@@ -1,12 +1,12 @@
 <?php
 
 
-class page_xAi_page_owner_analytics_live extends page_componentBase_page_owner_main {
+class page_xAi_page_owner_analytics_live extends page_xAi_page_owner_main {
 	
 	function init(){
 		parent::init();
 		
-		$main_cols = $this->add('Columns');
+		$main_cols = $this->app->layout->add('Columns');
 		$app_dash = $main_cols->addColumn(12);
 		// $manager_report_col = $main_cols->addColumn(4);
 

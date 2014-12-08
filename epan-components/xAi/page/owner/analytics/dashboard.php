@@ -1,7 +1,7 @@
 <?php
 
 
-class page_xAi_page_owner_analytics_dashboard extends page_componentBase_page_owner_main {
+class page_xAi_page_owner_analytics_dashboard extends page_xAi_page_owner_main {
 	
 	public $from_date=null;
 	public $to_date=null;
@@ -18,13 +18,13 @@ class page_xAi_page_owner_analytics_dashboard extends page_componentBase_page_ow
 		if($_GET['xai-analytical-from-date']) $this->from_date = $_GET['xai-analytical-from-date'];
 		if($_GET['xai-analytical-to-date']) $this->to_date = $_GET['xai-analytical-to-date'];
 
-		$form = $this->add('Form',null,null, array('form_horizontal'));
+		$form = $this->app->layout->add('Form',null,null, array('form_horizontal'));
 		$form->addField('DatePicker','from_date')->set($this->from_date);
 		$form->addField('DatePicker','to_date')->set($this->to_date);
 		$form->addSubmit('Update');
 
 		if($form->isSubmitted()){
-			$this->js()->reload(array(
+			$form->js()->reload(array(
 					'xai-analytical-from-date' => $form['from_date']?:0,
 					'xai-analytical-to-date' => $form['to_date']?:0
 				))->execute();
@@ -41,10 +41,10 @@ class page_xAi_page_owner_analytics_dashboard extends page_componentBase_page_ow
 			if($i==0) $row = $app_dash->add('Columns');
 			if($analytic_to_draw['visual_style']=='grid'){
 					$col = $row->addColumn(1 * ($analytic_to_draw['span_on_analytic_dashboard']?:1));
-					$dch = $col->add('xAi/View_DynamicDataTable',array('analytic'=> $analytic_to_draw,'from_date'=>$this->from_date,'to_date'=>$this->to_date));
+					$dch = $col->app->layout->add('xAi/View_DynamicDataTable',array('analytic'=> $analytic_to_draw,'from_date'=>$this->from_date,'to_date'=>$this->to_date));
 			}else{
 				$col = $row->addColumn(1 * ($analytic_to_draw['span_on_analytic_dashboard']?:1));
-				$dch = $col->add('xAi/View_DynamicChart',array('analytic'=> $analytic_to_draw,'from_date'=>$this->from_date,'to_date'=>$this->to_date));
+				$dch = $col->app->layout->add('xAi/View_DynamicChart',array('analytic'=> $analytic_to_draw,'from_date'=>$this->from_date,'to_date'=>$this->to_date));
 				$dch->chart->options['legend'] = array('layout'=> 'horizontal', 'align'=> 'center', 'verticalAlign'=> 'bottom');
 			}
 

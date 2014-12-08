@@ -2,9 +2,10 @@
 
 class page_xAi_page_owner_content extends page_xAi_page_owner_main {
 	
-	function page_index(){
+	function init(){
+		parent::init();
 
-		$tabs = $this->add('Tabs');
+		$tabs = $this->app->layout->add('Tabs');
 		$dimension_tab = $tabs->addTabURL('./dimensions','Deimensions');
 		$dimension_tab = $tabs->addTabURL('./iblocks','IBlocks Management');
 		$dimension_tab = $tabs->addTabURL('./config','iConfiguration');
