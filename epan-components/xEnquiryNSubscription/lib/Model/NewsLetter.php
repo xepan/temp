@@ -14,6 +14,8 @@ class Model_NewsLetter extends \Model_Table {
 
 		$f=$this->addField('name')->mandatory(true)->group('a1~6~Internal Name')->sortable(true);
 		$f->icon='fa fa-adn~red';
+		$f = $this->addField('is_active')->type('boolean')->defaultValue(true)->group('a1~2');
+		$f->icon='fa fa-exclamation~blue';
 		// $this->addField('short_description')->display(array('grid'=>'shorttext,wrap'));//->hint('255 Characters Msg for social and tweets');
 		$this->addField('email_subject')->mandatory(true)->group('a~12~<i/> NewsLetter')->sortable(true);
 		$this->addField('matter')->type('text')->display(array('form'=>'RichText'))->defaultValue('<p></p>')->group('a~12~bl')->mandatory(true);

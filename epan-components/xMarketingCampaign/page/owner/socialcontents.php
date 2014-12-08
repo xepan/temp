@@ -1,13 +1,12 @@
 <?php
 
-class page_xMarketingCampaign_page_owner_socialcontents extends page_componentBase_page_owner_main{
+class page_xMarketingCampaign_page_owner_socialcontents extends page_xMarketingCampaign_page_owner_main{
 
 	function init(){
-		parent::init();
-
 		$this->rename('y');
+		parent::init();
 		
-		$crud = $this->add('CRUD');
+		$crud = $this->app->layout->add('CRUD');
 
 		if($_GET['delete']){
 			// managing delete mannulaly for suhosin
@@ -20,8 +19,8 @@ class page_xMarketingCampaign_page_owner_socialcontents extends page_componentBa
 
 		$crud->setModel($social_model);
 		
-		$crud->add('Controller_FormBeautifier');
-		if($crud->grid){
+		// $crud->add('Controller_FormBeautifier');
+		if(!$crud->isEditing()){
 			$crud->add_button->setIcon('ui-icon-plusthick');
 		}
 

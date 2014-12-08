@@ -1,9 +1,9 @@
 <?php
 
-class page_xMarketingCampaign_page_owner_emailcontacts extends page_componentBase_page_owner_main{
+class page_xMarketingCampaign_page_owner_emailcontacts extends page_xMarketingCampaign_page_owner_main{
 
-	function page_index(){
-		// parent::init();
+	function init(){
+		parent::init();
 	
 		$email_category_model = $this->add('xEnquiryNSubscription/Model_SubscriptionCategories');
 		$email_category_model->hasMany('xMarketingCampaign/DataSearchPhrase','subscription_category_id');
@@ -16,10 +16,11 @@ class page_xMarketingCampaign_page_owner_emailcontacts extends page_componentBas
 			return $m->refSQL('xMarketingCampaign/DataSearchPhrase')->addCondition('is_active',true)->count();
 		})->type('int');
 
-		$crud = $this->add('CRUD');
+		$crud = $this->app->layout->add('CRUD');
 		$crud->setModel($email_category_model,array('name','is_active','total_phrases','active_phrases','total_emails'));
 
-		if($g=$crud->grid){
+		if(!$crud->isEditing()){
+			$g=$crud->grid;	
 			$crud->add_button->setIcon('ui-icon-plusthick');
 			$btn = $g->addButton('Manage Data Grabber');
 			$btn->setIcon('ui-icon-contact');
@@ -32,8 +33,9 @@ class page_xMarketingCampaign_page_owner_emailcontacts extends page_componentBas
 			$g->addTotals(array('total_phrases','active_phrases','total_emails'));	
 		}
 
-		$crud->add('Controller_FormBeautifier');
-		if($crud and $g = $crud->grid){
+		// $crud->add('Controller_FormBeautifier');
+		if($crud and (!$crud->isEditing())){
+			$g = $crud->grid;
 			$g->addColumn('expander','emails');
 		}
 		
@@ -49,11 +51,12 @@ class page_xMarketingCampaign_page_owner_emailcontacts extends page_componentBas
 
 		$subs_crud->setModel($cat_sub_model);
 
-		if($subs_crud){
-			$subs_crud->add('Controller_FormBeautifier');			
-			// ->getElement('from_app')->defaultValue('xMarketingCampaign');
-		}
-		if($subs_crud and $g=$subs_crud->grid){
+		// if($subs_crud){
+		// $subs_crud->add('Controller_FormBeautifier');			
+		// ->getElement('from_app')->defaultValue('xMarketingCampaign');
+		// }
+		if($subs_crud and (!$subs_crud->isEditing())){
+			$g=$subs_crud->grid;
 			$subs_crud->add_button->setIcon('ui-icon-plusthick');
 			$g->add_sno();
 			$g->addPaginator(100);
