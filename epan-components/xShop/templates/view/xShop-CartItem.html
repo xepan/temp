@@ -1,0 +1,24 @@
+<div id="{$_name}" class='{$class}'>
+	{$choices}
+</div>
+
+<div class="row">
+	<div class="col-md-1 col-sm-1 col-lg-1" >
+		<img width="100%" src="{xshop_item_image}{/xshop_item_image}" class="thumbnail"/>
+	</div>
+	<div class="col-md-2 text text-danger" >
+		<!-- id={$id} -->
+		<!-- <h4>{$item_id}</h4> -->
+		<h5>{$item_code}</h5>
+		<h4>{$item_name}</h4>
+	</div>
+	
+	<div class="col-md-7">
+		{$qty}
+	</div>
+
+	<div class="col-md-1">
+		<button class="btn btn-info btn-sm"  style="margin-top:25px;margin-left:-99px" onclick='javascript:$(this).univ().ajaxec("index.php?page=xShop_page_ajaxhandler_removecartitem&cartitem_id={$id}&task=page_removecartitem")'>Remove</button>	
+	</div>
+</div>
+	{$Content}			

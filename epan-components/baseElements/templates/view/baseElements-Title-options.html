@@ -1,0 +1,91 @@
+<div id='{$_name}' class='epan-component-options' component_type="{$component_type}">
+	<h3>{$component_type_name}</h3>
+	
+	<div id='title-options' class="row">
+		<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+			<button id="title-h1" class='btn btn-default btn-xs'>H1</button>
+		</div>
+		<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+			<button id="title-h2" class='btn btn-default btn-xs'>H2</button>
+		</div>
+		<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+			<button id="title-h3" class='btn btn-default btn-xs'>H3</button>
+		</div>
+		<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+			<button id="title-h4" class='btn btn-default btn-xs'>H4</button>
+		</div>
+		<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+			<button id="title-h5" class='btn btn-default btn-xs'>H5</button>
+		</div>
+		<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+			<button id="title-h6" class='btn btn-default btn-xs'>H6</button>
+		</div>
+	</div>
+
+
+</div>
+<script type="text/javascript">
+// ========== OPTION TO COMPONENT EFFECT ==============
+// 
+// $(your_option_html_element).click(function(event,ui){
+// 		$(current_selection_component).what to do ???
+// }) 
+
+$('#title-h1').click(function(event) {
+	text=$(current_selected_component).find('.editor').text();
+	$(current_selected_component).html('<h1 class="editor" contenteditable="true">'+text+'</h1>');
+	$('#title-options button').removeClass('btn-primary');
+	$(this).addClass('btn-primary');
+});
+
+$('#title-h2').click(function(event) {
+	text=$(current_selected_component).find('.editor').text();
+	$(current_selected_component).html('<h2 class="editor" contenteditable="true">'+text+'</h2>');
+	$('#title-options button').removeClass('btn-primary');
+	$(this).addClass('btn-primary');
+});
+
+$('#title-h3').click(function(event) {
+	text=$(current_selected_component).find('.editor').text();
+	$(current_selected_component).html('<h3 class="editor" contenteditable="true">'+text+'</h3>');
+	$('#title-options button').removeClass('btn-primary');
+	$(this).addClass('btn-primary');
+});
+
+
+$('#title-h4').click(function(event) {
+	text=$(current_selected_component).find('.editor').text();
+	$(current_selected_component).html('<h4 class="editor" contenteditable="true">'+text+'</h4>');
+	$('#title-options button').removeClass('btn-primary');
+	$(this).addClass('btn-primary');
+});
+
+
+$('#title-h5').click(function(event) {
+	text=$(current_selected_component).find('.editor').text();
+	$(current_selected_component).html('<h5 class="editor" contenteditable="true">'+text+'</h5>');
+	$('#title-options button').removeClass('btn-primary');
+	$(this).addClass('btn-primary');
+});
+
+
+$('#title-h6').click(function(event) {
+	text=$(current_selected_component).find('.editor').text();
+	$(current_selected_component).html('<h6 class="editor" contenteditable="true">'+text+'</h6>');
+	$('#title-options button').removeClass('btn-primary');
+	$(this).addClass('btn-primary');
+});
+
+var {$component_type}_options = {
+	show: function (){
+		// ===== THIS CODE RUNS EVERY TIME YOU DOUBLE CLICK YOUR COMPONENT
+		// TO TAKE VALUES FROM COMPONENT AND FILL OPTIONS
+		// 
+		// $(your_option_html_element).text($(current_selecte_component).css('border'));
+		hx = $(current_selected_component).find('.editor').prop("tagName").toLowerCase();
+		console.log(hx);
+		$('#title-options button').removeClass('btn-primary');
+		$('#title-'+hx).addClass('btn-primary');
+	}
+}
+</script>

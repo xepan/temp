@@ -1,0 +1,74 @@
+<div id='{$_name}' class='epan-component-options' component_type="{$component_type}">
+
+	<div class="panel-group" id="accordion">
+		<div class="xepan-collasp-header component-header">
+		 	<div class="panel-heading">
+		      	<h3 class="panel-title">
+		        	<a data-toggle="collapse" data-parent="#accordion"	 href="#collapse-enquiry-bootmenu">
+						{$component_type_name}
+		        	</a>
+		      	</h3>
+		   	</div>
+		 	<div id="collapse-enquiry-bootmenu" class="panel-			collapse collapse">
+		      	<div class="panel-body">
+		      		<div class='xepan-collasp-header'>
+						<table class="table table-condensed table-hover">
+							<tr>
+								<td>
+									Get Pages
+								</td>
+								<td>
+									<button id='xmenu-bootstrap-get-pages' class='btn btn-default btn-xs'>Get Pages</button>
+								</td>
+							</tr>
+
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+						
+	<div><button id='xMenuBootstrapServerSide'>Server Side</button></div>
+</div>
+<script type="text/javascript">
+// ========== OPTION TO COMPONENT EFFECT ==============
+// 
+// $(your_option_html_element).click(function(event,ui){
+// 		$(current_selected_component).what to do ???
+// }) 
+$('#xMenuBootstrapServerSide').click(function(event){
+	$('#epan-quick-component-options').toggle('slideup');
+	$.univ.frameURL('Bootstrap Menus','index.php?page=xMenus_page_owner_main')
+});
+
+$('#xmenu-bootstrap-get-pages').click(function(event) {
+	$.ajax({
+		url: 'index.php?page=xMenus_page_getpages&cut_page=1',
+		type: 'GET',
+		data: {param1: 'value1'}
+	})
+	.done(function(ret) {
+		$(current_selected_component).find('#xMenu-boostrap-ul').html(ret).sortable();
+		$(current_selected_component).find('#xMenu-boostrap-ul').find('ul.dropdown-menu').sortable();
+		console.log("success");
+	})
+	.fail(function() {
+		console.log("error");
+	})
+	.always(function() {
+		console.log("complete");
+	});
+	
+});
+
+var {$component_type}_options = {
+	show: function (){
+		// ===== THIS CODE RUNS EVERY TIME YOU DOUBLE CLICK YOUR COMPONENT
+		// TO TAKE VALUES FROM COMPONENT AND FILL OPTIONS
+		// 
+		// $(your_option_html_element).text($(current_selected_component).css('border'));
+		$('#input_option_b').val($(current_selected_component).find('b').text());
+	}
+}
+</script>

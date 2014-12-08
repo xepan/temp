@@ -1,0 +1,142 @@
+<div id='{$_name}' class='epan-component-options' component_type="{$component_type}">
+
+	<div class="panel-group" id="accordion">
+  <div class="xepan-collasp-header component-header">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapse-marquee">
+		{$component_type_name}
+        </a>
+      </h3>
+    </div>
+    <div id="collapse-marquee" class="panel-collapse collapse">
+      <div class="panel-body">
+      	<div class='xepan-collasp-header'>
+	<table class="table table-condensed table-hover">
+		<tr>
+			<td >
+				<label for='marquee_direction{$_id}'>
+				<b>Direction:-</b> 
+				</label>
+			</td>
+			<td>	
+				<select id='marquee_direction{$_id}'>
+					<option value="null">Select Direction</option>
+					<option value="up">up</option>
+					<option value="down">down</option>
+					<option value="left">left</option>
+					<option value="right">right</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			
+			<td >
+				<lable for='marquee_behavior{$_id}'>
+				<b>Behavior:-</b> 
+				</lable>
+			</td>
+			<td>	
+				<select id="marquee_behavior{$_id}">
+					<option value="null">Select Behavior</option>
+					<option value="slide">slide</option>
+					<option value="scroll">scroll</option>
+					<option value="alternate">alternate</option>
+				</select>
+			</td>
+		</tr>	
+
+		<!-- Marquee Start/Stop by Way2Tutorial.com -->
+		<tr>
+			<td> <label><b>Play:- </b></label>
+			</td>
+			<td>
+				<input class="btn btn-success btn-xs" id="start_marquee_{$_id}" type="button" value="Start Marquee" />
+			</td>
+		</tr>
+
+		<tr>	
+			<td> <label><b>Stop:-</b></label>
+			</td>
+			<td>
+				<input class="btn btn-danger btn-xs" id="stop_marquee_{$_id}" type="button" value="Stop Marquee" />
+			</td>
+		</tr>
+		<tr>
+				<td>
+					<b>Speed:-</b> 
+				</td> 
+				<td colspan="2">
+					<div class="btn-group">
+						<div id="slower_marquee_{$_id}" class="btn btn-default btn-xs ">Slow</div>
+						<div id="medium_marquee_{$_id}" class="btn btn-default btn-xs">Medium</div>
+						<div id="faster_marquee_{$_id}"class="btn btn-default btn-xs">Faster</div>
+						</div>					
+					<!-- <input class="btn btn-default btn-xs" id="slower_marquee_{$_id}" type="button" value="Slower" />
+					<input class="btn btn-default btn-xs" id="medium_marquee_{$_id}" type="button" value="Medium" />
+					<input class="btn btn-default btn-xs" id="faster_marquee_{$_id}" type="button" value="Faster" /> -->
+				</div>
+				</td>
+				
+		</tr>
+		</table>
+		</div>
+      </div>
+    </div>
+  </div>
+  </div><br>
+		<div><button id='marqueeServerSide'>Server Side</button></div>
+<!-- Marquee slow/fast by Way2Tutorial.com -->
+
+</div>
+<script type="text/javascript">
+// ========== OPTION TO COMPONENT EFFECT ==============
+// 
+// $(your_option_html_element).click(function(event,ui){
+// 		$(current_selected_component).what to do ???
+// }) 
+$('#marqueeServerSide').click(function(event){
+	$('#epan-quick-component-options').toggle('slideup');
+	$.univ.frameURL('Marquee','index.php?page=ExtendedElement_page_owner_main')
+});
+
+$('#marquee_direction{$_id}').change(function(event) {
+	$(current_selected_component).attr('direction',$('#marquee_direction{$_id}').val());
+	// $(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#marquee_behavior{$_id}').change(function(event) {
+	$(current_selected_component).attr('behavior',$('#marquee_behavior{$_id}').val());
+	// $(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+
+$('#start_marquee_{$_id}').click(function(){
+	document.getElementById($(current_selected_component).attr('id')).start();
+	
+	});
+$('#stop_marquee_{$_id}').click(function(){
+	document.getElementById($(current_selected_component).attr('id')).stop()
+	
+	});
+$('#slower_marquee_{$_id}').click(function(){
+	document.getElementById($(current_selected_component).attr('id')).setAttribute('scrollamount', 1, 0);
+	
+	});
+$('#medium_marquee_{$_id}').click(function(){
+	document.getElementById($(current_selected_component).attr('id')).setAttribute('scrollamount', 5, 0);
+	
+	});
+$('#faster_marquee_{$_id}').click(function(){
+	document.getElementById($(current_selected_component).attr('id')).setAttribute('scrollamount', 10, 0);
+	
+	});
+
+var {$component_type}_options = {
+	show: function (){
+		// ===== THIS CODE RUNS EVERY TIME YOU DOUBLE CLICK YOUR COMPONENT
+		// TO TAKE VALUES FROM COMPONENT AND FILL OPTIONS
+		// 
+		// $(your_option_html_element).text($(current_selected_component).css('border'));
+		// $('#input_option_b').val($(current_selected_component).find('b').text());
+	}
+}
+</script>

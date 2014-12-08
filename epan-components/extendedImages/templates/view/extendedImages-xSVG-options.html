@@ -1,0 +1,88 @@
+<div id='{$_name}' class='epan-component-options' component_type="{$component_type}">
+	
+	<div class="panel-group" id="accordion">
+		<div class="xepan-collasp-header component-header">
+		 	<div class="panel-heading">
+		      	<h3 class="panel-title">
+		        	<a data-toggle="collapse" data-parent="#accordion"	 href="#collapse-extendedimages-svg">
+						{$component_type_name}
+		        	</a>
+		      	</h3>
+		   	</div>
+		 	<div id="collapse-extendedimages-svg" class="panel-			collapse collapse">
+		      	<div class="panel-body">
+		      		<div class='xepan-collasp-header'>
+						<table class="table table-condensed table-hover">
+							<tr>
+							<td> Image </td>
+							<td>
+								<div class="btn-group">
+									<input type="text" id='xepan-image-svg-option-src' class="btn" disabled=true/>
+									<button type="button" id='xepan-image-svg-option-select' class="btn btn-success btn-xs">Select</button>
+								</div>
+							</td>
+							<td>
+								<button type="button" id='xepan-image-option-default' class="btn btn-default btn-xs">Default</button>
+							</td>
+
+							</tr>
+							<tr>
+							<td>
+								<input type='button' value='Edit' id='xsvg_edit_btn' />
+							</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+<script type="text/javascript">
+// ========== OPTION TO COMPONENT EFFECT ==============
+// 
+// $(your_option_html_element).click(function(event,ui){
+// 		$(current_selected_component).what to do ???
+// }) 
+
+$('#xsvg_edit_btn').click(function(event) {
+	// $('#xepan-image-svg-option-src').error(function(){
+	// 	alert('image not exist');
+	// });
+	var url = "epan-components/extendedImages/templates/svgEditor/editor/svg-editor.html?url=..%2F..%2F..%2F..%2F..%2F"+ $('#xepan-image-svg-option-src').val() +"&dimensions=500,400&canvas_expansion=5&initFill[color]=0000FF";
+	// url = encodeURI(url);
+	// alert(url);
+	window.open(url);
+});
+
+$('#xepan-image-svg-option-select').click(function(event) {
+	var fm = $('<div/>').dialogelfinder({
+						url : 'elfinder/php/connector.php',
+						lang : 'en',
+						width : 840,
+						destroyOnClose : true,
+						getFileCallback : function(files, fm) {
+							console.log(files.url);
+							$('#xepan-image-svg-option-src').val(files.url);
+							$(current_selected_component).find('img').attr('src',files.url);
+						},
+						commandsOptions : {
+							getfile : {
+								oncomplete : 'close',
+								folders : true
+							}
+						}
+					}).dialogelfinder('instance');
+		});
+
+var {$component_type}_options = {
+	show: function (){
+		// ===== THIS CODE RUNS EVERY TIME YOU DOUBLE CLICK YOUR COMPONENT
+		// TO TAKE VALUES FROM COMPONENT AND FILL OPTIONS
+		// 
+		// $(your_option_html_element).text($(current_selected_component).css('border'));
+		$('#xepan-image-svg-option-src').val($(current_selected_component).find('img').attr('src'));		
+	}
+}
+</script>

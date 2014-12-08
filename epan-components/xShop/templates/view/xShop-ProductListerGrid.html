@@ -1,0 +1,163 @@
+<div id="{$_name}">
+	<link rel="stylesheet" type="text/css" href="epan-components/xShop/templates/css/fancybox/jquery.fancybox.css"/>
+	<link rel="stylesheet" type="text/css" href="epan-components/xShop/templates/css/fancybox/jquery.fancybox-buttons.css"/>
+	<script src="epan-components/xShop/templates/js/jquery-elevatezoom.js"></script>
+	<script src="epan-components/xShop/templates/js/fancybox/jquery.fancybox.js"></script>
+	<script src="epan-components/xShop/templates/js/fancybox/jquery.fancybox-buttons.js"></script>
+	<style type="text/css">
+		.xshop-product-detailpage:hover{
+			cursor:grab;
+	}
+	</style>
+	{xshop_product_display}
+	<div class="row xshop-product-display-topbar" style="margin-bottom:5px;padding-bottom:5px;display:{xshop_product_topbar_display}{/xshop_product_topbar_display}">
+		<div class="col-md-4 col-sm-4 col-lg-4 xshop-product-topbar-colum">
+			Display :
+			<div class="btn-group">
+				<button type="button" class="btn btn-default glyphicon glyphicon-th-list btn btn-lg xshop-product-list-icon" title="List View"> </button>
+				<button type="button" class="btn btn-default glyphicon glyphicon-th btn-lg" title="Grid View"> </button>
+			</div>
+		</div>
+		<div class="col-md-4 col-sm-4 col-lg-4 ">
+			<!-- product search and filter come here -->
+		</div>
+		<div class="col-md-4 col-sm-4 col-lg-4">
+			<!-- Product Compare come here -->
+		</div>
+	</div>
+	{/xshop_product_display}
+	<div class="row">
+		{rows}
+		{row}
+		<div class="{$xshop_product_grid_column}">
+			{xshop_product_hover_detail_page_start}
+			<div class="xshop-product-detailpage" itemdetailpage="index.php?subpage={$xshop_product_hover_detail_page}&xshop_item_id={$id}">
+				{/xshop_product_hover_detail_page_start}
+				<div class="productlist-img thumbnail xshop-grid-cell-outerdiv">
+					{xshop_item_list_view_row_start}
+						<div class="row">	
+					{/xshop_item_list_view_row_start}
+
+					<!-- TODO xShop Item List View image-->
+					{xshop_item_list_view_image_start}
+						<div class="col-md-4">
+							{/xshop_item_list_view_image_start}
+							<!-- <a href="#99"> ADD HERE MULTIPLE OPTION ON IMAGE HOVER-->
+							<div class='text-center xshop-grid-cell-img-container' style="max-width:250px;max-height:250px;overflow:hidden;">
+								<a class="fancybox" href="{image_url}logo.png{/image_url}" rel="gallery{$id}" title="{name}{/name}" style="display:{$item_image_fancybox}">
+									<img id="img_for_fancy_{$id}" class="xshop-grid-cell-img" style="margin:0 auto 0 auto;max-width:100%;" src="{image_url}logo.png{/image_url}"/>
+								</a>
+								{xshop_product_detail_on_image_click_start}
+								<a class="xshop-product-image-anchor" href="index.php?subpage={$xshop_product_detail_url}&xshop_item_id={$id}">
+									{/xshop_product_detail_on_image_click_start}
+									<div style="display:{$item_image_no_fancybox};">
+										<img id="img_for_fancy_{$id}" class="xshop-grid-cell-img" style="margin:0 auto 0 auto;max-width:100%;" src="{image_url}logo.png{/image_url}"/>
+									</div>
+									{xshop_product_detail_on_image_click_end}
+								</a>
+								{/xshop_product_detail_on_image_click_end}
+							</div>
+							<!-- </a> -->
+							{xshop_item_list_view_image_end}
+						</div>
+					{/xshop_item_list_view_image_end}
+
+					<!-- XSHOP ITEM BTN-->
+					{xshop_item_list_view_btn_start}	
+						<div class="col-md-8">
+					{/xshop_item_list_view_btn_start}	
+					<div class="caption" class="xshop-grid-cell-detail-container">
+						<div class="xshop-grid-cell-name-container">
+							<h4 class="xshop-grid-cell-name">{name}Item{/name}</h4>
+						</div>
+						<div class="xshop-grid-cell-code-container">
+							<h4 class="xshop-grid-cell-code">
+							Code: {sku}{/sku}
+							<!-- <span class="pull-right" style="color:#cccccc">
+							<small>{xshop_product_created_at}
+								{/xshop_product_created_at}</small>
+							</span> -->
+							</h4>
+						</div>
+						<p style="display:{$xshop_product_price_display}">
+						{xShop_product_price_strike}
+						<small class="xshop-grid-cell-original-price" style="text-decoration: line-through;">
+						&#8377;{$original_price}
+						</small>
+						{/xShop_product_price_strike}
+						{xShop_product_price}
+						<small class="xshop-grid-cell-original-price">
+						&#8377;{$original_price}
+						</small>
+						{/xShop_product_price}
+						<big class="text-danger xshop-grid-cell-sale-price">
+						&#8377;{$sale_price}
+						</big>
+						</p>
+						
+						{xshop_item_short_description}	
+						<div class="xshop-list-cell-description">
+							{$short_description}<br>
+						</div>
+						{/xshop_item_short_description}
+						<div class="xshop-grid-btn-container">
+							{cart_and_enquiry}
+							<div class="row">
+								<div class="{$xshop_list_btn_class} xshop-grid-btn-addtocart" style="display:{$addtocart_display};">
+									<a href="#product_add{$id}" class="btn btn-default btn-block" role="button" onclick="{$aj}" style="text-decoration:none;">Add To Cart</a>
+									<!-- <a href="?epan=web&subpage=xshop-productdetail&product_id={$id}" class="btn btn-default" role="button">View Detail</a> -->
+								</div>
+									{xshop_product_detail}
+									<div class="{$xshop_list_btn_class}">
+										<a href="index.php?subpage={xshop_item_detail_url}{/xshop_item_detail_url}&xshop_item_id={$id}" role="button" class="btn btn-default btn-block" style="text-decoration:none;display:{$xshop_product_show_detail_display}">More</a>
+									</div>
+									{/xshop_product_detail}
+							</div>
+
+							<!-- 			  			<div class="btn-group xshop-grid-btn-enquiry">
+								{$enquiry_view}
+								<a href="?epan=web&subpage=xshop-productdetail&product_id={$id}" class="btn btn-default" role="button">View Detail</a>
+							</div> -->
+							{/cart_and_enquiry}
+						</div>
+					</div>	
+
+				{xshop_item_list_view_btn_end}	
+					</div>
+				{/xshop_item_list_view_btn_end}
+				</div>
+				{xshop_item_list_view_row_end}
+				</div>	
+				{/xshop_item_list_view_row_end}
+
+				{xshop_product_hover_detail_page_end}
+			</div>
+			{/xshop_product_hover_detail_page_end}
+		</div>
+		{/row}
+		{/rows}
+		{no_record_found}
+		<div class='epan-container'>
+			<div class="alert alert-success">
+				<p class='panel panel-warning text-center'>No Item in this category.</p> <br/>
+				<small class="panel panel-Info text-center">Place your Item
+				</small>
+			</div>
+			<!-- <img src="epans/web/effective_and_affordable.png"> -->
+		</div>
+		{/no_record_found}
+	</div>
+	{$paginator}
+	{$Content}
+</div>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$(".fancybox").fancybox({
+				openEffect	: 'elastic',
+			closeEffect	: 'elastic'
+			});
+	});
+	$("div.xshop-product-detailpage").click(function(){
+		window.location.href = $(this).attr("itemdetailpage");
+	});
+</script>

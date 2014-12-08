@@ -1,0 +1,159 @@
+<div id='{$_name}' class='epan-component-options' component_type="{$component_type}">
+	<div class="panel-group" id="accordion">
+		<div class="xepan-collasp-header component-header">
+		 	<div class="panel-heading">
+		      	<h3 class="panel-title">
+		        	<a data-toggle="collapse" data-parent="#accordion"	 href="#collapse-xshop-item-detail">
+						{$component_type_name}
+		        	</a> 
+		      	</h3>
+		   	</div>
+		 	<div id="collapse-xshop-item-detail" class="panel-			collapse collapse">
+		      	<div class="panel-body">
+		      		<div class='xepan-collasp-header'>
+						<table class="table table-condensed table-	hover">
+							<tr>
+								<td colspan="3">
+									Show/Hide
+								</td>
+							</tr>
+							<tr>
+								<td>
+									
+								</td>
+								<td>
+									Detail in Panel
+								</td>
+								<td>
+									<input id="xshop_product_detail_panel" type="checkbox"/>
+								</td>
+							</tr>
+							<tr id="panel-label">
+								<td>
+									
+								</td>
+								<td>
+									Panel Label
+								</td>
+								<td>
+									<input id="xshop_product_detail_panel_label" placeHolder="Panel Header Label"/>
+								</td>
+							</tr>
+							<!-- Live Edit Content option -->
+							<!-- tr>
+								<td>
+								</td>
+								<td>
+									Content live edit 
+								</td>
+								<td>
+									<input id="xshop_product_detail_live_edit" type="checkbox"/>
+								</td>
+							</tr> -->
+							<tr>
+								<td colspan="3">
+									Caption
+								</td>
+							</tr>
+							<tr>
+								<td>
+									
+								</td>
+								<td>
+									Supplier Button
+								</td>
+								<td>
+									<input id="xshop_pd_supplier_caption"/>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									
+								</td>
+								<td>
+									Manufacturer Button
+								</td>
+								<td>
+									<input id="xshop_pd_manufacturer_caption"/>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div><br>
+	<div>
+		<button id='xShopProductDetailServerSide'>Server Side</button>
+	</div>
+</div>
+<script type="text/javascript">
+// ========== OPTION TO COMPONENT EFFECT ==============
+// 
+// $(your_option_html_element).click(function(event,ui){
+// 		$(current_selected_component).what to do ???
+// }) 
+$('#xShopProductDetailServerSide').click(function(event){
+	$('#epan-quick-component-options').toggle('slideup');
+	$.univ.frameURL('xShop Products Details','index.php?page=xShop_page_owner_main')
+});
+
+$('#show_xshop_product_detail_images').change(function(event) {
+	if($('#show_xshop_product_detail_images').is(':checked')?$(current_selected_component).attr('xshop_product_detail_images',1):$(current_selected_component).attr('xshop_product_detail_images',0));	
+		
+	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+
+$('#xshop_product_detail_panel').change(function(event){
+	if($('#xshop_product_detail_panel').is(':checked')?$(current_selected_component).attr('xshop_product_detail_panel',1):$(current_selected_component).attr('xshop_product_detail_panel',0));
+	if($('#xshop_product_detail_panel').is(':checked')){
+		$('#panel-label').show();
+		$(current_selected_component).attr('xshop_product_detail_panel_label','Detail');
+	}
+	else
+		$('#panel-label').hide();	
+	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#xshop_product_detail_panel_label').change(function(event){
+	$(current_selected_component).attr('xshop_product_detail_panel_label',$(this).val());
+	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+
+$('#xshop_product_detail_live_edit').change(function(event) {
+	if($('#xshop_product_detail_live_edit').is(':checked')?$(current_selected_component).attr('xshop_product_detail_live_edit',1):$(current_selected_component).attr('xshop_product_detail_live_edit',0));		
+	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#xshop_pd_manufacturer_caption').change(function(event){
+	$(current_selected_component).attr('xshop_pd_manufacturer_caption',$('#xshop_pd_manufacturer_caption').val());
+	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+
+$('#xshop_pd_supplier_caption').change(function(event){
+	$(current_selected_component).attr('xshop_pd_supplier_caption',$('#xshop_pd_supplier_caption').val());
+	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');	
+});
+
+var {$component_type}_options = {
+	show: function (){
+		// ===== THIS CODE RUNS EVERY TIME YOU DOUBLE CLICK YOUR COMPONENT
+		// TO TAKE VALUES FROM COMPONENT AND FILL OPTIONS
+		// 
+		// $(your_option_html_element).text($(current_selected_component).css('border'));
+		$('#show_xshop_product_detail_images').attr('checked',$(current_selected_component).attr("xshop_product_detail_images")==1?true:false);
+
+		$('#xshop_product_detail_live_edit').attr('checked',$(current_selected_component).attr("xshop_product_detail_live_edit")==1?true:false);
+
+		// panel
+		$('#xshop_product_detail_panel_label').val($(current_selected_component).attr('xshop_product_detail_panel_label'));
+		$('#xshop_product_detail_panel').attr('checked',$(current_selected_component).attr("xshop_product_detail_panel")==1?true:false);
+		
+		if($(current_selected_component).attr("xshop_product_detail_panel") == '0'){
+			$("#panel-label").hide();			
+		}
+			// $(current_selected_component).attr('xshop_pd_supplier_caption','Supplier');		
+		
+		$('#xshop_pd_supplier_caption').val($(current_selected_component).attr('xshop_pd_supplier_caption')?$(current_selected_component).attr('xshop_pd_supplier_caption'):'Supplier');
+		$('#xshop_pd_manufacturer_caption').val($(current_selected_component).attr('xshop_pd_manufacturer_caption')?$(current_selected_component).attr('xshop_pd_manufacturer_caption'):'Manufacturer');
+	}
+}
+</script>

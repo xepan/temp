@@ -1,0 +1,129 @@
+<!-- {id}{/id} -->
+<div class="row">
+	<div class="col-md-4 col-sm-4">
+		<p class="panel panel-primary panel-footer">Name : {$name}</p>
+	</div>
+	<div class="col-md-2 col-sm-2">
+		<p class="panel panel-info panel-footer">Code : {$sku}</p>
+	</div>
+	<div class="col-md-2 col-sm-2">
+		<p class="panel panel-warning panel-footer">Original Price : {$original_price}</p>
+	</div>
+	<div class="col-md-2 col-sm-2">
+		<p class="panel panel-danger panel-footer">Sale Price : {$sale_price}</p>
+	</div>
+	<div class="col-md-2 col-sm-2">		
+		<p class="panel panel-success panel-footer">Created on : {$created_at}</p>	
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6 col-sm-6">
+		<div class="well alert alert-info"><h4>Short Description :</h4>{short_description_html}{/short_description_html}</div>
+		<div class="well alert alert-success"><h4>Description :</h4>{description_html}{/description_html}</div>
+	</div>
+	<div class="col-md-6 col-sm-6">
+		<div class="row">
+			<div class="col-md-4 col-sm-4">
+				<p class="panel panel-success panel-footer">Rank Weight : {$rank_weight}</p>
+			</div>
+			<div class="col-md-4 col-sm-4">
+				<p class="panel panel-info panel-footer">Publish : {$published}</p>
+			</div>
+			<div class="col-md-4 col-sm-4">
+				<p class="panel panel-warning panel-footer">Expire Date : {$expiry_date}</p>
+			</div>		
+		</div>
+		<div class="row">
+			<div class="col-md-6 col-sm-6">
+				<p class="panel panel-success panel-footer">Supplier/Author : {$supplier}</p>
+			</div>
+			<div class="col-md-6 col-sm-6">
+				<p class="panel panel-success panel-footer">Manufacturer : {$manufacturer}</p>
+			</div>
+		</div>
+		<div class="row well well-sm">
+			<h4>Marked</h4>
+			<div class="col-md-3 col-sm-3">
+				<p class="panel panel-info panel-footer">New: <span class="badge pull-right">{$marked_new}</span></p>
+			</div>
+			<div class="col-md-3 col-sm-3">
+				<p class="panel panel-success panel-footer">Feature: <span class="badge pull-right">{$marked_feature}</span></p>	
+			</div>
+			<div class="col-md-3 col-sm-3">
+				<p class="panel panel-success panel-footer">Latest: <span class="badge pull-right">{$marked_latest}</span></p>
+			</div>
+			<div class="col-md-3 col-sm-3">
+				<p class="panel panel-info panel-footer">Most View: <span class="badge pull-right">{$marked_mostview}</span></p>				
+			</div>	
+		</div>
+
+		<div class="row well well-sm">
+			<h4>Enquiry Send To</h4>
+			<div class="col-md-4 col-sm-4">
+				<p class="panel panel-info panel-footer">Owner: <span class="badge pull-right">{$self}</span></p>
+			</div>
+			<div class="col-md-4 col-sm-4">
+				<p class="panel panel-success panel-footer">Supplier: <span class="badge pull-right">{$supplier123}</span></p>	
+			</div>
+			<div class="col-md-4 col-sm-4">
+				<p class="panel panel-success panel-footer">Manufacturer: <span class="badge pull-right">{$manufacturer123}</span></p>
+			</div>
+			<h4 class="pull-right"><span class=" label label-info">Product Enquiry Auto Reply : <span class="badge">{$auto_reply}</span></span></h4>		
+		</div>
+
+		<div class="row well well-sm">
+			<h4>Item Display Options</h4>
+			<div class="col-md-4 col-sm-4">
+				<p class="panel panel-info panel-footer">Offer: <span class="badge pull-right">{$offer}</span></p>
+			</div>
+			<div class="col-md-4 col-sm-4">
+				<p class="panel panel-success panel-footer">Detail: <span class="badge pull-right">{$detail}</span></p>	
+			</div>
+			<div class="col-md-4 col-sm-4">
+				<p class="panel panel-success panel-footer">Price: <span class="badge pull-right">{$price}</span></p>
+			</div>
+			<h4 class="pull-left"><span class=" label label-success">Manufacturer Detail : <span class="badge">{$manufacturer_detail}</span></span></h4>		
+			<h4 class="pull-right"><span class=" label label-warning">Supplier Detail : <span class="badge">{$supplier_detail}</span></span></h4>		
+		</div>
+
+		<div class="row well well-sm">
+			<h4>Item Allow Options</h4>
+			<div class="col-md-4 col-sm-4">
+				<p class="panel panel-info panel-footer">Attachment: <span class="badge pull-right">{$attachment}</span></p>
+			</div>
+			<div class="col-md-4 col-sm-4">
+				<p class="panel panel-success panel-footer">Enquiry: <span class="badge pull-right">{$enquiry}</span></p>	
+			</div>
+			<div class="col-md-4 col-sm-4">
+				<p class="panel panel-success panel-footer">Saleable: <span class="badge pull-right">{$saleable}</span></p>
+			</div>				
+		</div>		
+
+		<div class="row well well-sm">
+			<h4>Item Comment Options</h4>
+			<div class="col-md-4 col-sm-4">
+				<p class="panel panel-info panel-footer">Comment System: <span class="badge pull-right">{$comment}</span></p>
+			</div>
+			<div class="col-md-8 col-sm-8">
+				<p class="panel panel-success panel-footer">Comment Api: {$comment_api}</p>	
+			</div>
+		</div>
+		
+		<div class="row well well-sm">
+			<h4>Item Other Options</h4>
+			<div class="col-md-4 col-sm-4">
+				<p class="panel panel-info panel-footer">Custom Button: <span class="badge pull-right">{$custom_button}</span></p>
+			</div>
+			<div class="col-md-4 col-sm-4">
+				<p class="panel panel-success panel-footer">Text: <span class="badge pull-right">{$custom_button_text}</span></p>	
+			</div>
+			<div class="col-md-4 col-sm-4">
+				<p class="panel panel-success panel-footer">URL: <span class="badge pull-right">{$custom_button_url}</span></p>
+			</div>
+			<h4><span class="label label-info">Meta Title : {$meta_title}</span></h4>		
+			<h4><span class="label label-warning">Meta Description : {$meta_description}</span></h4>		
+			<h4><span class="label label-success">Tags :{$tags}</span></h4>		
+		</div>
+
+	</div>
+</div>

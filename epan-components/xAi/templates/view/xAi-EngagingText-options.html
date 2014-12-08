@@ -1,0 +1,169 @@
+<div id='{$_name}' class='epan-component-options' component_type="{$component_type}">
+	<h3>{$component_type_name}</h3>
+<div class='xepan-ai-engagetext-options-div'>
+	<div>
+		<button id="xepan-ai-engagetext-edit" class='btn btn-default'>Edit</button>
+		<button id="xepan-ai-engagetext-exec" class='btn btn-default'>Non Edit</button>
+	</div>
+
+	<div>
+		No Of Characters to show 
+		<div>
+			<input type='text' id='slicePoint' />
+		</div>
+	</div>	
+	<div class="row">
+		<div class="col-md-6">
+			<label id='showWordCount'> Show Word Count
+			<input type='checkbox' id='showWordCount1' />
+			</label>
+		</div>		
+		<div class="col-md-6">
+			<label id='widow'> Widow
+			<input type='text' id='widow1' title="If after slicing the words in second part is less then thisthan do not show read more"/> 
+			</label>
+		</div>		
+	</div>
+	<div class="row">
+		<div class="col-md-5">
+			<label>
+			 Expand Effect
+		<select id="expandEffect1"> 
+				<option value="show">Show</option>
+				<option value="slideUp">Slide Up</option>
+				<option value="slideDown">Slide Down</option>
+			</select>
+			</label>
+		</div>
+		<div class="col-md-5">
+			<label id='userCollapseText'> User Collapse Text
+				<input type='text' id='userCollapseText1' />
+			</label>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-5">
+
+			<label id='expandText'> Expand Text
+				<input type='text' id='expandText1' />
+			</label>
+		</div>
+		<div class="col-md-5">
+			<label id='summaryClass'> Summary Class
+				<input type='text' id='summaryClass1' />
+			</label>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-5">
+			<label id='detailClass'> Detail Class
+				<input type='text' id='detailClass1' />
+			</label>
+		</div>
+		<div class="col-md-5">
+			<label id='userCollapse'> User Collapse
+				<input type='text' id='userCollapse1' />
+			</label>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-5">
+			<label id='collapseTimer'> Collapse Timer
+				<input type='text' id='collapseTimer1' />
+			</label>
+		</div>
+		<div class="col-md-5"></div>
+	</div></div>
+
+<!-- 
+slicePoint: $('#__COMPONENTID__').attr('slicepoint'),
+		  showWordCount: $('#__COMPONENTID__').attr('showwordcount') == 'true'? true:false,
+		  widow: $('#__COMPONENTID__').attr('widow'),
+		  expandEffect: $('#__COMPONENTID__').attr('expandeffect'),
+		  userCollapseText: $('#__COMPONENTID__').attr('usercollapsetext'),
+		  expandText: $('#__COMPONENTID__').attr('expandtext'),
+		  summaryClass: $('#__COMPONENTID__').attr('summaryclass'),
+		  detailClass: $('#__COMPONENTID__').attr('detailclass'),
+		  userCollapse: $('#__COMPONENTID__').attr('usercollapse'),
+		  collapseTimer: $('#__COMPONENTID__').attr('collapsetimer'), -->
+
+</div>
+<script type="text/javascript">
+// ========== OPTION TO COMPONENT EFFECT ==============
+// 
+// $(your_option_html_element).click(function(event,ui){
+// 		$(current_selected_component).what to do ???
+// }) 
+
+$('#xepan-ai-engagetext-edit').click(function(ev){
+	$(current_selected_component).trigger('editmode');
+});
+
+$('#xepan-ai-engagetext-exec').click(function(ev){
+	$(current_selected_component).trigger('execmode');
+});
+
+$('#slicePoint').change(function(event){
+	$(current_selected_component).attr('slicepoint',$(this).val());
+});
+
+$('#showWordCount1').change(function(event){
+	$(current_selected_component).attr('showwordcount',$(this).val());
+});
+
+$('#widow1').change(function(event){
+	$(current_selected_component).attr('widow',$(this).val());
+});
+
+$('#expandEffect1').change(function(event){
+	$(current_selected_component).attr('expandeffect',$(this).val());
+});
+
+$('#userCollapseText1').change(function(event){
+	$(current_selected_component).attr('usercollapsetext',$(this).val());
+});
+
+$('#expandText1').change(function(event){
+	$(current_selected_component).attr('expandtext',$(this).val());
+});
+
+$('#summaryClass1').change(function(event){
+	$(current_selected_component).attr('summaryclass',$(this).val());
+});
+
+$('#detailClass1').change(function(event){
+	$(current_selected_component).attr('detailclass',$(this).val());
+});
+
+$('#userCollapse1').change(function(event){
+	$(current_selected_component).attr('usercollapse',$(this).val());
+});
+
+$('#collapseTimer1').change(function(event){
+	$(current_selected_component).attr('collapseTimer',$(this).val());
+});
+
+var {$component_type}_options = {
+	show: function (){
+		// ===== THIS CODE RUNS EVERY TIME YOU DOUBLE CLICK YOUR COMPONENT
+		// TO TAKE VALUES FROM COMPONENT AND FILL OPTIONS
+		// 
+		// $(your_option_html_element).text($(current_selected_component).css('border'));
+		$('#slicePoint').val($(current_selected_component).attr('slicepoint'));
+		$('#showWordCount').val($(current_selected_component).attr('showwordcount'));
+		$('#widow').val($(current_selected_component).attr('widow'));
+		$('#expandEffect1').val($(current_selected_component).attr('expandeffect'));
+		$('#userCollapseText1').val($(current_selected_component).attr('usercollapsetext'));
+		$('#expandText1').val($(current_selected_component).attr('expandtext'));
+		$('#summaryClass1').val($(current_selected_component).attr('summaryclass'));
+		$('#detailClass1').val($(current_selected_component).attr('detailclass'));
+		$('#userCollapse1').val($(current_selected_component).attr('usercollapse'));
+		$('#collapseTimer1').val($(current_selected_component).attr('collapsetimer'));
+	}
+}
+
+$(function(){
+	$('.xepan-ai-engagetext-options-div input').tooltip();
+});
+
+</script>

@@ -1,0 +1,42 @@
+<div id='{$_name}'>
+	<div class='row'>
+	{rows}
+		{row}
+			<div class='col-md-3'>
+				<div class="panel panel-{panel_type}info{/panel_type}">
+	              <div class="panel-heading">
+	                <div class="row">
+	                  <div class="col-xs-3">
+	                    <i class="glyphicon glyphicon-ok-sign" style='font-size:50px'></i>
+	                  </div>
+	                  <div class="col-xs-9 text-right">
+	                    <p class="announcement-heading">{$type}</p>
+	                    <p class="announcement-text">{$name}</p>
+	                  </div>
+	                </div>
+	              </div>
+	                <div class="panel-footer announcement-bottom">
+	                  <div class="row">
+		              <a href="#" onclick="{$info_btn}">
+	                    <div class="col-xs-6">
+	                      View info &amp; Install
+	                    </div>
+		              </a>
+		              {remove_from_marketplace}
+			              <a href="#" onclick="{$remove_btn}">
+		                    <div class="col-xs-6 text-right">
+		                      <i class="glyphicon glyphicon-remove"></i>
+		                    </div>
+			              </a>
+		              {/remove_from_marketplace}
+	                  </div>
+	                </div>
+	            </div>
+			</div>
+		{/row}
+	{/rows}
+	</div>
+	<div class='row container'>
+		{$Paginator}
+	</div>
+</div>

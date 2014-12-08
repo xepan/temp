@@ -1,0 +1,29 @@
+<div {$_id} >
+	{$Content}
+<link rel="stylesheet" type="text/css" href="{template}css/ImageGalleryDefault.css{/}" />
+
+<link rel="stylesheet" type="text/css" href="{template}css/ImageGalleryComponent.css{/}" />
+
+<script src="{template}js/ImageGalleryModernizr.custom.js{/}"></script>
+	<div class="main">
+	<ul id="og-grid" class="og-grid">
+	{rows}
+	{row}
+			<li>
+				<a href="#55657" data-largesrc="{$image_url}" data-title="{$title}" data-description='{$name}'>
+				<img class="ximagegallery-row" style="margin:0 auto 0 auto;width:180px;height:180px;" src="{image_url}logo.png{/image_url}"/>
+				</a>
+			</li>
+	{/row}
+	{/rows}
+	</ul>
+	</div>	
+
+<script src="{template}js/ImageGalleryGrid1.js{/}"></script>
+	
+	<script>
+		$(function() {
+			Grid.init();
+			});
+
+	</script>

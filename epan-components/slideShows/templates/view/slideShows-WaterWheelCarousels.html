@@ -1,0 +1,44 @@
+<div id='{$_name}' {$attributes} class='slide {$class} ' style='position:relative; {$style}' >
+	<script type="text/javascript" src="epan-components/slideShows/templates/js/jquery.waterwheelCarousel.min.js"/>
+
+<style type="text/css">
+  #carousel {
+    width:80%;
+    height: 400px;
+    display: relative;
+  }
+  #carousel img {
+    display: hidden; /* hide images until carousel prepares them */
+    cursor: pointer; /* not needed if you wrap carousel items in links */
+  }
+</style>
+
+	<div id="carousel" class="carousel_{$id}">
+	{rows}
+	{row}
+		<img src="{$image}" alt="Image 1" />
+		<div>{$description}</div>
+	{/row}
+	{/rows}
+	</div>
+
+	<script type="text/javascript">
+		  $(document).ready(function() {
+		    $(".carousel_{$id}").waterwheelCarousel({
+		      // include options like this:
+		      // (use quotes only for string values, and no trailing comma after last option)
+		      	startingItem:1,
+				flankingItems:{$show_item},
+				separation:{$separation},
+				sizeMultiplier:{$size_multiplier},
+				opacityMultiplier:{$opacity},
+				// speed:{$speed},
+				animationEasing:"{$animation}",
+				autoPlay:{$autoPlay},
+				orientation:"{$orientation}",
+				keyboardNav:{$keyboard_Nav},
+		    });
+		  });
+	</script>
+</div>
+

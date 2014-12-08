@@ -1,0 +1,247 @@
+<div id='{$_name}' class='epan-component-options' component_type="{$component_type}">
+		<div class="panel-group" id="accordion">
+		<div class="xepan-collasp-header component-header">
+		 	<div class="panel-heading">
+		      	<h3 class="panel-title">
+		        	<a data-toggle="collapse" data-parent="#accordion"	 href="#collapse-xshop-item-xcart">
+						{$component_type_name}
+		        	</a> 
+		      	</h3>
+		   	</div>
+		 	<div id="collapse-xshop-item-xcart" class="panel-collapse collapse">
+		      	<div class="panel-body">
+		      		<div class='xepan-collasp-header'>
+						<table class="table table-condensed table-hover">
+							<tr>
+								<td>
+									Edit CSS
+								</td>
+								<td>
+									<div id="xshop-cart-editcss" class="btn btn-default btn-xs">Edit CSS</div>
+								</td>
+							</tr>
+							<tr>
+								<td width="40%">Cart Layout</td>
+								<td>
+									<select id='xshop_cart_layout'>
+										<option value='0'>Please Select</option>
+										<option value='1'>Simple</option>
+										<option value='2'>Sort</option>
+										<option value='3'>Cart Detail</option>;
+									</select>
+								</td>
+							</tr>
+							<tr class="ipb-options">
+								<td>
+									<label for="xshop_ipb_cart_empty_btn">Show Empty Button</label>
+								</td>
+								<td>
+									<input id="xshop_ipb_cart_empty_btn" type="checkbox"/>
+								</td>
+							</tr>
+							<tr class="ipb-options">
+								<td>
+									<label for="xshop_ipb_cart_checkout_btn">Show Checkout Button</label>
+								</td>
+								<td>
+									<input id="xshop_ipb_cart_checkout_btn" type="checkbox"/>
+								</td>
+							</tr>
+							<tr class="ipb-options">
+								<td>
+									<label for="xshop_ipb_cart_viewcart_btn">Show View Cart Button</label>
+								</td>
+								<td>
+									<input id="xshop_ipb_cart_viewcart_btn" type="checkbox"/>
+								</td>
+							</tr>
+							<tr class="ipb-options">
+								<td>
+									<label for="xshop_ipb_cart_items">Show Item(s) Count</label>
+								</td>
+								<td>
+									<input id="xshop_ipb_cart_items" type="checkbox"/>
+								</td>
+							</tr>
+							<tr class="ipb-options">
+								<td>
+									<label for="xshop_ipb_cart_price">Show Total Price</label>
+								</td>
+								<td>
+									<input id="xshop_ipb_cart_price" type="checkbox"/>	
+								</td>
+							</tr>
+							<tr class="ipb-options">
+								<td>
+									Cart Detail Page
+								</td>
+								<td>
+									<input id="xshop_ipb_cart_detail_page" type="text"/>
+								</td>
+							</tr>
+							<tr class="ipb-options">
+								<td>
+								Cart Checkout Page
+								</td>
+								<td>
+									<input id="xshop_ipb_checkout_page" type="text"/>
+								</td>
+							</tr>
+							<tr class="ic-options">
+								<td >
+								Cart Detail Page
+								</td>
+								<td>
+									<input id="xshop_ic_cartdetail_page" type="text" Placeholder="subpage name"/>	
+								</td>	
+							</tr>
+							<tr class="cartdetail-options">
+								<td >
+								Checkout Subpage				
+								</td>
+								<td>
+									<input id="xshop_cartdetail_checkout_subpage" type="text" Placeholder="Checkout subpage name"/>	
+								</td>	
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div><br>
+	<div>
+		<button id='xShopxCartServerSide'>Server Side</button>	
+	</div>							
+</div>
+
+<script type="text/javascript">
+// ========== OPTION TO COMPONENT EFFECT ==============
+// 
+// $(your_option_html_element).click(function(event,ui){
+// 		$(current_selected_component).what to do ???
+// }) 
+$('#xShopxCartServerSide').click(function(event){
+	$('#epan-quick-component-options').toggle('slideup');
+	$.univ.frameURL('xShop Cart','index.php?page=xShop_page_owner_main')
+});
+
+$('#xshop_cart_layout').change(function(event) {
+	$(current_selected_component).attr('xshop_cart_layout',$(this).val());
+	if($(this).val()==2){
+		$('.ipb-options').show();
+		$(current_selected_component).attr('xshop_ipb_cart_empty_btn','true');
+		$(current_selected_component).attr('xshop_ipb_cart_checkout_btn','true');
+		$(current_selected_component).attr('xshop_ipb_cart_viewcart_btn','true');
+		$(current_selected_component).attr('xshop_ipb_cart_items','true');
+		$(current_selected_component).attr('xshop_ipb_cart_price','true');
+	}
+	else{
+		$('.ipb-options').hide();
+		$(current_selected_component).attr('xshop_ipb_cart_empty_btn','false');
+		$(current_selected_component).attr('xshop_ipb_cart_checkout_btn','false');
+		$(current_selected_component).attr('xshop_ipb_cart_viewcart_btn','false');
+		$(current_selected_component).attr('xshop_ipb_cart_items','false');
+		$(current_selected_component).attr('xshop_ipb_cart_price','false');
+		$(current_selected_component).attr('xshop_ipb_cart_detail_page','#');
+	}
+
+	if($(this).val()==1){
+		$('.ic-options').show();
+	}else
+		$('.ic-options').hide();
+
+	
+	if($(this).val()==3){
+		$('.cartdetail-options').show();
+	}else
+		$('.cartdetail-options').hide();
+
+	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+
+$('#xshop-cart-editcss').click(function(){
+	$(this).univ().frameURL('Edit CSS ( xShop Cart Display Layout )','index.php?page=xShop_page_cartlayoutcss&cut_page=1');
+});
+
+$('#xshop_ipb_cart_empty_btn').change(function(event) {	
+	if($('#xshop_ipb_cart_empty_btn').is(':checked')?$(current_selected_component).attr('xshop_ipb_cart_empty_btn','true'):$(current_selected_component).attr('xshop_ipb_cart_empty_btn','false'));
+	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+
+$('#xshop_ipb_cart_checkout_btn').change(function(event) {	
+	if($('#xshop_ipb_cart_checkout_btn').is(':checked')?$(current_selected_component).attr('xshop_ipb_cart_checkout_btn','true'):$(current_selected_component).attr('xshop_ipb_cart_checkout_btn','false'));
+	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+
+$('#xshop_ipb_cart_viewcart_btn').change(function(event) {	
+	if($('#xshop_ipb_cart_viewcart_btn').is(':checked')?$(current_selected_component).attr('xshop_ipb_cart_viewcart_btn','true'):$(current_selected_component).attr('xshop_ipb_cart_viewcart_btn','false'));
+	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+
+$('#xshop_ipb_cart_items').change(function(event) {	
+	if($('#xshop_ipb_cart_items').is(':checked')?$(current_selected_component).attr('xshop_ipb_cart_items','true'):$(current_selected_component).attr('xshop_ipb_cart_items','false'));
+	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+
+$('#xshop_ipb_cart_price').change(function(event) {	
+	if($('#xshop_ipb_cart_price').is(':checked')?$(current_selected_component).attr('xshop_ipb_cart_price','true'):$(current_selected_component).attr('xshop_ipb_cart_price','false'));
+	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+
+$('#xshop_ipb_cart_detail_page').change(function(event) {	
+	$(current_selected_component).attr('xshop_ipb_cart_detail_page',$(this).val());
+	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+
+$('#xshop_ipb_checkout_page').change(function(event) {	
+	$(current_selected_component).attr('xshop_ipb_checkout_page',$(this).val());
+	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+
+$('#xshop_ic_cartdetail_page').change(function(event){
+	$(current_selected_component).attr('xshop_ic_cartdetail_page',$(this).val());
+	$(current_selected_component).univ().errorMessage('Save and Reloadm Page to see changes');		
+});	
+
+$('#xshop_cartdetail_checkout_subpage').change(function(event){
+	$(current_selected_component).attr('xshop_cartdetail_checkout_subpage',$(this).val());
+	$(current_selected_component).univ().errorMessage('Save and Reloadm Page to see changes');
+});
+
+var {$component_type}_options = {
+	show: function (){
+		// ===== THIS CODE RUNS EVERY TIME YOU DOUBLE CLICK YOUR COMPONENT
+		// TO TAKE VALUES FROM COMPONENT AND FILL OPTIONS
+		// 
+		// $(your_option_html_element).text($(current_selected_component).css('border'));
+		//TODO FOR CART LAYOUT SELECTION OPTION IF 2 THEN SHOW ITES OPTIONS 
+		$('#xshop_cart_layout').val($(current_selected_component).attr('xshop_cart_layout'));
+		if($('#xshop_cart_layout').val()==2){ 
+			$('.ipb-options').show();
+		}else	
+			$('.ipb-options').hide();
+
+		$('#xshop_ipb_cart_empty_btn').attr('checked',$(current_selected_component).attr("xshop_ipb_cart_empty_btn")=='true'?true:false);
+
+		$('#xshop_ipb_cart_checkout_btn').attr('checked',$(current_selected_component).attr("xshop_ipb_cart_checkout_btn")=='true'?true:false);		
+		
+		$('#xshop_ipb_cart_viewcart_btn').attr('checked',$(current_selected_component).attr("xshop_ipb_cart_viewcart_btn")=='true'?true:false);		
+   		
+   		$('#xshop_ipb_cart_items').attr('checked',$(current_selected_component).attr("xshop_ipb_cart_items")=='true'?true:false);
+   		
+   		$('#xshop_ipb_cart_price').attr('checked',$(current_selected_component).attr("xshop_ipb_cart_price")=='true'?true:false);
+
+   		$('#xshop_ipb_checkout_page').val($(current_selected_component).attr('xshop_ipb_checkout_page'));
+
+   		$('#xshop_ipb_cart_detail_page').val($(current_selected_component).attr('xshop_ipb_cart_detail_page'));
+
+   		$('#xshop_ic_cartdetail_page').val($(current_selected_component).attr('xshop_ic_cartdetail_page'));
+		
+		if($(current_selected_component).attr('xshop_cart_layout')==1){
+			$('.ic-options').show();
+		}else
+			$('.ic-options').hide();
+
+	}
+}
+</script>

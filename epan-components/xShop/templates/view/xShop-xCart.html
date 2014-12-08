@@ -1,0 +1,74 @@
+<div id="{$_name}" {$attributes} class=' {$class}' style=' {$style}'> 
+	
+	{xshop_cart_with_item_no}
+		<div class="row xshop-cart-container">
+			<div class="col-md-12 col-sm-12 col-lg-12">
+				<a class="xshop-cart xshop-simple-cart" href="{xshop_cart_detail_page}{/xshop_cart_detail_page}">
+					<i class="glyphicon glyphicon-shopping-cart xshop-simple-cart-icon">
+					</i><span class="xshop-simple-cart-label">{xshop_cart_name}Cart{/xshop_cart_name}</span> 
+				</a>
+					<span id="xshop-cart-count" class="xshop-simple-cart-count">{xshop_item_count}{/xshop_item_count}</span>	
+			</div>	
+		</div>
+	{/xshop_cart_with_item_no}
+
+	{xshop_cart_with_item_price_btn}
+		<div class="row xshop-sort-cart-container">
+			<div class="col-md-12 col-sm-12 col-sm-lg-12 xshop-sort-cart-inner-container">
+				<a class="xshop-sort-cart-anchor" href="{xshop_ipb_cart_detail_page}{/xshop_ipb_cart_detail_page}">
+					<i class="glyphicon glyphicon-shopping-cart xshop-sort-cart-icon">
+					</i><span class="xshop-sort-cart-label">{xshop_cart_name}Cart{/xshop_cart_name}</span> 
+				</a>
+			</div>	
+		</div>
+		<div class="row xshop-sort-cart-info-div">
+			{xshop_ipb_cart_items}
+			<div class="col-md-6 col-sm-6 col-lg-6 xshop-sort-cart-item-outer-div">
+				<div class="badge alert-success xshop-sort-cart-item-count">{xshop_item_count}{/xshop_item_count} <span class="xshop-sort-cart-item-count-label">{xshop_count_text}item(s){/xshop_count_text}</span></div>
+			</div>
+			{/xshop_ipb_cart_items}
+
+			{xshop_ipb_cart_price}
+			<div class="col-md-6 col-sm-6 col-lg-6 xshop-sort-cart-price-outer-div">
+				<div class="badge alert-danger xshop-sort-cart-price-count"><span class="xshop-sort-cart-rupees-sign">{xshop_cart_money_type}₹{/xshop_cart_money_type}</span><span class="xshop-sort-cart-price-count-label">{xshop_cart_total_price}{/xshop_cart_total_price}
+				</span></div>
+			</div>
+			{/xshop_ipb_cart_price}
+		</div>
+
+		<div class="row xshop-sort-cart-button-div">
+			{xshop_ipb_cart_empty_btn}
+			<div class="col-md-4 col-sm-4 col-lg-4 xshop-sort-cart-button-empty">
+				{xshop_ipb_cart_empty}
+				<div class="btn btn-default btn-block xshop-sort-cart-empty-button-inner-div">
+					{xshop_ipb_cart_empty_btn_text}empty{/xshop_ipb_cart_empty_btn_text}
+				</div>
+				{/xshop_ipb_cart_empty}
+			</div>	
+			{/xshop_ipb_cart_empty_btn}
+
+			{xshop_ipb_cart_checkout_btn}
+			<div class="col-md-4 col-sm-4 col-lg-4 xshop-sort-cart-checkout-button">
+				{xshop_ipb_cart_checkout_btn1}	
+				{/xshop_ipb_cart_checkout_btn1}
+			</div>	
+			{/xshop_ipb_cart_checkout_btn}
+			
+			{xshop_ipb_cart_viewcart_btn}
+			<div class="col-md-4 col-sm-4 col-lg-4 xshop-sort-cart-viewcart-button">
+				{xshop_ipb_cart_viewcart_btn1}
+				{/xshop_ipb_cart_viewcart_btn1}			
+			</div>
+			{/xshop_ipb_cart_viewcart_btn}
+		</div>
+	{/xshop_cart_with_item_price_btn}
+	
+	{xshop_cart_lg}		
+	{/xshop_cart_lg}
+
+	<div class="xshop-cartdetail-proceed">
+	{xshop_cart_proceed}
+	{/xshop_cart_proceed}
+	</div>
+	{$Content}
+</div>

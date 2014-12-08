@@ -1,0 +1,271 @@
+<div id='{$_name}' class='epan-component-options' component_type="{$component_type}">
+	<div class="panel-group" id="accordion">
+		<div class="xepan-collasp-header component-header">
+			<div class="panel-heading">
+				<h3 class="panel-title">
+				<a data-toggle="collapse" data-parent="#accordion"	 href="#collapse-xshop-product">
+					{$component_type_name}
+				</a>
+				</h3>
+			</div>
+			<div id="collapse-xshop-product" class="panel-collapse collapse">
+				<div class="panel-body">
+					<div class='xepan-collasp-header'>
+						<table class="table table-condensed table-hover">
+							<tr>
+								<td>
+									Edit CSS
+								</td>
+								<td colspan="2">
+									<div id="xshop-product-editcss" class="btn btn-default btn-xs">Edit css</div>
+								</td>
+							</tr>
+							<tr>
+								<td >
+									Select Product
+								</td>
+								<td colspan="2">
+									<select id='xShop-producttype-root'>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td >
+									Display Layout
+								</td>
+								<td>
+									<div class="btn-group">
+										<button id="xShop-listbtn" type="button" class="btn btn-default glyphicon glyphicon-th-list btn btn-sm" title="List View"> </button>
+										<button id="xShop-gridbtn" type="button" class="btn btn-default glyphicon glyphicon-th btn-sm" title="Grid View"> </button>
+									</div>
+								</td>
+								<td>
+									<select id="xShop-grid-column" type="number" class="" placeholder="Product in each Row">
+										<option value="0">Item in Each Row</option>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+										<option value="6">6</option>
+										<option value="12">12</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td >
+									Category Group
+								</td>
+								<td colspan="2">
+									<select id='xshop-product-categorygroup_{$_id}'>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									show/hide
+								</td>
+							</tr>
+							<tr>
+								<td>
+									
+								</td>
+								<td>
+									Product Topbar
+								</td>
+								<td>
+									<input id="xshop_product_topbar" type="checkbox"/>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									
+								</td>
+								<td>
+									Image Zoom on Click
+								</td>
+								<td>
+									<input id="xshop_product_fancy_box" type="checkbox"/>
+								</td>
+							</tr>
+							
+							<tr>
+								<td>
+									
+								</td>
+								<td >
+									Detail on click
+								</td>
+								<td>
+									<input id="xshop_product_hover" type="checkbox"/>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									
+								</td>
+								<td>
+									Detail on Image Click
+								</td>
+								<td>
+									<input id="xshop_product_detail_on_image_click" type="checkbox"/>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									
+								</td>
+								<td>
+									Short Description
+								</td>
+								<td>
+									<input id="xshop_item_short_description" type="checkbox"/>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									Items on Page
+								</td>
+								<td colspan="2">
+									<input id="xshop_product_paginator" type="text" placeHolder="no of items"/>
+								</td>
+							</tr>
+							<tr>
+								<td >
+									Item Detail Subpage
+								</td>
+								<td colspan="2">
+									<input id="xshop_product_hover_detail_page" type="text"/>
+								</td>
+							</tr>							
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div><br>
+	<table>
+		<tbody>
+			
+		</tbody>
+	</table>
+	<div><button id='xShopProductServerSide'>Server Side</button></div>
+</div>
+<script type="text/javascript">
+// ========== OPTION TO COMPONENT EFFECT ==============
+//
+// $(your_option_html_element).click(function(event,ui){
+		// 		$(current_selected_component).what to do ???
+// })
+$('#xShopProductServerSide').click(function(event){
+	$('#epan-quick-component-options').toggle('slideup');
+	$.univ.frameURL('xShop Products','index.php?page=xShop_page_owner_main')
+});
+$('#xShop-producttype-root').change(function(event) {
+	$(current_selected_component).attr('xshop_producttype',$(this).val());
+	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#xshop-product-categorygroup_{$_id}').change(function(event) {
+$(current_selected_component).attr('xshop_product_categorygroup_id',$(this).val());
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#xShop-listbtn').click(function(event) {
+$(current_selected_component).attr('xshop_productlayout','xShop-productlist');
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#xShop-gridbtn').click(function(event) {
+$(current_selected_component).attr('xshop_productlayout','xShop-productgrid');
+// $('#xShop-grid-column');
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#xShop-grid-column').change(function(event){
+$(current_selected_component).attr('xshop-grid-column',$(this).val());
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#xshop_product_topbar').change(function(event) {
+if($('#xshop_product_topbar').is(':checked')?$(current_selected_component).attr('xshop_product_topbar','true'):$(current_selected_component).attr('xshop_product_topbar','false'));
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#xshop-product-editcss').click(function(){
+$(this).univ().frameURL('Edit CSS ( xShop Product Display Layout )','index.php?page=xShop_page_productlayoutcss&cut_page=1');
+});
+$('#xshop_product_fancy_box').change(function(event) {
+if($('#xshop_product_fancy_box').is(':checked')?$(current_selected_component).attr('xshop_product_fancy_box',1):$(current_selected_component).attr('xshop_product_fancy_box',0));
+
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#xshop_product_hover').change(function(event) {
+if($('#xshop_product_hover').is(':checked')?$(current_selected_component).attr('xshop_product_hover','1'):$(current_selected_component).attr('xshop_product_hover','0'));
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#xshop_product_hover_detail_page').change(function(event){
+$(current_selected_component).attr('xshop_product_hover_detail_page',$(this).val());
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#xshop_product_detail_on_image_click').change(function(event){
+if($('#xshop_product_detail_on_image_click').is(':checked')?$(current_selected_component).attr('xshop_product_detail_on_image_click','1'):$(current_selected_component).attr('xshop_product_detail_on_image_click','0'));
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+
+$('#xshop_item_short_description').change(function(event){
+	if($('#xshop_item_short_description').is(':checked')?$(current_selected_component).attr('xshop_item_short_description','1'):$(current_selected_component).attr('xshop_item_short_description','0'));
+	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+
+$('#xshop_product_paginator').change(function(event){
+$(current_selected_component).attr('xshop_product_paginator',$(this).val());
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+var {$component_type}_options = {
+show: function (){
+// ===== THIS CODE RUNS EVERY TIME YOU DOUBLE CLICK YOUR COMPONENT
+// TO TAKE VALUES FROM COMPONENT AND FILL OPTIONS
+// $(your_option_html_element).text($(current_selected_component).css('border'));
+$.ajax({
+url: 'index.php?page=xShop_page_getproducttype',
+type: 'GET',
+data: {},
+success: function (data) {
+$('#xShop-producttype-root').html(data);
+$('#xShop-producttype-root').val($(current_selected_component).attr('xshop_producttype')?$(current_selected_component).attr('xshop_producttype'):0);
+}
+});
+$.ajax({
+url: 'index.php?page=xEnquiryNSubscription_page_getforms',
+type: 'GET',
+data: {},
+success: function ( data ){
+$('#xshop_product_enquiry_form_no').html(data);
+}
+});
+$.ajax({
+url: 'index.php?page=xShop_page_getcategories',
+type: 'GET',
+data: {},
+success: function (data) {
+$('#xshop-product-categorygroup_{$_id}').html(data);
+$('#xshop-product-categorygroup_{$_id}').val($(current_selected_component).attr('xshop_product_categorygroup_id')?$(current_selected_component).attr('xshop_product_categorygroup_id'):0);
+}
+});
+$('#xshop-product-categorygroup_{$_id}').val($(current_selected_component).attr("xshop-product-categorygroup_id"));
+//display selected option into checkbox
+
+$('#xshop_product_topbar').attr('checked',$(current_selected_component).attr("xshop_product_topbar")=='true'?true:false);
+$('#xshop_product_fancy_box').attr('checked',$(current_selected_component).attr("xshop_product_fancy_box")==1?true:false);
+$('#xshop_product_hover').attr('checked',$(current_selected_component).attr("xshop_product_hover")==1?true:false);
+$('#xshop_product_hover_detail_page').val($(current_selected_component).attr('xshop_product_hover_detail_page'));
+
+$('#xShop-producttype-root').val($(
+current_selected_component).attr('xshop_producttype'));
+$('#xshop_product_detail_on_image_click').attr('checked',$(current_selected_component).attr("xshop_product_detail_on_image_click")==1?true:false);
+
+$('#xshop_product_paginator').val($(current_selected_component).attr("xshop_product_paginator"));
+if($(current_selected_component).attr("xshop_productlayout") == undefined){
+	$(current_selected_component).attr('xshop_productlayout',"xShop-productgrid");
+}
+$(current_selected_component).attr("xshop_productlayout")=='xShop-productlist'?$('#xShop-listbtn').addClass('btn btn-success'):$('#xShop-gridbtn').addClass('btn btn-success');
+
+$('#xShop-grid-column').val($(current_selected_component).attr('xshop-grid-column')?$(current_selected_component).attr('xshop-grid-column'):0);
+$('#xshop_item_short_description').attr('checked',$(current_selected_component).attr("xshop_item_short_description")=='1'?true:false);
+}
+}
+</script>

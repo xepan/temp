@@ -1,0 +1,101 @@
+<div id="{$_name}">
+
+<!-- 	<link type="stylesheet" href="epan-components/xShop/templates/css/xShop.css" /> -->
+	{xshop_product_display}
+	<div class="row xshop-product-display-topbar" style="display:{xshop_product_topbar_display}{/xshop_product_topbar_display}">
+		<div class="col-md-4 col-sm-4 col-lg-4 xshop-product-topbar-colum">
+			Display : 
+			<div class="btn-group">
+  				<button type="button" class="btn btn-default glyphicon glyphicon-th-list btn btn-lg" title="List View"> </button>
+  				<button type="button" class="btn btn-default glyphicon glyphicon-th btn-lg" title="Grid View"> </button>
+			</div>
+		</div> 
+		<div class="col-md-4 col-sm-4 col-lg-4 xshop-product-topbar-colum">
+				<!-- product search and filter come here -->
+		</div>
+		<div class="col-md-4 col-sm-4 col-lg-4 xshop-product-topbar-colum">
+					<!-- Product Compare come here -->
+		</div>
+	</div>
+	{/xshop_product_display}
+	
+	{rows}
+	{row}
+		<div class="row page page-header xshop-list-cell-outerdiv">
+			<div class="col-sm-4 col-md-4 col-lg-4">
+				<div class="productlist-img">
+					<!-- <a href="{xshop_product_detail_url}#{/xshop_product_detail_url}"> -->
+						<div class='text-center xshop-list-cell-img-container'>
+						<img class="xshop-list-cell-img" style="margin:0 auto 0 auto;max-width:100%;" src="{image_url}logo.png{/image_url}"/></div>
+					<!-- </a> -->
+				</div>
+			</div>	
+			<div class="col-md-8 col-sm-8 col-lg-8 xshop-list-cell-detail-container">
+				<div class="xshop-list-cell-name-container">
+					<h4 class="xshop-list-cell-name">{name}Products{/name}</h4>
+				</div>	
+				<div class="xshop-list-cell-code-container">
+						<h4 class="xshop-list-cell-code">
+							Code: {sku}{/sku}	
+						<span class="pull-right" style="color:#cccccc">
+						<small>{xshop_product_created_at}
+						{/xshop_product_created_at}</small>
+						</span>
+						</h4>
+				</div>	
+
+				{xshop-product-price}
+					<p style="display:{$xshop_product_price_display}">	
+						{xShop_product_price_strike}	
+						<small class="price-cut xshop-list-cell-original-price" style="text-decoration: line-through;">
+							&#8377;{$original_price}
+						</small>
+						{/xShop_product_price_strike}
+						{xShop_product_price}	
+						<small class="xshop-list-cell-original-price">
+							&#8377;{$original_price}
+						</small>
+						{/xShop_product_price}
+
+						<big class="text-danger xshop-list-cell-sale-price">
+						&#8377;{$sale_price}
+						</big>
+					</p>
+
+				{/xshop-product-price}
+				<div class="xshop-list-cell-description">
+					{$short_description}<br>
+				</div>	
+				<div class="xshop-list-btn-container">	
+				{cart_and_enquiry}
+					<div class="btn-group xshop-list-btn-addtocart">
+						{add_to_cart}
+						{/add_to_cart}
+			  		</div>	
+
+			  			<div class="btn-group xshop-list-btn-enquiry">
+			  			{xshop_product_detail}
+						<a href="index.php?subpage={xshop_item_detail_url}{/xshop_item_detail_url}&xshop_item_id={$id}" class="btn btn-default" role="button" style="text-decoration:none;display:{$xshop_product_show_detail_display}">More</a>
+						{/xshop_product_detail}
+			  			</div>
+				{/cart_and_enquiry}
+			</div>	
+			</div>
+		</div>			
+	{/row}
+	{/rows}
+
+	{no_record_found}
+		<div class='epan-container'>
+			<div class="alert alert-success">
+				<p class='panel panel-warning text-center'>No Item in this category.</p> <br/> 
+				<small class="panel panel-Info text-center">Place your Item 
+				</small>
+			</div>
+			<!-- <img src="epans/web/effective_and_affordable.png"> -->
+		</div>
+	{/no_record_found}
+	
+	{$paginator}
+	{$Content}
+</div>

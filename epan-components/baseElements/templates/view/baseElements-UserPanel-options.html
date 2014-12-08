@@ -1,0 +1,318 @@
+<div id='{$_name}' class='epan-component-options' component_type="{$component_type}">
+	<div class="panel-group" id="accordion">
+		<div class="xepan-collasp-header component-header">
+			<div class="panel-heading">
+				<h4 class="panel-title">
+				<a data-toggle="collapse" data-parent="#accordion" href="#user-panel">
+					<h4>{$component_type_name}</h4>
+				</a>
+				</h4>
+			</div>
+			<div id="user-panel" class="panel-collapse collapse">
+				<div class="panel-body">
+					<div class='xepan-collasp-header'>
+						<table class="table table-condensed table-hover">
+							<tbody>
+								<tr>
+									<td>
+										Show/Hide
+									</td>
+									<td>
+									<table>
+										<tr>
+											<td><input id="user_panel_show_logout_view" type="checkbox" /></td>
+											<td style='vertical-align:middle'> Logout View</td>
+										</tr>
+										<tr>
+											<td>
+											<input id="user_panel_login_view" type="checkbox"/>
+											</td>
+											<td style='vertical-align:middle'>Short Login View</td>
+										</tr>
+										<tr>
+											<td>
+											<input id="user_panel_form_stacked" type="checkbox"/>
+											</td>
+											<td style='vertical-align:middle'>Stacked View</td>
+										</tr>
+										<tr>
+											<td>
+											<input id="user_panel_verify_{$id}" type="checkbox"/>
+											</td>
+											<td style='vertical-align:middle'>Verify</td>
+										</tr>
+										<tr>
+											<td>
+											<input id="user_panel_forgotpassword_{$id}" type="checkbox">
+											</td>
+											<td style='vertical-align:middle'>Forgot Password</td>
+										</tr>
+										<tr>
+											<td>
+											<input id="user_panel_new_registration_{$id}" type="checkbox">
+											</td>
+											<td style='vertical-align:middle'>New Registration</td>
+										</tr>
+									</table>
+										
+									</td>
+								</tr>
+
+								<tr>
+									<td>
+										<b>URL(s)</b>
+									</td>
+									<td>
+										&nbsp;
+									</td>
+								</tr>
+
+								<tr>
+									<td>
+										After login
+									</td>
+									<td>
+										<input id="user_panel_after_login_page" placeholder='value of subpage=???'/>
+									</td>
+								</tr>
+
+								<tr>
+									<td>
+										Login Link Click
+									</td>
+									<td>
+										<input id="user_panel_redirect_page" placeholder='If Short Login View is on'/>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										Activation Code		
+									</td>
+									<td>
+										<input id="user_panel_activation_code_placeholder" type="text"/>				
+									</td>
+								</tr>	
+								<tr>
+									<td>
+										<b>Captions</b>
+									</td>
+									<td>
+										&nbsp;
+									</td>
+								</tr>
+
+								<tr>
+									<td>
+										Username
+									</td>
+									<td>
+										<input id="user_panel_username_caption" type="text"/>
+									</td>
+								</tr>
+
+								<tr>
+									<td>
+										Password
+									</td>
+									<td>
+										<input id="user_panel_password_caption" type="text"/>
+									</td>
+								</tr>
+
+<!-- 								<tr>
+									<td>Verify Button
+									</td>
+									<td>
+										<input id="user_panel_verify_btn_placeholder" type="text"/>
+									</td>
+								</tr> -->
+
+								<tr>
+									<td>Forgot Pass.
+									</td>
+									<td>
+										<input id="user_panel_forgotpassword_caption" type="text"/>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										Login Button
+									</td>
+									<td>
+										<input id="user_panel_login_caption" type="text"/>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										Verify
+									</td>
+									<td>
+										<input id="user_panel_verify_caption" type="text"/>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										Registration Button
+									</td>
+									<td>
+										<input id="user_panel_new_registration_caption" type="text"/>				
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<b>Place Holders</b>
+									</td>
+									<td>
+										&nbsp;
+									</td>
+								</tr>
+								<tr>
+									<td>
+										User Name
+									</td>
+									<td>
+										<input id="user_panel_username_placeholder"/>					
+									</td>
+								</tr>
+								<tr>
+									<td>
+										Password
+									</td>
+									<td>
+										<input id="user_panel_password_placeholder"/>						
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<b>CSS Class</b>
+									</td>
+									<td>
+										&nbsp;
+									</td>
+								</tr>
+								<tr>
+									<td>
+										Login Button
+									</td>
+									<td>
+										<input id="user_panel_login_btn_css"/>						
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>					
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+// ========== OPTION TO COMPONENT EFFECT ==============
+//
+// $(your_option_html_element).click(function(event,ui){
+		// 		$(current_selected_component).what to do ???
+// })
+$('#user_panel_login_view').change(function(event) {
+	if($('#user_panel_login_view').is(':checked')?$(current_selected_component).attr('login_view',1):$(current_selected_component).attr('login_view',0));
+	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#user_panel_redirect_page').change(function(event) {
+	$(current_selected_component).attr('user_panel_redirect_page',$('#user_panel_redirect_page').val());
+	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#user_panel_form_stacked').change(function(event) {
+	if($('#user_panel_form_stacked').is(':checked')?$(current_selected_component).attr('form_stacked_on',1):$(current_selected_component).attr('form_stacked_on',0));
+	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#user_panel_verify_{$id}').change(function(event) {
+if($('#user_panel_verify_{$id}').is(':checked')?$(current_selected_component).attr('show_verify_me',1):$(current_selected_component).attr('show_verify_me',0));
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#user_panel_username_placeholder').change(function(event) {
+$(current_selected_component).attr('user_panel_username_placeholder',$('#user_panel_username_placeholder').val());
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#user_panel_activation_code_placeholder').change(function(event) {
+$(current_selected_component).attr('user_panel_activation_code',$('#user_panel_activation_code_placeholder').val());
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#user_panel_password_placeholder').change(function(event) {
+$(current_selected_component).attr('user_panel_password_placeholder',$('#user_panel_password_placeholder').val());
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#user_panel_username_caption').change(function(event) {
+$(current_selected_component).attr('user_panel_name',$('#user_panel_username_caption').val());
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#user_panel_password_caption').change(function(event) {
+$(current_selected_component).attr('user_panel_pass',$('#user_panel_password_caption').val());
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#user_panel_verify_caption').change(function(event) {
+$(current_selected_component).attr('user_panel_verify_caption',$('#user_panel_verify_caption').val());
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#user_panel_forgotpassword_caption').change(function(event) {
+$(current_selected_component).attr('user_panel_forgot_pass',$('#user_panel_forgotpassword_caption').val());
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#user_panel_new_registration_caption').change(function(event) {
+$(current_selected_component).attr('user_panel_btn_registration_name',$('#user_panel_new_registration_caption').val());
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#user_panel_login_caption').change(function(event) {
+$(current_selected_component).attr('user_panel_btn_login_name',$('#user_panel_login_caption').val());
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#user_panel_verify_btn_placeholder').change(function(event) {
+$(current_selected_component).attr('user_panel_btn_Verify_name',$('#user_panel_verify_btn_placeholder').val());
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#user_panel_forgotpassword_{$id}').change(function(event) {
+if($('#user_panel_forgotpassword_{$id}').is(':checked')?$(current_selected_component).attr('show_forgot_password',1):$(current_selected_component).attr('show_forgot_password',0));
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#user_panel_new_registration_{$id}').change(function(event) {
+if($('#user_panel_new_registration_{$id}').is(':checked')?$(current_selected_component).attr('show_register_new_user',1):$(current_selected_component).attr('show_register_new_user',0));
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#user_panel_show_logout_view').change(function(event) {
+if($('#user_panel_show_logout_view').is(':checked')?$(current_selected_component).attr('user_panel_show_logout_view',1):$(current_selected_component).attr('user_panel_show_logout_view',0));
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#user_panel_after_login_page').change(function(event){
+$(current_selected_component).attr('user_panel_after_login_page',$(this).val());
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+
+$('#user_panel_login_btn_css').change(function(event){
+$(current_selected_component).attr('user_panel_login_btn_css',$(this).val());
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+var {$component_type}_options = {
+show: function (){
+// ===== THIS CODE RUNS EVERY TIME YOU DOUBLE CLICK YOUR COMPONENT
+// TO TAKE VALUES FROM COMPONENT AND FILL OPTIONS
+//
+// $(your_option_html_element).text($(current_selected_component).css('border'));
+$('#user_panel_login_view').attr('checked',$(current_selected_component).attr("login_view")=='1'?true:false);
+$('#user_panel_redirect_page').val($(current_selected_component).attr('user_panel_redirect_page'));
+$('#user_panel_new_registration_{$id}').attr('checked',$(current_selected_component).attr("show_register_new_user")=='1'?true:false);
+$('#user_panel_forgotpassword_{$id}').attr('checked',$(current_selected_component).attr("show_forgot_password")=='1'?true:false);
+
+$('#user_panel_verify_{$id}').attr('checked',$(current_selected_component).attr("show_verify_me")=='1'?true:false);
+$('#user_panel_verify_caption').val($(current_selected_component).attr('user_panel_verify_caption'));
+$('#user_panel_forgotpassword_caption').val($(current_selected_component).attr('user_panel_forgot_pass'));
+$('#user_panel_new_registration_caption').val($(current_selected_component).attr('user_panel_btn_registration_name'));
+$('#user_panel_login_caption').val($(current_selected_component).attr('user_panel_btn_login_name'));
+$('#user_panel_username_caption').val($(current_selected_component).attr('user_panel_name'));
+$('#user_panel_password_caption').val($(current_selected_component).attr('user_panel_pass'));
+$('#user_panel_form_stacked').val($(current_selected_component).attr('form_stacked_on'));
+$('#user_panel_username_placeholder').val($(current_selected_component).attr('user_panel_username_placeholder'));
+$('#user_panel_verify_btn_caption').val($(current_selected_component).attr('user_panel_btn_Verify_name'));
+$('#user_panel_show_logout_view').attr('checked',$(current_selected_component).attr("user_panel_show_logout_view")=='1'?true:false);
+$('#user_panel_after_login_page').val($(current_selected_component).attr("user_panel_after_login_page"));
+$('#user_panel_login_btn_css').val($(current_selected_component).attr("user_panel_login_btn_css")?$(current_selected_component).attr("user_panel_login_btn_css"):"btn btn-success btn-block");
+
+}}
+</script>

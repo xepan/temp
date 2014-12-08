@@ -1,0 +1,124 @@
+<div id='{$_name}' class='epan-component-options' component_type="{$component_type}">
+	<h3>{$component_type_name}</h3>
+
+	<div>
+        Manage Dimensions Content
+        <div id='xepan-ai-ib-dimensions'>
+    		
+    	</div>
+    </div>
+
+    <div>
+        Track Visibility
+        <div id='xepan-ai-ib-whattotrack'>
+            <button id='xepan-ai-ib-trackvisibility' class='btn btn-info btn-sm'>Visible</button>
+            <!-- <button id='xepan-ai-ib-trackvisibility-top' class='btn btn-default btn-sm'>Top</button>
+            <button id='xepan-ai-ib-trackvisibility-bottom' class='btn btn-default btn-sm'>Bottom</button> -->
+            <button id='xepan-ai-ib-trackvisibility-top-bottom' class='btn btn-default btn-sm'>Top-Bottom</button>
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript">
+// ========== OPTION TO COMPONENT EFFECT ==============
+// 
+// $(your_option_html_element).click(function(event,ui){
+// 		$(current_selected_component).what to do ???
+// }) 
+
+$('#xepan-ai-ib-whattotrack button').click(function(event) {
+	$(current_selected_component).attr('data-aitrack',$(this).text());
+    $('#xepan-ai-ib-whattotrack button').removeClass('btn-info').addClass('btn-default');
+    $(this).addClass('btn-info');
+});
+
+var {$component_type}_options = {
+	show: function (){
+		// ===== THIS CODE RUNS EVERY TIME YOU DOUBLE CLICK YOUR COMPONENT
+		// TO TAKE VALUES FROM COMPONENT AND FILL OPTIONS
+		// 
+		// $(your_option_html_element).text($(current_selected_component).css('border'));
+		$('#xepan-ai-ib-dimensions').html('Wait, Loading Dimensions ...');
+		$.ajax({
+	        url: 'index.php?page=xAi_page_owner_getdimensions',
+	        type: 'GET',
+	        // dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
+	    })
+        .done(function(dimensions) {
+        	console.log(dimensions);
+        	dimensions = $.parseJSON(dimensions);
+        	var i=1;
+        	$('#xepan-ai-ib-dimensions').html('');
+            $.each(dimensions,function(key,value){
+                active_dimension = $(current_selected_component).attr('data-dimension-id');
+
+            	btn = $('<button class="btn '+ (active_dimension == value['id'] ? 'btn-info': 'btn-default') +' btn-sm" data-dimension-id="'+value['id']+'">' + (value['name']) + '</button>');
+            	btn.click(function(ev){
+                    // save current block to db
+                    console.log($(current_selected_component).attr('data-dimension-id'));
+
+                    if(current_selected_component == undefined || $(current_selected_component).attr('data-dimension-id'))
+
+                    if($(current_selected_component).attr('data-dimension-id')=='')
+                        $(current_selected_component).attr('data-dimension-id',$(this).attr('data-dimension-id'));
+
+                    $.ajax({
+                        url: 'index.php?page=xAi_page_owner_blockActions&cut_page=1',
+                        type:'GET',
+                        data: {
+                            id: $(current_selected_component).attr('id'),
+                            parent_id: $(current_selected_component).parent('[component_type=IntelligentBlock]').attr('id'),
+                            current_dimension_id: $(current_selected_component).attr('data-dimension-id'),
+                            content: encodeURIComponent($.trim($(current_selected_component).html())),
+                            required_dimension_id : $(this).attr('data-dimension-id')
+                        }
+                    })
+                    .done(function(res){
+                        // console.log($(ev.target).attr('data-dimension-id'));
+                        $(current_selected_component).attr('data-dimension-id',$(ev.target).attr('data-dimension-id'));
+                        $(current_selected_component).html(res);
+                        
+                        $('#epan-quick-component-options').slideUp('fast');
+                        
+                        $('#xepan-ai-ib-dimensions button').each(function(key,value){
+                            $(value).removeClass('btn-info');
+                            $(value).addClass('btn-default');
+                        });
+                        $(ev.target).removeClass('btn-default');
+                        $(ev.target).addClass('btn-info');
+                    })
+                    .fail(function(jqXHR, textStatus, errorThrown) {
+                        if (errorCallBack !== undefined)
+                            errorCallBack(errorThrown);
+                        throw errorThrown;
+                     })
+                    ;
+                    // get new dimension data into if exists
+
+            		// alert($(this).attr('data-dimension-id'));
+            	});
+				$('#xepan-ai-ib-dimensions').append(btn);
+			});
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+            if (errorCallBack !== undefined)
+                errorCallBack(errorThrown);
+            throw errorThrown;
+        })
+        .always(function() {
+            console.log("complete");
+        });
+
+        // set tracking option back
+
+        $('#xepan-ai-ib-whattotrack button').each(function(key,value){
+            $(value).removeClass('btn-info');
+            $(value).addClass('btn-default');
+            if($(current_selected_component).attr('data-aitrack') == $(value).text()){
+                $(value).addClass('btn-info');
+            }
+        });
+        
+	}
+}
+</script>

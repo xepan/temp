@@ -1,0 +1,25 @@
+<link rel="stylesheet" type="text/css" href="epan-components/xShop/templates/css/xShop.css"/>
+
+<div id="{$_id}">
+	{rows}
+	{row}
+			
+	<div class="panel-group mypanel" id="accordion">
+		<div class="panel panel-info">
+		    <div class="panel-heading ">
+		    	<h4 class="panel-title">
+		        <a data-toggle="collapse" data-parent="#accordion" href="#custom_field_{$id}">
+					{$name}
+		        </a>
+		      	</h4>
+		    </div>
+		    <div id="custom_field_{$id}" class="panel-collapse collapse ">
+		    	<div class="panel-body">
+					{$value}
+		    	</div>
+		    </div>
+		</div>
+	</div>	
+	{/row}
+	{/rows}
+</div>

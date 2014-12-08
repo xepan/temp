@@ -1,0 +1,39 @@
+<div id="{$_name}">
+<table width='100%' class='table' style="font-size:11px;vertical-align:top;" >
+	<tbody class='table-striped'>
+		<tr>
+			<th align="left">Sno</th>
+			<th align="left">Product</th>
+			<th align="right" class="text-right">Qty</th>
+			<th align="right" class="text-right">Rate</th>
+			<th colspan="2" align="right" class="text-right">Amount</th>
+		</tr>
+	{rows}
+	{row}
+		<tr>
+			<td align="left">{$sno}</td>
+			<td align="left">{$product}</td>
+			<td align="right">{$qty}</td>
+			<td align="right">{$rate}</td>
+			<td colspan="2" align="right">{$amount}</td>
+		</tr>
+		{/row}
+	{/rows}
+		<tr align="right">
+			<td>&nbsp;</td>
+			<th>Total</th>
+			<td class='' colspan="4"><b>&#8377;</b> {$gross_amount}</td>
+		</tr>
+		<tr align="right">
+			<td>&nbsp;</td>
+			<th>Discount Voucher Amount</th>
+			<td class='' colspan="4"><b>&#8377;</b> {$discount_voucher_amount}</td>
+		</tr>		
+		<tr align="right">
+			<td>&nbsp;</td>
+			<th>Net Amount</th>
+			<td colspan="4" class=''><b>&#8377; {$net_amount} </b> </td>
+		</tr>
+	</tbody>
+</table>
+</div>

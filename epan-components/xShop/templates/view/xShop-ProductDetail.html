@@ -1,0 +1,338 @@
+<div id="{$_name}" class="product-detail">
+<script src="epan-components/xShop/templates/js/jquery-elevatezoom.js">
+</script>
+<link rel="stylesheet" type="text/css" href="epan-components/xShop/templates/css/xShop.css"/>
+
+	{$Content}
+	<div class="text-center">
+		<h1 class="page page-header"><span>{$name}</span></h1>
+	</div>
+   
+	<div class="row">
+<!-- 			{xshop_product_detail_images}
+		<div class="col-md-4" >
+			{$product_images}
+		</div>
+			{/xshop_product_detail_images} -->
+		<div class="col-md-12 well well-sm col-sm-12">
+			<div class="row">
+				<div class="col-md-4 col-sm-4 text-left text-success">
+					<b>Code: {$sku}</b>
+				</div>
+				<div class="col-md-8 col-sm-8 text-left">
+					<h2>{$name}</h2>
+				</div>
+			</div>
+			<div class="row">
+				{xshop_productdetail_price}
+				<div class="col-md-6">
+					<span class="text-success"><span class="old-price">&#8377. {$original_price}</span>&nbsp;&nbsp;&#8377. {$sale_price}</span>				
+				</div>
+				{/xshop_productdetail_price}
+				<div class="col-md-6">
+					<!-- reviews comes here -->
+				</div>
+			</div>
+			{xshop_product_detail_panel_start}
+			<div class="panel-group mypanel" id="xshop_detail_accordion_">
+				<div class="panel panel-success">
+				    <div class="panel-heading">
+				    	<h4 class="panel-title">
+				        <a data-toggle="collapse" data-parent="#xshop_detail_accordion" href="#xShop-collapseOne1">
+				          {$xshop_product_detail_panel_label}
+				        </a>
+				      	</h4>
+				    </div>
+				    <div id="xShop-collapseOne1" class="panel-collapse collapse in">
+				    <div class="panel-body">
+			{/xshop_product_detail_panel_start}
+				    <div class="xshop-product-detail">
+				    {xshop_product_detail_live_edit_start}	
+				    		<div class="epan-container epan-sortable-component epan-component  ui-sortable component-outline epan-sortable-extra-padding ui-selected xshop-product-detail-content-live-edit" component_type="Container" id="xshop_product_detail_content_live_edit_{id}{/id}">
+				    {/xshop_product_detail_live_edit_start}	
+				    			{$description123}				    
+				    {xshop_product_detail_live_edit_end}
+				    		</div>
+				    		<div id="xshop_product_detail_live_edit_update" class="btn btn-danger pull-right btn-block" onclick='javascript:$(this).univ().producDetailUpdate("xshop_product_detail_content_live_edit_{id}{/id}","{id}{/id}","{$sku}")' style="margin-top:10px;">
+				    			Update
+				    		</div>	
+				    {/xshop_product_detail_live_edit_end}	
+				    		<!-- {$description} -->
+				  {xshop_product_detail_panel_end}  	
+				    	</div>
+				    </div>
+				</div>
+			</div>
+			{/xshop_product_detail_panel_end}
+			<div class="custom-field">
+				{$product_custom_fields}
+			</div>
+			<ul class="xshop-popover-examples list-inline">
+				{xshop_product_supplier} 
+        		<li><a href="#" class="btn btn-default" data-toggle="modal" data-target="#xShop_supplier_modal_{$id}" >{supplier_caption}Supplier{/supplier_caption}</a>
+        		</li>
+				{/xshop_product_supplier} 
+        		{xshop_product_manufacturer}
+        		<li><a href="#" class="btn btn-default" data-toggle="modal" data-target="#xShop_manufacturer_modal_{$id}" >{manufacturer_caption}Manufacturer{/manufacturer_caption}</a>
+        		</li>
+        		{/xshop_product_manufacturer}
+        		{xshop_product_enquiry}
+        		<li><a href="#" data-toggle="modal" data-target="#xShop_enquiry_modal_{$id}" >
+        		{send_button}{/send_button}
+        		</a>
+        		</li>
+        		{/xshop_product_enquiry}
+        		{xshop_product_attachment}
+        		<li>
+        			<a href="{$attachment_url}" class="btn btn-default">{$attachment_name}
+        			</a>
+        		</li>
+        		{/xshop_product_attachment}
+        		<li>
+        			<a href="?subpage={$xshop_product_custom_btn_url}">	
+        			{xshop_product_custom_btn}
+        			{/xshop_product_custom_btn}
+        			</a>
+        		</li>
+
+        		<li>
+        			{xshop_product_cart_btn}
+					<div class="btn-group xshop-grid-btn-addtocart">
+						<a href="#product_add{$id}" class="btn btn-default" role="button" onclick="{$aj}">Add To Cart</a>
+			  		</div>
+        			{/xshop_product_cart_btn}
+        		</li>
+    		</ul>
+
+			<div class="row" style="margin:2% 0 0 0; color:#cccccc">
+				<div class="col-md-12">
+					{$xshop_product_tags}
+				</div>
+			<div class="pull-right" style="color:#c3c3c3;">
+				Date: {$created_at}
+			</div>
+			</div>
+			<!-- <div class="row" style="margin:2% 0 0 0; color:#cccccc">
+					<div class="col-md-3"><small><span class="glyphicon glyphicon-certificate"></span> Indian Manufacturer</small></div>
+
+					<div class="col-md-3"><small><span class="glyphicon glyphicon-certificate"></span> 100% Indian Products</small></div>
+
+					<div class="col-md-3"><small><span class="glyphicon glyphicon-certificate"></span>100% Original Product</small></div>
+			</div> -->
+			
+		</div>
+	</div>
+					<!-- Modal -->
+	<div class="modal fade" id="xShop_supplier_modal_{$id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-lg">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <h4 class="modal-title" id="myModalLabel">{supplier_caption}Supplier{/supplier_caption}</h4>
+	      </div>
+	      <div class="modal-body">
+			<div class="row">
+				<div class="col-md-2 col-sm-2">
+					Name :
+				</div>
+				<div class="col-md-9 col-sm-9">
+				{$supplier_name}	
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-2 col-sm-2">
+					Contact No. :
+				</div>
+				<div class="col-md-4 col-sm-4">
+					{$supplier_phone_no}<br>
+					{$supplier_mobile_no}
+				</div>
+				<div class="col-md-2 col-sm-2">
+					Email id : 
+				</div>
+				<div class="col-md-4 col-sm-4">
+					{$supplier_email_id}	
+				</div>
+			</div>
+			<div class="row">
+
+				<div class="col-md-2 col-sm-2">
+					Official Address :  
+				</div>
+				<div class="col-md-4 col-sm-4">
+					{$supplier_office_address}
+				</div>
+				<div class="col-md-2 col-sm-2">
+					Address : 
+				</div>
+				<div class="col-md-4 col-sm-4">
+					{$supplier_address}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-2 col-sm-2">
+					City :
+				</div>
+				<div class="col-md-4 col-sm-4">
+					{$supplier_city}
+				</div>
+				<div class="col-md-2 col-sm-2">
+					State :
+				</div>
+				<div class="col-md-4 col-sm-4">
+					{$supplier_state}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-2 col-sm-2">
+					Country: 
+				</div>
+				<div class="col-md-4 col-sm-4">
+					{$supplier_country}
+				</div>
+				<div class="col-md-2 col-sm-2">
+					Zip Code: 
+				</div>
+				<div class="col-md-4 col-sm-4">
+					{$supplier_zip_code}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12 col-sm-12">
+					<div style="display:none;">{$supplier_description}  
+					</div>   
+					{$supplier_description_copy}     
+				</div>
+			</div>  
+	      </div>
+	      <div class="modal-footer">
+	              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>					
+<!-- Modal Manufacturer-->
+	<div class="modal fade" id="xShop_manufacturer_modal_{$id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <div class="row">
+	        	<div class="col-md-10">
+	        		<h4 class="modal-title" id="myModalLabel">{manufacturer_caption}Manufacturer{/manufacturer_caption}</h4>
+	        	</div>	
+	      	 <div class="col-md-2 col-sm-2">
+	      		<img style="width:50px;height:50px;max-height:50px;max-width:50px;overflow:hidden;" src="{$manufacturer_logo_url}" />
+	      	</div>
+	        </div>	
+	      </div>
+	    <div class="modal-body">
+	      	<div class="row">
+				<div class="col-md-2 col-sm-2">
+					Name :
+				</div>
+				<div class="col-md-8 col-sm-8">
+				{$manufacturer_name}	
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-2 col-sm-2">
+					Official Address :  
+				</div>
+				<div class="col-md-10 col-sm-10">
+					{$manufacturer_office_address}
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-md-2 col-sm-2">
+					City :
+				</div>
+				<div class="col-md-4 col-sm-4">
+					{$manufacturer_city}
+				</div>
+				<div class="col-md-2 col-sm-2">
+					State :
+				</div>
+				<div class="col-md-4 col-sm-4">
+					{$manufacturer_state}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-2 col-sm-2">
+					Country: 
+				</div>
+				<div class="col-md-4 col-sm-4">
+					{$manufacturer_country}
+				</div>
+				<div class="col-md-2 col-sm-2">
+					Zip Code: 
+				</div>
+				<div class="col-md-4 col-sm-4">
+					{$manufacturer_zip_code}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-2 col-sm-2">
+					Contact No. :
+				</div>
+				<div class="col-md-4 col-sm-4">
+					{$manufacturer_phone_no}<br>
+					{$manufacturer_mobile_no}
+				</div>
+				<div class="col-md-4 col-sm-4">
+					{$manufacturer_email_id}
+					{$manufacturer_website_url}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12 col-sm-12">
+					<div style="display:none;" >{$manufacturer_description}</div>
+					{$manufacturer_description_copy}     
+				</div>
+			</div>
+		</div>	
+	      <div class="modal-footer">
+	              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+
+    <div class="modal fade" id="xShop_enquiry_modal_{$id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Enquiry</h4>
+	      </div>
+	    <div class="modal-body">
+	    	<div class="row">
+    			<div class="col-md-12">
+    				{$xshop_product_enquiry_form}	
+    			</div>
+    		</div>
+		</div>	
+	      <div class="modal-footer">
+	              <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- // code for discus  -->
+		{$xshop_product_discus}       
+	<!-- //end of code for discus		 -->
+</div>	
+	
+
+
+<!--
+<script type="text/javascript">
+$(document).ready(function(){
+    $(".xshop-popover-examples a").popover({
+        placement : 'bottom'
+    });
+});
+</script>-->

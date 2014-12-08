@@ -1,0 +1,57 @@
+<table border="1" width="100%" class="xshop-cartdetail-container">
+			<tr class="xshop-cart-lg-header">
+				<td class="xshop-cartdetail-item-header-image" width="20%">
+					{xshop_cart_lg_item_image}Image{/xshop_cart_lg_item_image}
+				</td>
+				<td class="xshop-cartdetail-item-header-text" width="30%">
+					{xshop_cart_lg_item_text}Item Description{/xshop_cart_lg_item_text}
+				</td>
+				<td class="xshop-cartdetail-item-header-price" width="10%">
+					{xshop_cart_lg_item_price}Price{/xshop_cart_lg_item_price}
+				</td>
+				<td class="xshop-cartdetail-item-header-qty" width="10%">
+					{xshop_cart_lg_item_qty}Qty{/xshop_cart_lg_item_qty}
+				</td>
+				<td class="xshop-cartdetail-item-header-total" width="10%">
+					{xshop_cart_lg_item_total}Total{/xshop_cart_lg_item_total}
+				</td>
+				<td class="xshop-cartdetail-item-header-remove" width="20%">
+				 	remove
+				</td>
+			</tr>
+			{rows}
+				{row}
+					<tr>
+						<td class=" text-center xshop-cartdetail-item-image-td" width="20%">
+							<img style="width:auto;max-width:100px;" src="{xshop_cart_lg_item_img_value}{/xshop_cart_lg_item_img_value}" />
+						</td>
+						<td class="xshop-cartdetail-item-text-td" width="30%">
+							<p class="xshop-cartdetail-item-text">{xshop_cart_lg_item_text_value}{/xshop_cart_lg_item_text_value}</p>	
+						</td>
+						<td class="xshop-cartdetail-item-price-td" width="10%">
+							<p class="xshop-cartdetail-item-price">{xshop_cart_lg_item_price_value}{/xshop_cart_lg_item_price_value}</p>	
+						</td>
+						<td class="xshop-cartdetail-item-qty-td" width="10%">
+							<input id="{$id}" value="{xshop_cart_lg_item_qty_value}{/xshop_cart_lg_item_qty_value}" />
+						</td>
+						<td class="xshop-cartdetail-item-total-td" width="10%">
+							<p class="xshop-cartdetail-item-total">{xshop_cart_lg_item_total_value}{/xshop_cart_lg_item_total_value}</p>	
+						</td>
+						<td class="xshop-cartdetail-item-remove-td" width="20%">
+							{xshop_cart_lg_item_remove_btn}{/xshop_cart_lg_item_remove_btn}	
+						</td>
+					</tr>
+				{/row}
+			{/rows}
+		</table>
+		<div class="row page page-header xshop-cartdetail-footer-div">
+			<div class="col-md-6 col-lg-6 col-sm-6 xshop-cartdetail-coupon">
+				<p>If you have coupon code, enter it here</p>
+				<input id="" type="text" />	
+			</div>	
+			<div class="col-md-6 col-sm-6 col-lg-6 text-right xshop-cartdetail-total-price">
+				<p class="xshop-cartdetail-grandtotal">{xshop_cart_lg_grandtotal}Grand Total{/xshop_cart_lg_grandtotal}</p>	
+				<p class="xshop-cartdetail-disountamount">{xshop_cart_lg_discount_amount}Discount Amount{/xshop_cart_lg_discount_amount}</p>	
+				<p class="xshop-cartdetail-netamount">{xshop_cart_lg_net_amount}Net Amount{/xshop_cart_lg_net_amount}</p>					
+			</div>
+		</div>

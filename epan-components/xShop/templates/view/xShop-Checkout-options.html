@@ -1,0 +1,98 @@
+<div id='{$_name}' class='epan-component-options' component_type="{$component_type}">
+		<div class="panel-group" id="accordion">
+		<div class="xepan-collasp-header component-header">
+		 	<div class="panel-heading">
+		      	<h3 class="panel-title">
+		        	<a data-toggle="collapse" data-parent="#accordion"	 href="#collapse-xshop-checkout">
+						{$component_type_name}
+		        	</a> 
+		      	</h3>
+		   	</div>
+		 	<div id="collapse-xshop-checkout" class="panel-collapse collapse">
+		      	<div class="panel-body">
+		      		<div class='xepan-collasp-header'>
+						<table class="table table-condensed table-hover">
+							<tr>
+								<td>
+									<input id="xshop_checkout_noauth_subpage_url" type="radio" name="xshop_checkout_noauth" />
+								</td>
+								<td>
+									<label for="xshop_checkout_noauth_subpage_url">Auth Fail Redirect Url
+									</label>	
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<input id="xshop_checkout_noauth_subpage" type="input"  style="display:none;" PlaceHolder="Subpage url (with param..)" />		
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<input id="xshop_checkout_noauth_view" type="radio" name="xshop_checkout_noauth"/>
+								</td>
+								<td>
+									<label for="xshop_checkout_noauth_view">Auth Fail Add Login View
+									</label>							
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div><br>
+	<div><button id='xShopcheckoutServerSide'>Server Side</button></div>
+
+</div>
+<script type="text/javascript">
+// ========== OPTION TO COMPONENT EFFECT ==============
+// 
+// $(your_option_html_element).click(function(event,ui){
+// 		$(current_selected_component).what to do ???
+// }) 
+$('#xShopcheckoutServerSide').click(function(event){
+	$('#epan-quick-component-options').toggle('slideup');
+	$.univ.frameURL('xShop Checkout','index.php?page=xShop_page_owner_main')
+});
+
+$('#xshop_checkout_noauth_subpage_url').change(function(event) {
+	$(current_selected_component).attr('xshop_checkout_noauth_subpage_url',$(this).val());
+	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+	$(current_selected_component).attr('xshop_checkout_noauth_view','off');
+	$('#xshop_checkout_noauth_subpage').toggle();
+});
+
+$('#xshop_checkout_noauth_view').change(function(event) {
+	$(current_selected_component).attr('xshop_checkout_noauth_subpage_url','off');
+	$(current_selected_component).attr('xshop_checkout_noauth_view',$(this).val());
+	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+	$('#xshop_checkout_noauth_subpage').hide();
+});
+
+$('#xshop_checkout_noauth_subpage').change(function(event){
+	$(current_selected_component).attr('xshop_checkout_noauth_subpage',$(this).val());
+	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+
+var {$component_type}_options = {
+	show: function (){
+		// ===== THIS CODE RUNS EVERY TIME YOU DOUBLE CLICK YOUR COMPONENT
+		// TO TAKE VALUES FROM COMPONENT AND FILL OPTIONS
+		// 
+		// $(your_option_html_element).text($(current_selected_component).css('border'));		
+		if($(current_selected_component).attr('xshop_checkout_noauth_subpage_url')=='on'){
+			$('#xshop_checkout_noauth_subpage_url').attr('checked','checked');
+			$('#xshop_checkout_noauth_subpage').show();	
+		}else
+			$('#xshop_checkout_noauth_subpage_url').attr('unchecked');
+
+		if($(current_selected_component).attr('xshop_checkout_noauth_view')=='on'){
+			$('#xshop_checkout_noauth_view').attr('checked','checked');
+		}else
+			$('#xshop_checkout_noauth_view').attr('unchecked');
+
+		
+		$('#xshop_checkout_noauth_subpage').val($(current_selected_component).attr('xshop_checkout_noauth_subpage'));	
+	}
+}
+</script>

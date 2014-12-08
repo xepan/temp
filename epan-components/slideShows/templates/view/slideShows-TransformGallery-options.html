@@ -1,0 +1,75 @@
+<div id='{$_name}' class='epan-component-options' component_type="{$component_type}">
+
+	<div class="panel-group" id="accordion">
+		<div class="xepan-collasp-header component-header">
+		 	<div class="panel-heading">
+		      	<h3 class="panel-title">
+		        	<a data-toggle="collapse" data-parent="#accordion"	 href="#collapse-slideShows-3DGallery">
+						{$component_type_name}
+		        	</a>
+		      	</h3>
+		   	</div> 
+		 	<div id="collapse-slideShows-3DGallery" class="panel-collapse collapse">
+		      	<div class="panel-body">
+		      		<div class='xepan-collasp-header'>
+						<table class="table table-condensed table-hover">
+							<tr>
+								<td><b>Gallery:-</b>
+								</td>
+								<td>
+									<select id='slideShows-threeDGallery'>
+									</select>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>					
+
+	<div><button id='threeDGallerySlideShowServerSide'>Server Side</button></div>
+</div>
+<script type="text/javascript">
+// ========== OPTION TO COMPONENT EFFECT ==============
+// 
+// $(your_option_html_element).click(function(event,ui){
+// 		$(current_selected_component).what to do ???
+// }) 
+
+$('#slideShows-threeDGallery').change(function(event) {
+	$(current_selected_component).attr('transform_gallery_id',$('#slideShows-threeDGallery').val());
+	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+
+$('#threeDGallerySlideShowServerSide').click(function(event){
+	$('#epan-quick-component-options').toggle('slideup');
+	$.univ.frameURL('3D Galley Slide','index.php?page=slideShows_page_owner_transformgallery')
+});
+
+var {$component_type}_options = {
+	show: function (){
+		$.ajax({
+			url: 'index.php?page=slideShows_page_transformgallery&cut_page=1',
+			type: 'GET',
+			data: {param1: 'value1'},
+		})
+		.done(function(ret) {
+			$('#slideShows-threeDGallery').html('<option value="">Please Select ...</option>'+ret);
+			console.log("success");
+		})
+		.fail(function() {
+			console.log("error");
+		})
+		.always(function() {
+			console.log("complete");
+		});
+		// ===== THIS CODE RUNS EVERY TIME YOU DOUBLE CLICK YOUR COMPONENT
+		// TO TAKE VALUES FROM COMPONENT AND FILL OPTIONS
+		// 
+		// $(your_option_html_element).text($(current_selected_component).css('border'));
+		$('#input_option_b').val($(current_selected_component).find('b').text());
+
+	}
+}
+</script>

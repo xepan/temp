@@ -1,0 +1,84 @@
+<div id='{$_name}' class='epan-component-options' component_type="{$component_type}">
+
+	<div class="panel-group" id="accordion">
+		<div class="xepan-collasp-header component-header">
+		 	<div class="panel-heading">
+		      	<h3 class="panel-title">
+		        	<a data-toggle="collapse" data-parent="#accordion"	 href="#collapse-enquiry-ximagegallery">
+						{$component_type_name}
+		        	</a>
+		      	</h3>
+		   	</div>
+		 	<div id="collapse-enquiry-ximagegallery" class="panel-			collapse collapse">
+		      	<div class="panel-body">
+		      		<div class='xepan-collasp-header'>
+						<table class="table table-condensed table-hover">
+							<tr>
+								<td><b>Gallery :-</b></td>
+								<td>
+									<select id='xImageGallery_Categories'>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<b>Edit CSS</b>
+								</td>
+								<td>
+									<div id="xepan-googleimagegallery-custom-link" class="btn btn-default btn-xs">
+										Edit css
+									</div>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+  	<div><button id='xImageGooglegalleryServerSide'>Server Side</button></div>
+</div>
+<script type="text/javascript">
+// ========== OPTION TO COMPONENT EFFECT ==============
+// 
+// $(your_option_html_element).click(function(event,ui){
+// 		$(current_selected_component).what to do ???
+// }) 
+$('#xImageGooglegalleryServerSide').click(function(event){
+	$('#epan-quick-component-options').toggle('slideup');
+	$.univ.frameURL('Google Image gallery','index.php?page=xImageGallery/page_owner_imageGallery')
+});
+
+
+$('#xImageGallery_Categories').change(function(event) {
+	$(current_selected_component).attr('data-options',$('#xImageGallery_Categories').val());
+	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+
+$('#xepan-googleimagegallery-custom-link').click(function(event) {
+	$(this).univ().frameURL('Edit CSS ( Google Image Gallery )','index.php?page=xImageGallery_page_gallerycss&cut_page=1');
+});
+
+var {$component_type}_options = {
+	show: function (){
+		$.ajax({
+			url: 'index.php?page=xImageGallery_page_imagecats&cut_page=1',
+			type: 'GET',
+			data: {param1: 'value1'},
+		})
+		.done(function(ret) {
+			$('#xImageGallery_Categories').html('<option value="">Please Select ...</option>'+ret);
+			console.log("success");
+		})
+		.fail(function() {
+			console.log("error");
+		})
+		.always(function() {
+			console.log("complete");
+		});
+		
+	$('#xImageGallery_Categories').val($(current_selected_component).attr("data-options"));
+	}
+
+}
+</script>

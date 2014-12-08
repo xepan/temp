@@ -1,0 +1,52 @@
+<div id="{$_name}">
+
+<link rel="stylesheet" type="text/css" href="epan-components/xShop/templates/css/fancybox/jquery.fancybox.css"/>
+<link rel="stylesheet" type="text/css" href="epan-components/xShop/templates/css/fancybox/jquery.fancybox-buttons.css"/>
+<script src="epan-components/xShop/templates/js/jquery-elevatezoom.js"></script>
+<script src="epan-components/xShop/templates/js/fancybox/jquery.fancybox.js"></script>
+<script src="epan-components/xShop/templates/js/fancybox/jquery.fancybox-buttons.js"></script>
+
+	{$Content}
+	{zoom3_image}
+	<div style="" class="zoomWrapper">
+		<img style="border: 1px solid rgb(232, 232, 230); width:80%" id="zoom_03" src="{zoom3_image_url}logo.png{/zoom3_image_url}" data-zoom-image="{$zoom3_image_url}" class="zoomwrapper-img">
+	</div>
+	{/zoom3_image}
+
+	<div id="gal1" class="row"> 
+	{rows}
+	{row}
+		<div class="col-md-1 zoom3-small-image-container ">
+		<a href="#{$id}" data-image="{$image_url}" data-zoom-image="{$image_url}" class="zoom3-small-image"> 
+			<img id="img_{$id}" src="{$image_url}" class="img" style="width:100%;" /> 
+		</a>
+		</div>	
+	{/row}
+	{/rows}
+	</div>
+
+</div>
+
+
+<script type="text/javascript">
+	$(document).ready(function(){
+
+	$("#zoom_03").elevateZoom({
+		gallery:'gal1', 
+		cursor: 'pointer', 
+		galleryActiveClass: 'active', 
+		imageCrossfade: true, 
+		loadingIcon: 'epan-components/xShop/templates/images/loading.gif'
+	}); 
+	
+	$("#zoom_03").bind("click", function(e) {  
+  		var ez =   $('#zoom_03').data('elevateZoom');
+  		ez.closeAll(); //NEW: This function force hides the lens, tint and window	
+		$.fancybox(ez.getGalleryList({
+		}));
+  		return false;	
+	});
+	
+	});
+
+</script>

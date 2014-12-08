@@ -1,0 +1,35 @@
+<div id='{$_name}' {$attributes} class='slide {$class} ' style='position:relative; {$style}' >
+        {$Content}
+
+    <script type="text/javascript" src="epan-components/slideShows/templates/js/jquery.gallery.js"></script>
+   <script type="text/javascript" src="epan-components/slideShows/templates/js/modernizr.custom.53451.js"></script>
+    <!-- <link rel="stylesheet" type="text/css" href="epan-components/slideShows/templates/css/3ddemo.css" /> -->
+    <link rel="stylesheet" type="text/css" href="epan-components/slideShows/templates/css/3dstyle.css" />
+
+<section id="dg-container_{$id}" class="dg-container">
+    <div class="dg-wrapper">
+        {rows}
+        {row}
+        <a href="#">
+            <img src="{image}{/image}" alt="{name}{/name}">
+            <!-- <div>http://www.colazionedamichy.it/</div> -->
+        </a>
+        {/row}
+        {/rows}
+    </div>
+    <nav>
+        <span class="dg-prev"><</span>
+        <span class="dg-next">></span>
+    </nav>
+</section>
+
+<script>
+    
+     $(function() {
+                $('#dg-container_{$id}').gallery({
+                    autoplay    : {$autoplay},  // slideshow on / off
+                    interval    : {$interval}  // time between transitions
+                });
+            });
+</script>
+</div>

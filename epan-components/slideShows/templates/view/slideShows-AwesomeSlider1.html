@@ -1,0 +1,64 @@
+<div id="{$_name}" {$attributes} class=' {$class}' style=' {$style}' >
+  <b class='editor' contenteditable="true"></b>
+
+  <link rel="stylesheet" type="text/css" href="epan-components/slideShows/templates/css/themes/default/default.css"/>
+  <link rel="stylesheet" type="text/css" href="epan-components/slideShows/templates/css/themes/bar/bar.css"/>
+  <link rel="stylesheet" type="text/css" href="epan-components/slideShows/templates/css/themes/dark/dark.css"/>
+  <link rel="stylesheet" type="text/css" href="epan-components/slideShows/templates/css/themes/light/light.css"/>
+    <link rel="stylesheet" type="text/css" href="epan-components/slideShows/templates/css/nivo-slider.css"/>    
+
+    <script type="text/javascript" src="epan-components/slideShows/templates/js/jquery.nivo.slider.js"></script>
+         {$Content}  
+         <!--<h1>vxnxv,n{$control_nav}</h1>-->
+         <div class="slider-wrapper {theme_css}theme-default{/theme_css}">
+        <div id="slider_{$id}" class="nivoSlider ">
+        {rows}
+         {row}     
+                  <img src="{image}{/image}" alt="" title="{$tag}" data-thumb="{image}{/image}" alt="" data-transition="{$effects}" />
+          {/row}
+        {/rows}
+      </div>
+        </div>
+</div>      
+   
+
+<script type="text/javascript">
+$(document).ready(function() {
+       i = false;
+      if('{$control_nav}' == 1)
+          i = true;
+        p=false;
+      if('{$on_hover}' ==1)
+          p= true;  
+
+    $('#slider_{$id}').nivoSlider({
+      effect: 'random',
+      slices: 15,
+      boxCols: 8,
+      boxRows: 4,
+      animSpeed: 500,
+      pauseTime: '{$pause_time}',
+      startSlide: 0,
+      directionNav: true,
+      controlNav: i,
+      controlNavThumbs: false,
+      pauseOnHover: p,
+      manualAdvance: false,
+      prevText:'Prev',
+      nextText:'next',
+      // prevText: '<img src="epan-components/slideShows/templates/images/arrow-left.png" />',
+      // nextText: '<img src="epan-components/slideShows/templates/images/arrow-right.png" />',
+      randomStart: false,
+      beforeChange: function(){},
+      afterChange: function(){},
+      slideshowEnd: function(){},
+      lastSlide: function(){},
+      afterLoad: function(){}
+  });
+
+    if('{$image_paginator}'){
+      $(".nivo-controlNav").last().addClass('{$image_paginator}');
+    }
+     
+});
+</script>

@@ -1,0 +1,88 @@
+<div id='{$_name}' class='epan-component-options' component_type="{$component_type}">
+
+	<div class="panel-group" id="accordion">
+		<div class="xepan-collasp-header component-header">
+		 	<div class="panel-heading">
+		      	<h3 class="panel-title">
+		        	<a data-toggle="collapse" data-parent="#accordion"	 href="#collapse-slideShows-thumb">
+						{$component_type_name}
+		        	</a>
+		      	</h3> 
+		   	</div>
+		 	<div id="collapse-slideShows-thumb" class="panel-			collapse collapse">
+		      	<div class="panel-body">
+		      		<div class='xepan-collasp-header'>
+						<table class="table table-condensed table-hover">
+						<tr>
+							<td>
+								<b>Gallery</b>
+							</td>
+							<td>
+								<select id='ThumbnailSlider_Gallery'>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<b>Edit CSS</b>
+							</td>
+							<td>
+								<div id="ThumbnailSlider_Gallery-editcss" class="btn btn-default btn-xs">Edit CSS</div>
+							</td>
+						</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>					
+</br>
+	<div><button id='ThumbnailSlideShowServerSide'>Server Side</button></div>
+</div>
+<script type="text/javascript">
+// ========== OPTION TO COMPONENT EFFECT ==============
+// 
+// $(your_option_html_element).click(function(event,ui){
+// 		$(current_selected_component).what to do ???
+// }) 
+$('#ThumbnailSlideShowServerSide').click(function(event){
+	$('#epan-quick-component-options').toggle('slideup');
+	$.univ.frameURL('Thumbnail Tooltip Slide Shows','index.php?page=slideShows_page_owner_thumbnailslider')
+});
+
+$('#ThumbnailSlider_Gallery').change(function(event) {
+	$(current_selected_component).attr('thumbnailslider_gallery_id',$('#ThumbnailSlider_Gallery').val());
+	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+
+$('#ThumbnailSlider_Gallery-editcss').click(function(){
+	$(this).univ().frameURL('Edit CSS ( Thumbnail Slider css )','index.php?page=slideShows_page_thumbnailslidercss&cut_page=1');
+});
+
+
+var {$component_type}_options = {
+	show: function (){
+		$.ajax({
+			url: 'index.php?page=slideShows_page_thumbnailslider&cut_page=1',
+			type: 'GET',
+			data: {param1: 'value1'},
+		})
+		.done(function(ret) {
+			$('#ThumbnailSlider_Gallery').html('<option value="">Please Select ...</option>'+ret);
+			console.log("success");
+		})
+		.fail(function() {
+			console.log("error");
+		})
+		.always(function() {
+			console.log("complete");
+		});
+		// ===== THIS CODE RUNS EVERY TIME YOU DOUBLE CLICK YOUR COMPONENT
+		// TO TAKE VALUES FROM COMPONENT AND FILL OPTIONS
+		// 
+		// $(your_option_html_element).text($(current_selected_component).css('border'));
+		$('#input_option_b').val($(current_selected_component).find('b').text());
+
+	}
+}
+</script>
