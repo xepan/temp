@@ -4,7 +4,9 @@ class page_xEnquiryNSubscription_page_owner_form extends page_xEnquiryNSubscript
 	function init(){
 		parent::init();
 
-		$bv = $this->add('View_BackEndView',array('cols_widths'=>array(12)));
+		$this->app->layout->template->trySetHTML('page_title','<i class="fa fa-bullhorn"></i> '.$this->component_name. '<small> Manage Your Custom Forms And submitted data</small>');
+
+		$bv = $this->app->layout->add('View_BackEndView',array('cols_widths'=>array(12)));
 		$bv->addToTopBar('H3')->set('Custom Form');
 		$total_custom_form=$this->setModel('xEnquiryNSubscription/Model_Forms')->count()->getOne();
 		$bv->addToTopBar('View')->set('Custom Form -'.$total_custom_form);
@@ -15,22 +17,19 @@ class page_xEnquiryNSubscription_page_owner_form extends page_xEnquiryNSubscript
 		$op = $bv->addOptionButton();
 		$crud = $bv->addToColumn(0,'View');
 
-
-		$this->add('H4')->setHTML('Manage Your Custom Forms <small>And submitted data</small>');
-		$crud=$this->add('CRUD');
+		$crud=$this->app->layout->add('CRUD');
 		$crud->setModel('xEnquiryNSubscription/Model_Forms');
-		$crud->add('Controller_FormBeautifier');
+		// $crud->add('Controller_FormBeautifier');
 
-		if($crud->grid){
+		if(!$crud->isEditing()){
 			$crud->add_button->setIcon('ui-icon-plusthick');
-
 		}
 
 		$refcrud=$crud->addRef('xEnquiryNSubscription/CustomFields',array('label'=>'Add Fields'));
 		$form_values = $crud->addRef('xEnquiryNSubscription/CustomFormEntry',array('label'=>'Submissions','view_options'=>array('allow_add'=>false)));
 		
-
-		if($form_values and $g=$form_values->grid){
+		if($form_values and (!$form_values->isEditing())){
+			$g=$form_values->grid;
 			$btn = $g->addButton('Mark All Read');
 			
 			if($btn->isClicked()){
@@ -40,7 +39,7 @@ class page_xEnquiryNSubscription_page_owner_form extends page_xEnquiryNSubscript
 			}
 
 			$form_values->grid->addClass('panel panel-default');
-			$form_values->grid->setStyle('padding','20px');
+			// $form_values->grid->setStyle('padding','20px');
 			$form_values->grid->addPaginator(50);
 			$form_values->grid->addQuickSearch(array('message'));
 			$form_values->grid->addColumn('Button','Keep_Watch');
@@ -55,7 +54,7 @@ class page_xEnquiryNSubscription_page_owner_form extends page_xEnquiryNSubscript
 			$form_values->grid->js(null,$this->js()->univ()->successMessage('Watch Changes'))->reload()->execute();
 		}
 
-		if($refcrud and $refcrud->grid){
+		if($refcrud and (!$refcrud->isEditing())){
 			$refcrud->add_button->setIcon('ui-icon-plusthick');
 		}
 
@@ -73,7 +72,7 @@ class page_xEnquiryNSubscription_page_owner_form extends page_xEnquiryNSubscript
 
 		
 		if($refcrud){
-			$refcrud->add('Controller_FormBeautifier');
+			// $refcrud->add('Controller_FormBeautifier');
 		}
 
 	}
