@@ -4,12 +4,12 @@ class page_xShop_page_owner_addblock extends page_xShop_page_owner_main{
 
 	function page_index(){
 
-		$crud=$this->add('CRUD');
+		$crud=$this->app->layout->add('CRUD');
 		$crud->setModel('xShop/Model_AddBlock');
-		$crud->add('Controller_FormBeautifier');
+		// $crud->add('Controller_FormBeautifier');
 		$ref = $crud->addRef('xShop/BlockImages',array('label'=>'Images'));
-		if($ref)
-			$ref->add('Controller_FormBeautifier');
+		// if($ref)
+		// 	$ref->add('Controller_FormBeautifier');
 	}
 
 	function page_BlockImages(){
