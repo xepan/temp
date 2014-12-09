@@ -42,7 +42,7 @@ class page_base_owner extends Page {
 
 		$components_m = $m->addMenu('Components');
 		foreach ($installed_components as $comp) {
-			$components_m->addItem(array($comp['name'],'icon'=>'right-hand'),$comp['namespace'].'_page_owner_main');
+			$components_m->addItem(array($comp['name'],'icon'=>'right-hand'),$comp['namespace'].'_page_owner_dashboard');
 		}
 
 	}

@@ -43,18 +43,26 @@ class View_Tools_CustomeForm extends \componentBase\View_Component{
 				$form->setStyle('display','none');	
 			}
 
-			foreach ($custome_field as $junk) {		
-				if($junk['type']=='captcha'){
-					// throw new \Exception($custome_field['type']=='captcha');
-				$captcha_field=$form->addField('line','captcha');
-				$captcha_field->belowField()->add('H5')->set('Please enter the code shown above');
-				$captcha_field->add('x_captcha/Controller_Captcha');
-				}elseif($junk['mandatory']){
-					$field=$form->addField($custome_field['type'],$this->api->normalizeName($custome_field['name']),$custome_field['name'])->validateNotNull(true);
+			foreach ($custome_field as $junk) {	
+				switch ($junk['type']) {
+						case 'captcha':
+							$captcha_field=$form->addField('line','captcha');
+							$captcha_field->belowField()->add('H5')->set('Please enter the code shown above');
+							$captcha_field->add('x_captcha/Controller_Captcha');
+							break;
+						case 'email':
+							$field=$form->addField('line',$this->api->normalizeName($custome_field['name']),$custome_field['name']);
+							$field->validateField('filter_var($this->get(), FILTER_VALIDATE_EMAIL)');
+							break;
+						default:
+							$field=$form->addField($custome_field['type'],$this->api->normalizeName($custome_field['name']),$custome_field['name']);
+							break;
+					}	
+
+				if($junk['mandatory']){
+					$field->validateNotNull(true);
 				}
-				else{
-					$field=$form->addField($custome_field['type'],$this->api->normalizeName($custome_field['name']),$custome_field['name']);
-				}
+				
 
 				if($junk['type']=='dropdown'){
 					$field->setEmptyText('Please Select');

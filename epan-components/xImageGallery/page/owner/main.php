@@ -1,7 +1,9 @@
 <?php
 
 class page_xImageGallery_page_owner_main extends page_componentBase_page_owner_main {
-	function page_index(){
+	
+	function init(){
+		parent::init();
 
 		$this->app->layout->template->trySetHTML('page_title','<i class="fa fa-file-picture-o"></i> '.$this->component_name. '<small>Different kinds of Attractive and Custom Image Gallery</small>');
 

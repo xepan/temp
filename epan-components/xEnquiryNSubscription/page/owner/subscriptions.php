@@ -5,23 +5,92 @@ class page_xEnquiryNSubscription_page_owner_subscriptions extends page_xEnquiryN
 	function init(){
 		$this->rename('xEnSubs');
 		parent::init();
-			
-
-	}
-	
-	function page_index(){
-
+		$this->app->layout->template->trySetHTML('page_title','<i class="fa fa-bullhorn"></i> '.$this->component_name. '<small> Email Data Management </small>');
 		$tabs= $this->app->layout->add('Tabs');
 
-		$subscription_cat_tab = $tabs->addTab('Categories');
+		$subscription_cat_tab = $tabs->addTabURL("./total_categories",'Categories');
 		$subscriptions_tab = $tabs->addTabUrl("./total_subscriptions",'Total Subscriptions');
-		// Add Top Bar
-		$bv = $subscription_cat_tab->app->layout->add('View_BackEndView',array('cols_widths'=>array(12)));
-		$bv->addToTopBar('H3')->set('Subscription Categories');
-		$op = $bv->addOptionButton();
-		$crud = $bv->addToColumn(0,'View');
+	}
+
+	function page_total_categories(){
+		
+		// Digging of web entries :: Used by grid 
+		$web_entries_vp = $this->add('VirtualPage')->set(function($p){
+			$p->api->stickyGET('category_id');
+
+			$grid = $p->add('Grid');
+			$m=$p->add('xEnquiryNSubscription/Model_Subscription');
+			$as_j=$m->join('xEnquiryNSubscription_SubsCatAss.subscriber_id');
+			$as_j->addField('category_id');
+			$as_j->addField('subscribed_on')->sortable(true);
+
+			$m->addCondition('category_id',$_GET['category_id']);
+			$m->addCondition('from_app','xEnquiryNSubscription');
+
+			$grid->setModel($m);
+			$grid->addPaginator(100);
+			$grid->addQuickSearch(array('email'));
+
+			$grid->removeColumn('epan');
+			$grid->removeColumn('name');
+
+		});	
+
+		// Digging of web entries :: Used by grid 
+		$other_entries_vp = $this->add('VirtualPage')->set(function($p){
+			$p->api->stickyGET('category_id');
+
+			$grid = $p->add('Grid');
+			$m=$p->add('xEnquiryNSubscription/Model_Subscription');
+			$as_j=$m->join('xEnquiryNSubscription_SubsCatAss.subscriber_id');
+			$as_j->addField('category_id');
+			$as_j->addField('subscribed_on')->sortable(true);
+
+			$m->addCondition('category_id',$_GET['category_id']);
+			$m->addCondition('from_app','<>','xEnquiryNSubscription');
+
+			$grid->setModel($m,array('email','is_ok','ip','created_at','from_app','subscribed_on'));
+			$grid->addPaginator(100);
+			$grid->addQuickSearch(array('email','from_app'));
+
+		});		
+
+		
+
+		$total_emails =$this->add('xEnquiryNSubscription/Model_Subscription');
+		$mail=$total_emails->count()->getOne();		
+
+		$bg=$this->add('View_BadgeGroup');
+		$v=$bg->add('View_Badge')->set('Total Subscription')->setCount($mail)->setCountSwatch('ink');
+
 
 		$sub_cat_model= $this->add('xEnquiryNSubscription/Model_SubscriptionCategories');
+		
+		$sub_cat_model->addExpression('web_entries')->sortable(true)->set(function($m,$q){
+
+			$mq=$m->add('xEnquiryNSubscription/Model_Subscription',array('table_alias'=>'tmq'));
+			// $s_j=$mq->join('xEnquiryNSubscription_Subscription','subscriber_id');
+			$as_j=$mq->join('xEnquiryNSubscription_SubsCatAss.subscriber_id');
+			$as_j->addField('category_id');
+
+			$mq->addCondition('category_id',$q->getField('id'));
+			$mq->addCondition('from_app','xEnquiryNSubscription');
+			return $mq->count();
+		});
+
+
+		$sub_cat_model->addExpression('other_entries')->sortable(true)->set(function($m,$q){
+
+			$mq=$m->add('xEnquiryNSubscription/Model_Subscription',array('table_alias'=>'tmq'));
+			// $s_j=$mq->join('xEnquiryNSubscription_Subscription','subscriber_id');
+			$as_j=$mq->join('xEnquiryNSubscription_SubsCatAss.subscriber_id');
+			$as_j->addField('category_id');
+
+			$mq->addCondition('category_id',$q->getField('id'));
+			$mq->addCondition($mq->dsql()->orExpr()->where('from_app','<>','xEnquiryNSubscription')->where('from_app',null));
+			return $mq->count();
+		});
+
 		$sub_cat_model->addExpression('last_communicated')->sortable(true)->set(function($m,$q){
 
 			$mq=$m->add('xEnquiryNSubscription/Model_EmailQueue',array('table_alias'=>'tmq'));
@@ -36,30 +105,45 @@ class page_xEnquiryNSubscription_page_owner_subscriptions extends page_xEnquiryN
 			return $mq->fieldQuery('sent_at');
 		});
 
-		$subscriptions_cat_curd = $crud->add('CRUD');
+		$subscriptions_cat_curd = $this->add('CRUD');
 		$subscriptions_cat_curd->setModel($sub_cat_model);
 		// $subscriptions_cat_curd->add('Controller_FormBeautifier');
 
 		if(!$subscriptions_cat_curd->isEditing()){
+
 			$g=$subscriptions_cat_curd->grid;
 			$subscriptions_cat_curd->add_button->setIcon('ui-icon-plusthick')->set("New");
-			$g->addPaginator(20);
-			
+			$g->addPaginator(100);
 			$qs = $g->addQuickSearch(array('name'));
 
 			$qs->search_field->setAttr('placeholder','Search Categories by Name');
 
 			$g->addColumn('Expander','config');
-			$g->addTotals(array('total_emails'));
 			$g->removeColumn('epan');
 			$g->add_sno();
 			$g->order->move('is_active','after','s_no');
+
+			$g->addMethod('format_web_entries',function($g,$f)use($web_entries_vp){
+				// VP defined at top of init function
+				$g->current_row_html[$f]= '<a href="javascript:void(0)" onclick="'.$g->js()->univ()->frameURL('Web Entries',$this->api->url($web_entries_vp->getURL(),array('category_id'=>$g->model->id))).'">'.$g->current_row[$f].'</a>';
+			});
+
+			$g->addFormatter('web_entries','web_entries');
+
+			$g->addMethod('format_other_entries',function($g,$f)use($other_entries_vp){
+				// VP defined at top of init function
+				$g->current_row_html[$f]= '<a href="javascript:void(0)" onclick="'.$g->js()->univ()->frameURL('Web Entries',$this->api->url($other_entries_vp->getURL(),array('category_id'=>$g->model->id))).'">'.$g->current_row[$f].'</a>';
+			});
+
+			$g->addFormatter('other_entries','other_entries');
+
+
 		}
 
 
 
 		// Subscribers of this Category section
-		$cat_ref_subs_crud = $subscriptions_cat_curd->addRef('xEnquiryNSubscription/Model_SubscriptionCategoryAssociation',array('label'=>'Subscribers','grid_fields'=>array('subscriber','send_news_letters','subscribed_on')));
+		$cat_ref_subs_crud = $subscriptions_cat_curd->addRef('xEnquiryNSubscription/Model_SubscriptionCategoryAssociation',array('label'=>'Subscribers','grid_fields'=>array('subscriber','send_news_letters','subscribed_on','from_app')));
 
 		if($cat_ref_subs_crud){
 			// $cat_ref_subs_crud->add('Controller_FormBeautifier');
@@ -79,31 +163,37 @@ class page_xEnquiryNSubscription_page_owner_subscriptions extends page_xEnquiryN
 	}
 
 	function page_total_subscriptions(){
-		$bv = $this->add('View_BackEndView',array('cols_widths'=>array(12)));
-		$bv->addToTopBar('H3')->set('Total Subscription');
-		$total_subscription=$this->setModel('xEnquiryNSubscription/Model_Subscription')->count()->getOne();
-		$bv->addToTopBar('View')->set('Total Subscriptions -'.$total_subscription);		
-		$op = $bv->addOptionButton();
-		$crud = $bv->addToColumn(0,'View');
+
+		$total_emails =$this->add('xEnquiryNSubscription/Model_Subscription');
+		$mail=$total_emails->count()->getOne();		
+		$bg=$this->add('View_BadgeGroup');
+		$v=$bg->add('View_Badge')->set('Total Subscription')->setCount($mail)->setCountSwatch('ink');
+
 
 		$subscriptions_curd = $this->add('CRUD');
 		$subscriptions_curd->setModel('xEnquiryNSubscription/Model_Subscription',null,array('email','is_ok','created_at'));
 		if(!$subscriptions_curd->isEditing()){
 			$g = $subscriptions_curd->grid;	
 			$subscriptions_curd->add_button->seticon('ui-icon-plusthick');
-			// $g->sno=1;
-			// $g->addMethod('format_sno',function($grid,$field){
-			// 	$skip=0;
-			// 	foreach ($_GET as $key => $value) {
-			// 		if(strpos($key, '_paginator_skip') !== false) $skip = $_GET[$key];
-			// 	}
-			// 	$grid->current_row[$field] = $grid->sno + $skip;
-			// 	$grid->sno++;
-			// });
-
-			// $g->addColumn('sno','sno');
-			// $g->addOrder()->move('sno','first')->now();
 			$g->add_sno();
+
+			$delete_form = $g->add('Form',null,'grid_buttons');
+			$df= $delete_form->addField('hidden','selected');
+
+
+			$delete_btn = $g->addButton('Delete Selected');
+			$delete_btn->js('click',$delete_form->js()->submit());
+
+			if($delete_form->isSubmitted()){
+				$all = json_decode($delete_form['selected'],true);
+				foreach ($all as $id) {
+					$s=$this->add('xEnquiryNSubscription/Model_Subscription')->tryLoad($id);
+					if($s->loaded()) $s->delete();
+				}
+				$delete_form->js(null,array($g->js()->reload(),$bg->js()->reload()))->univ()->successMessage('removed')->execute();
+			}
+
+			$g->addSelectable($df);
 			
 			$subscriptions_curd->grid->addPaginator(100);
 			$subscriptions_curd->grid->addQuickSearch(array('email'));
@@ -129,7 +219,7 @@ class page_xEnquiryNSubscription_page_owner_subscriptions extends page_xEnquiryN
 
 	}
 
-	function page_config(){
+	function page_total_categories_config(){
 
 		$this->api->stickyGET('xEnquiryNSubscription_Subscription_Categories_id');
 
@@ -155,6 +245,7 @@ class page_xEnquiryNSubscription_page_owner_subscriptions extends page_xEnquiryN
 	}
 
 	function page_newsletter(){
+
 		$config_model=$this->add('xEnquiryNSubscription/Model_Config')->tryLoadAny();
 		// Add Top Bar
 		$bv = $this->app->layout->add('View_BackEndView',array('cols_widths'=>array(12)));

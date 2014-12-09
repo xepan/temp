@@ -15,21 +15,6 @@ class page_xEnquiryNSubscription_page_owner_main extends page_componentBase_page
 			$xenq_m->addItem(array('Subscriber Section','icon'=>'plus'),'xEnquiryNSubscription_page_owner_subscriptions');
 			$xenq_m->addItem(array('Custom Form Section','icon'=>'plus'),'xEnquiryNSubscription_page_owner_form');
 			$xenq_m->addItem(array('News Letters','icon'=>'plus'),'xEnquiryNSubscription_page_owner_subscriptions_newsletter');
-
-			// $mh_b=$this->toolbar->addButton('Module Home');
-			// $mh_b->setIcon('ui-icon-home');
-			// $mh_b->js('click')->univ()->redirect('xEnquiryNSubscription_page_owner_main');
-			
-			// $menu=$this->add('Menu');
-
-			// $dashboard = $menu->addMenuItem('xEnquiryNSubscription_page_owner_dashboard','Dashboard');
-			// $subs = $menu->addSubMenu('Subscription Section  <i class="fa fa-arrow-circle-down"></i>');
-			
-			// $subs->addMenuItem('xEnquiryNSubscription_page_owner_subscriptions_categories','Categories');
-			// $subs->addMenuItem('xEnquiryNSubscription_page_owner_subscriptions_total_subscriptions','Total Subscribers');
-
-			// $cust_form = $menu->addMenuItem('xEnquiryNSubscription_page_owner_form','Custom Forms');
-			// $cust_form = $menu->addMenuItem('xEnquiryNSubscription_page_owner_subscriptions_newsletter','News Letters');
 		}
 	}
 

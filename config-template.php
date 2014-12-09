@@ -2,9 +2,9 @@
 $config['installed']=false;
 
 $config['atk']['base_path']='./atk4/';
-$config['dsn']='mysql://root:winserver@localhost/dev_theroundtable';
+$config['dsn']='mysql://{database_username}:{database_password}@{host}/{database}';
 
-$config['js']['versions']['jquery']='1.8.2.min';
+// $config['js']['versions']['jquery']='1.8.2.min';
 $config['url_postfix']='';
 $config['url_prefix']='?page=';
 
