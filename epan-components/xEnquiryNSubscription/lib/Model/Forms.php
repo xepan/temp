@@ -54,10 +54,4 @@ class Model_Forms extends \Model_Table{
 			throw $this->exception('Name Already Taken','ValidityCheck')->setField('name');
 
 	}
-
-
-
-
 }
-
-

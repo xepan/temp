@@ -137,8 +137,9 @@ class View_Tools_CustomeForm extends \componentBase\View_Component{
 				$message_model=$this->add('Model_Messages');	
 				$message_model->createNew($this->api->current_website->id,"Custom Form Entry","Submitted : ". $form_model['name'],"Custom Enquiry Form");	
 
-				$goal_uuid = array(array('uuid'=>$form_model['name']));
+				$goal_uuid = array(array('uuid'=>$form_model['name'],'form'=>$form_model));
 				$this->api->exec_plugins('goal',$goal_uuid);
+				$this->api->event('xenq-n-subs-custom-form-submit',$goal_uuid);
 					
 				$form->js(null,$this->js()->univ()->successMessage('Thank You for Enquiry'))->reload()->execute();
 			}

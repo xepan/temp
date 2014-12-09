@@ -77,7 +77,7 @@ class Model_SubscriptionCategories extends \Model_Table {
 		if(!$this->loaded()) throw $this->exception('Must be called on loaded Subscriber Category Model');
 		if($subscriber instanceof Subscription) throw $this->exception('Subscriber Must be instance of Subscription Model');
 
-		if(!$subscriber->loaded()) throw $this->exception('Subscriber Must be LOADED instance of Subscription Model');
+		if(!$subscriber->loaded()) return false;
 
 		$asso = $this->add('xEnquiryNSubscription/Model_SubscriptionCategoryAssociation');
 		$asso->addCondition('category_id',$this->id);

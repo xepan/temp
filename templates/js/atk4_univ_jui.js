@@ -135,9 +135,11 @@ $.each({
 
         html.find('.do-close').click(function(e){e.preventDefault();html.remove();});
 
-        var dest=$("body>.atk-layout");
+        var dest=$("body>.atk-growl");
         if(dest.length){
             html.prependTo(dest);
+            html.fadeIn();
+            $.univ().setTimeout(function(){html.fadeOut()},2000);
             return html;
         }else{
             alert(msg);
@@ -145,7 +147,7 @@ $.each({
         }
     },
     successMessage: function(msg){
-        var html=$('<div class="atk-layout-row" style="position: fixed; z-index: 1000">\
+        var html=$('<div class="atk-layout-row" style="position: fixed; z-index: 1000; right:10px; display:none">\
     <div class="atk-swatch-green atk-cells atk-padding-small">\
       <div class="atk-cell atk-jackscrew"><i class="icon-info"></i>&nbsp;<span>Agile Toolkit failed to automatically renew certificate.</span></div>\
       <div class="atk-cell"><a href="javascript: void()" class="do-close"><i class="icon-cancel"></i></a></div>\
@@ -155,7 +157,7 @@ $.each({
         setTimeout(function() { html.remove();},8000);
     },
     errorMessage: function(msg){
-        var html=$('<div class="atk-layout-row" style="position: fixed; z-index: 1000">\
+        var html=$('<div class="atk-layout-row" style="position: fixed; z-index: 1000; right:10px; display:none">\
     <div class="atk-swatch-red atk-cells atk-padding-small">\
       <div class="atk-cell atk-jackscrew"><i class="icon-attention"></i>&nbsp;<span>Agile Toolkit failed to automatically renew certificate.</span></div>\
       <div class="atk-cell"><a href="javascript: void()" class="do-close"><i class="icon-cancel"></i></a></div>\

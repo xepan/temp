@@ -12,7 +12,7 @@ class Model_NewsLetter extends \Model_Table {
 		$this->hasOne('Epan','epan_id');
 		$this->addCondition('epan_id',$this->api->current_website->id);
 		
-		$this->hasOne('xEnquiryNSubscription/NewsLetterCategory','category_id')->mandatory(true);
+		$this->hasOne('xEnquiryNSubscription/NewsLetterCategory','category_id')->mandatory(true)->sortable(true);
 
 		$f=$this->addField('name')->mandatory(true)->group('a1~6~Internal Name')->sortable(true);
 		$f->icon='fa fa-adn~red';
