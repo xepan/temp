@@ -5,27 +5,31 @@ class page_developerZone_page_owner_main extends page_componentBase_page_owner_m
 	function init(){
 		parent::init();
 
-		$this->h1->setHTML('<i class="fa fa-wrench"></i> '.$this->component_name .'<small> Helper utility to create new applications </small>');
+		$this->app->layout->template->trySetHTML('page_title','<i class="fa fa-wrench"></i> '.$this->component_name .'<small> Helper utility to create new applications </small>');
 
-		if(!$this->api->isAjaxOutput()){
-			$dh_b= $this->toolbar->addButton( 'Developer Home' );
-			$dh_b->setIcon('ui-icon-home');
-			$dh_b->js( 'click', $this->js()->univ()->redirect( $this->api->url('developerZone_page_owner_main') ) );
-			$ds_b= $this->toolbar->addButton( 'Dashboard' );
-			$ds_b->setIcon('ui-icon-home');
-			$ds_b->js( 'click', $this->js()->univ()->redirect( $this->api->url('owner_dashboard') ) );
-		}
+		$developer_m=$this->app->top_menu->addMenu($this->component_name);
+		$developer_m->addItem(array('Dashboard','icon'=>'gauge-1'),'developerZone_page_owner_main');
+		$developer_m->addItem(array('New Component','icon'=>'plus'),'developerZone_page_owner_component_new');
+
+		// if(!$this->api->isAjaxOutput()){
+		// 	$dh_b= $this->toolbar->addButton( 'Developer Home' );
+		// 	$dh_b->setIcon('ui-icon-home');
+		// 	$dh_b->js( 'click', $this->js()->univ()->redirect( $this->api->url('developerZone_page_owner_main') ) );
+		// 	$ds_b= $this->toolbar->addButton( 'Dashboard' );
+		// 	$ds_b->setIcon('ui-icon-home');
+		// 	$ds_b->js( 'click', $this->js()->univ()->redirect( $this->api->url('owner_dashboard') ) );
+		// }
 	}
 
 	function page_index(){
 		if($_GET['page'] == 'developerZone_page_owner_main' or $_GET['page'] == 'developerZone/page/owner/main'){
-			$this->add('H4')->set('Available Components in Local MarketPlace');
-			$grid = $this->add('Grid');
+			$this->app->layout->add('H4')->set('Available Components in Local MarketPlace');
+			$grid = $this->app->layout->add('Grid');
 			$grid->setModel('MarketPlace',array('namespace','type','name','is_system','has_toolbar_tools','has_owner_modules','has_plugins','has_live_edit_app_page'));
 
-			$btn=$grid->add('Button',null,'top_1')->set('New Component');
-			$btn->setIcon('ui-icon-plusthick');
-			$btn->js('click',$this->js()->univ()->redirect($this->api->url('developerZone_page_owner_component_new')));
+			// $btn=$grid->add('Button',null,'top_1')->set('New Component');
+			// $btn->setIcon('ui-icon-plusthick');
+			// $btn->js('click',$this->js()->univ()->redirect($this->api->url('developerZone_page_owner_component_new')));
 
 			$grid->setFormatter('namespace','template')->setTemplate('<a href="?page=developerZone_page_owner_component_edit&component=<?$namespace?>"><?$namespace?></a>');
 

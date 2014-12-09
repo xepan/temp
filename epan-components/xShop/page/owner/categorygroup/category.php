@@ -2,8 +2,8 @@
 
 class page_xShop_page_owner_categorygroup_category extends page_xShop_page_owner_main{
 
-	function page_index(){
-		// parent::init();
+	function init(){
+		parent::init();
 		
 		$categorygroup_id=$this->api->stickyGET('xshop_categorygroup_id');
 		$col=$this->add('Columns');
@@ -25,10 +25,9 @@ class page_xShop_page_owner_categorygroup_category extends page_xShop_page_owner
 		$category_model->setOrder('id','asc');
 
 		$crud->setModel($category_model,array('parent_id','name','order','is_active','meta_title','meta_description','meta_keywords','image_url','alt_text','description'),array('name','parent','order','is_active'));
-		$crud->add('Controller_FormBeautifier',array('params'=>array('f/addClass'=>'stacked')));
+		// $crud->add('Controller_FormBeautifier',array('params'=>array('f/addClass'=>'stacked')));
 		
-		if($crud->form){
-									
+		if($crud->form){							
 			$parent_model = $crud->form->getElement('parent_id')->getModel();
 			$parent_model->title_field='category_name';
 			$parent_model->addCondition('categorygroup_id',$_GET['xshop_categorygroup_id']);
@@ -36,9 +35,10 @@ class page_xShop_page_owner_categorygroup_category extends page_xShop_page_owner
 			// $parent_model->debug();
 		}
 
-		if($g = $crud->grid){
+		if(!$crud->isEditing()){
+			$g = $crud->grid;
 			$g->addClass('panel panel-default');
-			$g->addStyle('padding','20px');
+			// $g->addStyle('padding','20px');
 			$crud->grid->addClass('mygrid');//Todo for reload of crud->grid 
 			$crud->grid->js('reload')->reload();//adding trigger 
 			$crud->grid->addQuickSearch(array('name','parent','order'));

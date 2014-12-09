@@ -2,13 +2,14 @@
 
 class page_xShop_page_owner_categorygroup extends page_xShop_page_owner_main{
 
-	function page_index(){
+	function init(){
+		parent::init();
 
 		$catgroup_model=$this->add('xShop/Model_CategoryGroup');	
 		$cat_model=$this->add('xShop/Model_Category');	
 		
 		//Tobar and options	
-		$bv = $this->add('View_BackEndView',array('cols_widths'=>array(12)));
+		$bv = $this->app->layout->add('View_BackEndView',array('cols_widths'=>array(12)));
 		$total_category = $cat_model->count();
 		$active_category = $cat_model->addCondition('is_active',true)->count();
 		$unactive_category = $this->add('xShop/Model_Category')->addCondition('is_active',false)->count();
@@ -19,25 +20,25 @@ class page_xShop_page_owner_categorygroup extends page_xShop_page_owner_main{
 			
 		$catgroup_model->setOrder('name','asc');
 		$crud=$bv->add('CRUD');
+		$crud->setModel($catgroup_model,array('name'));
 
-		$crud->setModel($catgroup_model,array('name','total'));
-		$crud->add('Controller_FormBeautifier',array('params'=>array('f/addClass'=>'stacked')));
+		// $crud->add('Controller_FormBeautifier',array('params'=>array('f/addClass'=>'stacked')));
 
-		if($grid = $crud->grid){
-			$grid->add_sno();
-			$grid->addMethod('format_category',function($g,$f){
+		if(!$crud->isEditing()){			
+			$crud->grid->add_sno();
+			$crud->grid->addMethod('format_category',function($g,$f){
 				$g->current_row_html[$f]=$g->model->ref('xShop/Category')->count();
 			});
-			$grid->addMethod('format_active',function($g,$f){
+			$crud->grid->addMethod('format_active',function($g,$f){
 				$g->current_row_html[$f]=$g->model->ref('xShop/Category')->addCondition('is_active',true)->count();
 			});
-			$grid->addMethod('format_unactive',function($g,$f){
+			$crud->grid->addMethod('format_unactive',function($g,$f){
 				$g->current_row_html[$f]=$g->model->ref('xShop/Category')->addCondition('is_active',false)->count();
 			});
-			$grid->addcolumn('category','Total Category');
-			$grid->addcolumn('active','Active Category');
-			$grid->addcolumn('unactive','Unactive Category');
-			$grid->addcolumn('expander','category','Categories');
+			$crud->grid->addcolumn('category','TotalCategory');
+			$crud->grid->addcolumn('active','ActiveCategory');
+			$crud->grid->addcolumn('unactive','UnactiveCategory');
+			$crud->grid->addcolumn('expander','category','Categories');
 		}
 	}
 

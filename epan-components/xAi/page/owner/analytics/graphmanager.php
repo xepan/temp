@@ -1,10 +1,11 @@
 <?php
 
-class page_xAi_page_owner_analytics_graphmanager extends page_componentBase_page_owner_main{
+class page_xAi_page_owner_analytics_graphmanager extends page_xAi_page_owner_main{
 
 	function init(){
-		parent::init();
 		$this->rename('grph'); // Shorten name length for suhosin restrictions
+		parent::init();
+
 	}
 	
 	function page_index(){
@@ -23,7 +24,7 @@ class page_xAi_page_owner_analytics_graphmanager extends page_componentBase_page
 			$this->js()->univ()->frameURL($visual_analytic['name'],$vp->getURL())->execute();
 		}
 
-		$crud = $this->add('CRUD');
+		$crud = $this->app->layout->add('CRUD');
 		$crud->setModel('xAi/VisualAnalytic');
 
 		if($g=$crud->grid){

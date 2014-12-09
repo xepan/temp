@@ -1,21 +1,22 @@
 <?php
 
 class page_xShop_page_owner_main extends page_componentBase_page_owner_main {
-	function page_index(){
+	function init(){
+		parent::init();
 
-		$this->h1->setHTML('<i class="fa fa-shopping-cart"></i> '.$this->component_name. '<small>Used as ( <i class="fa fa-list"></i> ) Product Listing , Blogs and ( <i class="fa fa-shopping-cart"></i> ) E-commerce kinds of Application</small>');
-
-		$tab=$this->add('Tabs');
-		$cat_tab=$tab->addTabURL('xShop/page_owner_dashboard','Dashboard');
-		$cat_tab=$tab->addTabURL('xShop/page_owner_categorygroup','Category');
-		$product_tab=$tab->addTabURL('xShop/page_owner_product','Product');
-		$manufacturer_tab=$tab->addTabURL('xShop/page_owner_manufacturer','Manufacturer');
-		$supplier_tab=$tab->addTabURL('xShop/page_owner_supplier','Supplier');
-		$e_voucher_tab=$tab->addTabURL('xShop/page_owner_voucher','E-Voucher');
-		$config_tab=$tab->addTabURL('xShop/page_owner_configuration','Configuration');
-		$member_tab=$tab->addTabURL('xShop/page_owner_member','Member');
-		$order_tab=$tab->addTabURL('xShop/page_owner_order','Order');
-		$addblock_tab=$tab->addTabURL('xShop/page_owner_addblock','AddBlock');
+		$this->app->layout->template->trySetHTML('page_title','<i class="fa fa-shopping-cart"></i> '.$this->component_name. '<small>Used as ( <i class="fa fa-list"></i> ) Product Listing , Blogs and ( <i class="fa fa-shopping-cart"></i> ) E-commerce kinds of Application</small>');
+			
+		$xshop_m = $this->app->top_menu->addMenu($this->component_name);
+		$xshop_m->addItem(array('Dashboard','icon'=>'gauge-1'),'xShop_page_owner_dashboard');
+		$xshop_m->addItem(array('Category','icon'=>'gauge-1'),'xShop_page_owner_categorygroup');
+		$xshop_m->addItem(array('Product','icon'=>'gauge-1'),'xShop_page_owner_product');
+		$xshop_m->addItem(array('Manufacturer','icon'=>'gauge-1'),'xShop_page_owner_manufacturer');
+		$xshop_m->addItem(array('supplier','icon'=>'gauge-1'),'xShop_page_owner_supplier');
+		$xshop_m->addItem(array('E-Voucher','icon'=>'gauge-1'),'xShop_page_owner_voucher');
+		$xshop_m->addItem(array('Member','icon'=>'gauge-1'),'xShop_page_owner_member');
+		$xshop_m->addItem(array('Order','icon'=>'gauge-1'),'xShop_page_owner_order');
+		$xshop_m->addItem(array('AddBlock','icon'=>'gauge-1'),'xShop_page_owner_addblock');
+		$xshop_m->addItem(array('Configuration','icon'=>'gauge-1'),'xShop_page_owner_configuration');
 
 
 		// $cart['item_id']=1;

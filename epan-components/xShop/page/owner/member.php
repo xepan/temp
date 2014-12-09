@@ -4,11 +4,11 @@ class page_xShop_page_owner_member extends page_xShop_page_owner_main{
 
 	function page_index(){
 
-		$crud=$this->add('CRUD');
+		$crud=$this->app->layout->add('CRUD');
 
 		$members=$this->add('xShop/Model_MemberDetails');
 		if($crud->isEditing('add')){
-			$users_join = $members->join('users','Users_id');
+			$users_join = $members->join('users','users_id');
 			$users_join->addField('username','username');
 			$users_join->addField('email','email');
 			$users_join->addField('is Active','is_active');
@@ -17,7 +17,7 @@ class page_xShop_page_owner_member extends page_xShop_page_owner_main{
 
 		$members->setOrder('id',true);
 		$crud->setModel($members);
-		if($crud->grid){
+		if(!$crud->isEditing()){
 			$crud->grid->add('misc/Export');
 			$crud->grid->addQuickSearch(array('users','email','address','city','mobile_number'));
 			$crud->grid->addPaginator($ipp=50);
@@ -25,5 +25,4 @@ class page_xShop_page_owner_member extends page_xShop_page_owner_main{
 		
 		
 	}
-
 }	

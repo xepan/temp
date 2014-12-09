@@ -9,12 +9,13 @@ class page_xMarketingCampaign_page_owner_mrkt_dtgrb_dtgrb extends page_component
 		$crud = $this->add('CRUD');
 		$crud->setModel('xMarketingCampaign/DataGrabber',null,array('name','site_url','is_active','last_run_time','is_runnable'));
 
-		if($g = $crud->grid){
+		if(!$crud->isEditing()){
+			$g = $crud->grid;
 			$crud->add_button->setIcon('ui-icon-plusthick');
 			$g->addColumn('expander','phrases');
 		}
 
-		$crud->add('Controller_FormBeautifier');
+		// $crud->add('Controller_FormBeautifier');
 
 	}
 
@@ -39,12 +40,12 @@ class page_xMarketingCampaign_page_owner_mrkt_dtgrb_dtgrb extends page_component
 
 		$crud->setModel($phrases ,null,array('subscription_category','name','is_active','last_page_checked_at','emails_count'));
 
-		if($crud->grid){
+		if(!$crud->isEditing()){
 			$crud->grid->addPaginator(10);
 			$crud->add_button->setIcon('ui-icon-plusthick');
 		}
 
-		$crud->add('Controller_FormBeautifier');
+		// $crud->add('Controller_FormBeautifier');
 
 	}
 }
