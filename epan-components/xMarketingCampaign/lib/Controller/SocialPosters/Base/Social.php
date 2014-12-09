@@ -2,6 +2,10 @@
 
 namespace xMarketingCampaign;
 
+// Model Post
+
+// Model Post Activity/Comments
+
 class Controller_SocialPosters_Base_Social extends \AbstractController{
 
 	function login_status(){
