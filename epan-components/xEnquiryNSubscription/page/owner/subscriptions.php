@@ -6,10 +6,14 @@ class page_xEnquiryNSubscription_page_owner_subscriptions extends page_xEnquiryN
 		$this->rename('xEnSubs');
 		parent::init();
 		$this->app->layout->template->trySetHTML('page_title','<i class="fa fa-bullhorn"></i> '.$this->component_name. '<small> Email Data Management </small>');
+	}
+
+	function page_index(){
 		$tabs= $this->app->layout->add('Tabs');
 
 		$subscription_cat_tab = $tabs->addTabURL("./total_categories",'Categories');
 		$subscriptions_tab = $tabs->addTabUrl("./total_subscriptions",'Total Subscriptions');
+
 	}
 
 	function page_total_categories(){
@@ -246,15 +250,29 @@ class page_xEnquiryNSubscription_page_owner_subscriptions extends page_xEnquiryN
 
 	function page_newsletter(){
 
+		$this->app->layout->template->trySetHTML('page_title','<i class="fa fa-bullhorn"></i> '.$this->component_name. '<small> NewsLetters </small>');
+
 		$config_model=$this->add('xEnquiryNSubscription/Model_Config')->tryLoadAny();
 		// Add Top Bar
-		$bv = $this->app->layout->add('View_BackEndView',array('cols_widths'=>array(12)));
-		$bv->addToTopBar('H3')->set('News Letters');
-		$total_newsletter=$this->add('xEnquiryNSubscription/Model_NewsLetter');
-		$total=$total_newsletter->addCondition('created_by','xEnquiryNSubscription')->count()->getOne();
-		$bv->addToTopBar('View')->set('Total xEnquiryNSubscription NewsLetter - '.$total);
-		$op = $bv->addOptionButton($this->api->url('./config'));
-		$crud = $bv->addToColumn(0,'View');
+		// $bv = $this->app->layout->add('View_BackEndView',array('cols_widths'=>array(12)));
+		// $bv->addToTopBar('H3')->set('News Letters');
+		// $total_newsletter=$this->add('xEnquiryNSubscription/Model_NewsLetter');
+		// $total=$total_newsletter->addCondition('created_by','xEnquiryNSubscription')->count()->getOne();
+		// $bv->addToTopBar('View')->set('Total xEnquiryNSubscription NewsLetter - '.$total);
+		// $op = $bv->addOptionButton($this->api->url('./config'));
+		// $crud = $bv->addToColumn(0,'View');
+
+		$bg=$this->app->layout->add('View_BadgeGroup');
+		$v=$bg->add('View_Badge')->set('Total Subscription')->setCount(11)->setCountSwatch('ink');
+
+		$cols = $this->app->layout->add('Columns');
+		$cat_col = $cols->addColumn(4);
+		$news_col = $cols->addColumn(8);
+
+		$newsletter_category_model = $this->add('xEnquiryNSubscription/Model_NewsLetterCategory');
+
+		$cat_crud=$cat_col->add('CRUD');
+		$cat_crud->setModel($newsletter_category_model,array('name'));
 
 		$newsletter_model = $this->add('xEnquiryNSubscription/Model_NewsLetter');
 		$newsletter_model->addExpression('unsend_emails')->set(function($m,$q){
@@ -267,7 +285,7 @@ class page_xEnquiryNSubscription_page_owner_subscriptions extends page_xEnquiryN
 			$newsletter_model->addCondition('created_by','xEnquiryNSubscription');
 		}
 		
-		$newsletter_crud = $this->app->layout->add('CRUD');
+		$newsletter_crud = $news_col->add('CRUD');
 		$newsletter_crud->setModel($newsletter_model,null,array('name','email_subject','unsend_emails','created_by'));
 		// $newsletter_crud->add('Controller_FormBeautifier');
 

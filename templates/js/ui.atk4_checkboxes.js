@@ -19,7 +19,7 @@ $.widget("ui.atk4_checkboxes", {
 		});
 		
 		
-		this.element.find('tbody').selectable({filter: 'tr',stop: function(){ chb.stop.apply(chb,[this]) }}).css({cursor:'crosshair'});
+		this.element.find('tbody').selectable({filter: 'td',stop: function(){ chb.stop.apply(chb,[this]) }}).css({cursor:'crosshair'});
 		this.element.find('input[type=checkbox]')
 		.each(function(){
 			var o=$(this);
