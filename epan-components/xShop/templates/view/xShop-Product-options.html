@@ -223,7 +223,7 @@ show: function (){
 $.ajax({
 url: 'index.php?page=xShop_page_getproducttype',
 type: 'GET',
-data: {},
+data: { },
 success: function (data) {
 $('#xShop-producttype-root').html(data);
 $('#xShop-producttype-root').val($(current_selected_component).attr('xshop_producttype')?$(current_selected_component).attr('xshop_producttype'):0);
@@ -232,7 +232,7 @@ $('#xShop-producttype-root').val($(current_selected_component).attr('xshop_produ
 $.ajax({
 url: 'index.php?page=xEnquiryNSubscription_page_getforms',
 type: 'GET',
-data: {},
+data: { },
 success: function ( data ){
 $('#xshop_product_enquiry_form_no').html(data);
 }
@@ -240,7 +240,7 @@ $('#xshop_product_enquiry_form_no').html(data);
 $.ajax({
 url: 'index.php?page=xShop_page_getcategories',
 type: 'GET',
-data: {},
+data: { },
 success: function (data) {
 $('#xshop-product-categorygroup_{$_id}').html(data);
 $('#xshop-product-categorygroup_{$_id}').val($(current_selected_component).attr('xshop_product_categorygroup_id')?$(current_selected_component).attr('xshop_product_categorygroup_id'):0);

@@ -73,15 +73,24 @@ class Plugins_ImplementIntelligence extends \componentBase\Plugin {
 		
 		// echo "</pre>";
 
-  		$l=$this->api->locate('addons',__NAMESPACE__, 'location');
-		$this->api->pathfinder->addLocation(
-			$this->api->locate('addons',__NAMESPACE__),
-			array(
-		  		'template'=>'templates',
-		  		'css'=>'templates/css',
-		  		'js'=>'templates/js'
-				)
-			)->setParent($l);
+  		$this->app->pathfinder->base_location->addRelativeLocation(
+		    'epan-components/'.__NAMESPACE__, array(
+		        'php'=>'lib',
+		        'template'=>'templates',
+		        'css'=>'templates/css',
+		        'js'=>'templates/js',
+		    )
+		);
+		
+  // 		$l=$this->api->locate('addons',__NAMESPACE__, 'location');
+		// $this->api->pathfinder->addLocation(
+		// 	$this->api->locate('addons',__NAMESPACE__),
+		// 	array(
+		//   		'template'=>'templates',
+		//   		'css'=>'templates/css',
+		//   		'js'=>'templates/js'
+		// 		)
+		// 	)->setParent($l);
 		$this->js(true)->_load('jquery.inview')->_load('jquery.expander.min')->_load('aitrack')->univ()->initaitrack();
 
 		include_once (getcwd().'/lib/phpQuery.php');

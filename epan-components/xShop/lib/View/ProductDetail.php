@@ -47,14 +47,23 @@ class View_ProductDetail extends \View{
 	}
 
 	function defaultTemplate(){
-		$l=$this->api->locate('addons',__NAMESPACE__, 'location');
-		$this->api->pathfinder->addLocation(
-			$this->api->locate('addons',__NAMESPACE__),
-			array(
-		  		'template'=>'templates',
-		  		'css'=>'templates/css'
-				)
-			)->setParent($l);
+		$this->app->pathfinder->base_location->addRelativeLocation(
+		    'epan-components/'.__NAMESPACE__, array(
+		        'php'=>'lib',
+		        'template'=>'templates',
+		        'css'=>'templates/css',
+		        'js'=>'templates/js',
+		    )
+		);
+		
+		// $l=$this->api->locate('addons',__NAMESPACE__, 'location');
+		// $this->api->pathfinder->addLocation(
+		// 	$this->api->locate('addons',__NAMESPACE__),
+		// 	array(
+		//   		'template'=>'templates',
+		//   		'css'=>'templates/css'
+		// 		)
+		// 	)->setParent($l);
 		return array('view/xShop-productdetailview');
 	}
 	

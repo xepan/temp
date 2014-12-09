@@ -57,7 +57,7 @@ var {$component_type}_options = {
 		$.ajax({
 			url: 'index.php?page=xEnquiryNSubscription_page_getforms',
 			type: 'GET',
-			data: {},
+			data: { },
 			success: function(data){
 				$('#xCustomeForm_layout_{$id}').html(data);
 				console.log($(current_selected_component).attr('data-options'));

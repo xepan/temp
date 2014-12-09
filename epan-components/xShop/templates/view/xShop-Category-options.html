@@ -89,8 +89,6 @@ $('#xshop_category_url_page_{$id}').change(function(event){
 });
 
 $('#xshop-category-theme-color').change(function(){
-			// $(current_selected_component).css('bakcground-color', '#'+ $(this).val());
-	// $('body').append($("<link rel='stylesheet' href='{template}css/sky-mega-menu-theme.css{/}' type='text/css' media='screen' />"));
 	$.ajax({
 		url: "index.php/?page=xShop/page/categorytheme",
 		data: null,
@@ -107,7 +105,7 @@ var {$component_type}_options = {
 		$.ajax({
 				url: 'index.php?page=xShop_page_getcategories',
 				type: 'GET',
-				data: {},
+				data: { },
 				success: function (data) {
 					$('#xshop_categorygroup_{$_id}').html(data);
 					$('#xshop_categorygroup_{$_id}').val($(current_selected_component).attr('xshop_categorygroup_id')?$(current_selected_component).attr('xshop_categorygroup_id'):0);
