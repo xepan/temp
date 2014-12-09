@@ -27,6 +27,7 @@ class Model_SubscriptionCategoryAssociation extends \Model_Table {
 			return $m->refSQL('subscriber_id')->fieldQuery('from_app');
 		})->sortable(true);
 
+
 		$this->addHook('beforeSave',$this);
 
 		// $this->add('dynamic_model/Controller_AutoCreator');

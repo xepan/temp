@@ -6,7 +6,7 @@ class page_xMarketingCampaign_page_owner_mrkt_dtgrb_dtgrb extends page_component
 	function page_index(){
 		// parent::init();
 			
-		$crud = $this->add('CRUD');
+		$crud = $this->app->layout->add('CRUD');
 		$crud->setModel('xMarketingCampaign/DataGrabber',null,array('name','site_url','is_active','last_run_time','is_runnable'));
 
 		if(!$crud->isEditing()){

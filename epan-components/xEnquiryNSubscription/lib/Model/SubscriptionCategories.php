@@ -27,7 +27,7 @@ class Model_SubscriptionCategories extends \Model_Table {
 			return $mq->count();
 			
 			// return $m->refSQL('xEnquiryNSubscription/Model_SubscriptionCategoryAssociation')->count();
-		})->type('int')->sortable(true);
+		})->type('int')->sortable(true)->caption('Total Assos Emails');
 		
 		$this->addHook('beforeSave',$this);
 		$this->addHook('afterInsert',$this);
