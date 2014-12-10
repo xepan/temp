@@ -312,7 +312,11 @@ class page_xEnquiryNSubscription_page_owner_subscriptions extends page_xEnquiryN
 		$config_model=$this->add('xEnquiryNSubscription/Model_Config')->tryLoadAny();
 
 		$bg=$this->app->layout->add('View_BadgeGroup');
-		$v=$bg->add('View_Badge')->set('Total Subscription')->setCount(11)->setCountSwatch('ink');
+		$data=$this->add('xEnquiryNSubscription/Model_NewsLetter')->count()->getOne();
+		$v=$bg->add('View_Badge')->set('Total NewsLetters')->setCount($data)->setCountSwatch('ink');
+
+		$data=$this->add('xEnquiryNSubscription/Model_NewsLetter')->addCondition('created_by','xEnquiryNSubscription')->count()->getOne();
+		$v=$bg->add('View_Badge')->set('By This App')->setCount($data)->setCountSwatch('ink');
 
 		$cols = $this->app->layout->add('Columns');
 		$cat_col = $cols->addColumn(3);

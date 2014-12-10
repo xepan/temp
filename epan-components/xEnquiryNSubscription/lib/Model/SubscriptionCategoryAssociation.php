@@ -18,10 +18,10 @@ class Model_SubscriptionCategoryAssociation extends \Model_Table {
 		$f=$this->addField('last_updated_on')->type('datetime')->defaultValue(date('Y-m-d H:i:s'))->group('a~4')->sortable(true);
 		$f->icon='fa fa-calander~blue';
 		
-		$f=$this->addField('send_news_letters')->type('boolean')->defaultValue(true)->group('a~4');
+		$f=$this->addField('send_news_letters')->type('boolean')->defaultValue(true)->group('a~4')->sortable(true);
 		$f->icon='fa fa-exclamation~blue';
 
-		$this->addField('unsubscribed_on')->type('datetime')->defaultValue(null);
+		$this->addField('unsubscribed_on')->type('datetime')->defaultValue(null)->sortable(true);
 
 		$this->addExpression('from_app')->set(function($m,$q){
 			return $m->refSQL('subscriber_id')->fieldQuery('from_app');
