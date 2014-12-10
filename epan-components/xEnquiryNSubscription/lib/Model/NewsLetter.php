@@ -35,14 +35,14 @@ class Model_NewsLetter extends \Model_Table {
 		if($this['matter']=='<p></p>')
 			throw $this->exception('Matter is mandatory field','ValidityCheck')->setField('matter');
 	}
+
 	function beforeDelete(){
 		$jobs=$this->ref('xEnquiryNSubscription/EmailJobs');
 		foreach($jobs as $junk){
 			$jobs->delete();
 		}
-
+		
 		$this->api->event('xenq_n_subs_newletter_before_delete',$this);
-
 	}
 
 }
