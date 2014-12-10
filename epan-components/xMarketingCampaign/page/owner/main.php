@@ -8,6 +8,7 @@ class page_xMarketingCampaign_page_owner_main extends page_componentBase_page_ow
 		$this->app->layout->template->trySetHTML('page_title','<i class="fa fa-slideshare"></i> '.$this->component_name. '<small> Email & Social Campaign Manager</small>');
 		
 		$xmrkt_cmg_m=$this->app->top_menu->addMenu($this->component_name);
+
 		$xmrkt_cmg_m->addItem(array('Dashboard','icon'=>'gauge-1'),'xMarketingCampaign_page_owner_dashboard');
 		$xmrkt_cmg_m->addItem(array('Manage Contacts','icon'=>'gauge-1'),'xMarketingCampaign_page_owner_emailcontacts');
 		$xmrkt_cmg_m->addItem(array('Data Grabber','icon'=>'gauge-1'),'xMarketingCampaign_page_owner_mrkt_dtgrb_dtgrb');
@@ -19,6 +20,7 @@ class page_xMarketingCampaign_page_owner_main extends page_componentBase_page_ow
 
 		$exec_m = $this->app->top_menu->addMenu('Executors');
 		$exec_m->addItem(array('Start Grabbing Data','icon'=>'gauge-1'),'xMarketingCampaign_page_owner_mrkt_dtgrb_exec');
+		$exec_m->addItem(array('Start Sending Mass Email','icon'=>'gauge-1'),'xEnquiryNSubscription_page_emailexec');
 
 	}
  

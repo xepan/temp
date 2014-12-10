@@ -267,6 +267,9 @@ class Frontend extends ApiFrontend{
 		}
 	}
 
+	function event($event_hook, &$param){
+		$this->exec_plugins($event_hook,$param);
+	}
 
 	function exec_plugins( $event_hook, &$param ) {
 		if ( !is_array( $param ) )

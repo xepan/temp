@@ -303,6 +303,13 @@ class page_xEnquiryNSubscription_page_owner_subscriptions extends page_xEnquiryN
 		$preview_vp = $this->add('VirtualPage');
 		$preview_vp->set(function($p){
 			$m=$p->add('xEnquiryNSubscription/Model_NewsLetter')->load($_GET['newsletter_id']);
+			try{
+
+			$p->add('View')->set('Created '. $this->add('xDate')->diff(Carbon::now(),$m['created_at']) .', Last Modified '. $this->add('xDate')->diff(Carbon::now(),$m['updated_at']) )->addClass('atk-size-micro pull-right')->setStyle('color','#555');
+			}catch(Exception $e){
+				echo $e->getMessage();
+			}
+			
 			$p->add('HR');
 			$p->add('View')->setHTML($m['matter']);
 		});
@@ -330,6 +337,7 @@ class page_xEnquiryNSubscription_page_owner_subscriptions extends page_xEnquiryN
 
 		if(!$cat_crud->isEditing()){
 			$g=$cat_crud->grid;
+			$g->add_sno();
 			$g->addMethod('format_filternewsletter',function($g,$f)use($news_col){
 				$g->current_row_html[$f]='<a href="javascript:void(0)" onclick="'. $news_col->js()->reload(array('category_id'=>$g->model->id)) .'">'.$g->current_row[$f].'</a>';
 			});
@@ -370,6 +378,7 @@ class page_xEnquiryNSubscription_page_owner_subscriptions extends page_xEnquiryN
 
 		if(!$newsletter_crud->isEditing()){
 			$g=$newsletter_crud->grid;
+			$g->add_sno();
 
 			$g->removeColumn('email_subject');
 

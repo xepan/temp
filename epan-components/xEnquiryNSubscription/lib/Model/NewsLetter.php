@@ -25,8 +25,11 @@ class Model_NewsLetter extends \Model_Table {
 		$this->addHook('beforeSave',$this);
 		$this->addHook('beforeDelete',$this);
 
-		$this->addField('created_at')->type('datetime')->defaultValue(date('Y-m-d H:i:s'));
+		$this->addField('created_at')->type('datetime')->defaultValue(date('Y-m-d H:i:s'))->system(true);
+		$this->addField('updated_at')->type('datetime')->defaultValue(date('Y-m-d H:i:s'))->system(true);
 		$this->addField('created_by')->system(true)->defaultValue('xEnquiryNSubscription')->sortable(true);
+
+		$this->setOrder('created_at','desc');
 
 		$this->add('dynamic_model/Controller_AutoCreator');
 	}
@@ -34,6 +37,9 @@ class Model_NewsLetter extends \Model_Table {
 	function beforeSave(){
 		if($this['matter']=='<p></p>')
 			throw $this->exception('Matter is mandatory field','ValidityCheck')->setField('matter');
+
+		$this['updated_at'] = date('Y-m-d H:i:s');
+
 	}
 
 	function beforeDelete(){
