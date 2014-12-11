@@ -169,4 +169,78 @@ class page_xMarketingCampaign_page_owner_socialcontents extends page_xMarketingC
 		}
 	
 	}
+
+	function page_post(){
+
+		$this->api->stickyGET('xMarketingCampaign_SocialPosts_id');
+		$post_m = $this->add('xMarketingCampaign/Model_SocialPost')->load($_GET['xMarketingCampaign_SocialPosts_id']);
+
+		$v= $this->add('View')->addClass('panel panel-default');
+		$v->setStyle('padding','20px');
+
+		$btn_set = $v->add('ButtonSet');
+
+		$objects = scandir($plug_path = getcwd().DS.'epan-components'.DS.'xMarketingCampaign'.DS.'lib'.DS.'Controller'.DS.'SocialPosters');
+    	foreach ($objects as $object) {
+    		if ($object != "." && $object != "..") {
+        		if (filetype($plug_path.DS.$object) != "dir"){
+        			$object = str_replace(".php", "", $object);
+        			$btn = $btn_set->addButton($object);
+        			if($btn->isClicked()){
+        				$btn->js()->univ()->frameURL('Post on '. $object, $this->api->url('./single',array('social'=>$object,'socialpost_id'=>$_GET['xMarketingCampaign_SocialPosts_id'])))->execute();
+        			}
+        		}
+    		}
+    	}
+
+    	$grid= $v->add('Grid');
+    	$postings_m = $this->add('xMarketingCampaign/Model_SocialPosting');
+    	$postings_m->addCondition('post_id',$_GET['xMarketingCampaign_SocialPosts_id']);
+    	$postings_m->setOrder('posted_on','desc');
+    	$grid->setModel($postings_m);
+
+	}
+
+	function page_post_single(){
+		$this->api->stickyGET('social');
+		$this->api->stickyGET('socialpost_id');
+
+		$object =$_GET['social'];
+		$social_cont = $this->add('xMarketingCampaign/Controller_SocialPosters_'.$object);
+
+		$config = $this->add('xMarketingCampaign/Model_'.$object.'Config');
+
+		$crud= $this->add('CRUD',array('allow_add'=>false,'allow_del'=>false,'allow_edit'=>false));
+		$crud->setModel($config);
+
+		$users_crud = $crud->addRef('xMarketingCampaign/SocialUsers',array('label'=>'Users','view_options'=>array('allow_add'=>false,'allow_del'=>false,'allow_edit'=>false),'grid_fields'=>array('name')));
+
+		if($users_crud and !$users_crud->isEditing()){
+			$g= $users_crud->grid;
+			$g->addColumn('Button','status_update_only');
+			if($crud->model['post_in_groups']){
+				$g->addColumn('Button','status_with_groups');
+			}
+		}
+
+		$do_post=false;
+		$in_groups=false;
+		$user_id=null;
+		if($user_id = $_GET['status_with_groups']){
+			$do_post=true;
+			$in_groups=true;
+		}
+
+		if($_GET['status_update_only'] OR $do_post){
+			if(!$user_id) $user_id = $_GET['status_update_only'];
+
+				$post = $this->add('xMarketingCampaign/Model_SocialPost')->load($_GET['socialpost_id']);			
+				$user= $this->add('xMarketingCampaign/Model_SocialUsers')->load($user_id);
+			$social_cont->postSingle($user,$post,$in_groups);
+			$this->js()->univ()->successMessage('Posted Sucessfully')->execute();
+		}
+
+
+	}
+
 }		

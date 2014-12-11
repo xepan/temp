@@ -320,7 +320,7 @@ class PathFinder extends AbstractController
         }
 
         if ($throws_exception) {
-            throw $this->exception('File not found')
+            throw $this->exception('File not found'. print_r($attempted_locations,true))
                 ->addMoreInfo('file', $filename)
                 ->addMoreInfo('type', $type)
                 ->addMoreInfo('attempted_locations', $attempted_locations)

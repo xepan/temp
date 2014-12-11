@@ -327,4 +327,9 @@ class Frontend extends ApiFrontend{
 		return file_get_contents('version');
 	}
 
+
+	function addSharedLocations($path_finder, $base_directory){
+		
+	}
+
 }

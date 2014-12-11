@@ -25,10 +25,10 @@ frameURL resize bug
 
 Form Field Dropdown js change event not working 
 
+Shared location is not in php open base path ... Pathfinder line 190 and 245 commented by copying in own lib then Logger not found. Had to change original file ????
+--> can it be -- if api has method addshared location do not add shared locations in pathfinder and check api parameter for sandboxes to avoid another sandbox error 
 
-
-
-
+If extended class is not ok .. the error shown is Class is not defined in file for class that is trying to extend
 
 
 =============== TODO

@@ -51,17 +51,34 @@ class Model_SocialUsers extends \Model_Table{
 
 // Model Post
 
-class Model_SocialPosting extends \SQL_Model{
+class Model_SocialPosting extends \Model_Table{
 	public $table="xMarketingCampaign_SocialPostings";
 
 	function init(){
 		parent::init();
 
+		$this->addExpression('social_app')->set(function($m,$q){
+			$config = $m->add('xMarketingCampaign/Model_SocialConfig',array('table_alais'=>'tmp'));
+			$user_j = $config->join('xMarketingCampaign_SocialUsers.config_id');
+			$user_j->addField('user_j_id','id');
+
+			$config->addCondition('user_j_id',$q->getField('user_id'));
+
+			return $config->fieldQuery('social_app');
+
+		});
+
 		$this->hasOne('xMarketingCampaign/Model_SocialUsers','user_id');
 		$this->hasOne('xMarketingCampaign/SocialPost','post_id');
+		
+		$this->hasOne('xMarketingCampaign/Campaign','campaign_id');
+
+		$this->addField('post_type')->mandatory(true); // Status Update / Share a link / Group Post etc.
 
 		$this->addField('postid_returned'); // Rturned by social site 
 		$this->addField('posted_on')->type('datetime')->defaultValue(date('Y-m-d H:i:s'));
+		$this->addField('group_id');
+		$this->addField('group_name');
 
 		$this->addField('likes'); // Change Caption in subsequent extended social controller, if nesecorry
 		$this->addField('share'); // Change Caption in subsequent extended social controller, if nesecorry
@@ -69,6 +86,22 @@ class Model_SocialPosting extends \SQL_Model{
 		$this->hasMany('xMarketingCampaign/Activity','posting_id');
 
 		$this->add('dynamic_model/Controller_AutoCreator');
+	}
+
+	function create($user_id, $social_post_id, $postid_returned, $post_type,$group_id=0,$group_name="", $campaign_id=0){
+		if($this->loaded()) $this->unload();
+
+		$this['post_type'] = $post_type;
+		$this['user_id'] = $user_id;
+		$this['post_id'] = $social_post_id;
+		$this['postid_returned'] = $postid_returned;
+		$this['campaign_id'] = $campaign_id;
+		$this['group_id'] = $group_id;
+		$this['group_name'] = $group_name;
+		$this->save();
+
+		return $this;
+
 	}
 }
 
@@ -106,7 +139,12 @@ class Controller_SocialPosters_Base_Social extends \AbstractController{
 		return array('title','image','255');
 	}
 
-	function post($params){
+	function postSingle($user_model,$params,$post_in_groups=true, &$groups_posted){
+		throw $this->exception('Define in extnding class');
+	}
+
+	function postAll($params){
+		throw $this->exception('Define in extnding class');
 		
 	}
 
