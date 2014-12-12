@@ -4,17 +4,17 @@ class page_xShop_page_owner_product extends page_xShop_page_owner_main{
 
 	function init(){
 		parent::init();
-				
-		$bv = $this->app->layout->add('View_BackEndView',array('cols_widths'=>array(12)));
-		$product_model = $this->add('xShop/Model_Product');
-		$bv->addToTopBar('View')->setHTML('Total Product - '.$product_model->getAllProductCount())->addClass('label label-primary');
-		$bv->addToTopBar('View')->setHTML('Publish Product - '.$product_model->getPublishCount())->addClass('label label-success');
-		$bv->addToTopBar('View')->setHTML('Unpublish Product - '.$this->add('xShop/Model_Product')->getUnpublishCount())->addClass('label label-warning');
 		
-		$col=$this->app->layout->add('Columns');
-		$p_col=$col->addColumn(12);
-		$model = $p_col->add('xShop/Model_Product');
-		$crud=$p_col->add('CRUD');
+
+		$product_model = $this->add('xShop/Model_Product');
+		
+		$bg=$this->app->layout->add('View_BadgeGroup');
+		$v=$bg->add('View_Badge')->set(' Total Product ')->setCount($product_model->getAllProductCount())->setCountSwatch('ink');
+		$v=$bg->add('View_Badge')->set(' Publish Product ')->setCount($product_model->getPublishCount())->setCountSwatch('green');
+		$v=$bg->add('View_Badge')->set(' Unpublish Product ')->setCount($this->add('xShop/Model_Product')->getUnpublishCount())->setCountSwatch('red');
+		
+		$model = $this->add('xShop/Model_Product');
+		$crud=$this->app->layout->add('CRUD');
 		$crud->setModel($model,array('supplier_id','manufacturer_id','name','sku','is_publish','short_description','description','original_price','sale_price','rank_weight','created_at','expiry_date','allow_attachment','allow_enquiry','allow_saleable','show_offer','show_detail','show_price','show_manufacturer_detail','show_supplier_detail','new','feature','latest','mostviewed','enquiry_send_to_self','enquiry_send_to_supplier','enquiry_send_to_manufacturer','product_enquiry_auto_reply','allow_comments','comment_api','add_custom_button','custom_button_text','custom_button_url','meta_title','meta_description','tags'),array('name','sku','sale_price'));
 		// $crud->add('Controller_FormBeautifier',array('params'=>array('f/addClass'=>'stacked')));
 		// if($crud->isEditing()){

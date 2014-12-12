@@ -9,6 +9,7 @@ class page_xMarketingCampaign_page_owner_socialcontents extends page_xMarketingC
 		$this->rename('y');
 		parent::init();
 
+		$total_posts_vp = $this->total_posts_vp();
 	
 		$preview_vp = $this->add('VirtualPage');
 		$preview_vp->set(function($p){
@@ -115,7 +116,7 @@ class page_xMarketingCampaign_page_owner_socialcontents extends page_xMarketingC
 
 		$social_crud = $social_col->add('CRUD');
 		
-		$cols_array = array('category','name','is_active');
+		$cols_array = array('category','name','is_active','total_posts','total_likes','total_share','total_comments');
 
 		if($_GET['sort_by']){
 			$this->api->stickyGET('sort_by');
@@ -158,6 +159,11 @@ class page_xMarketingCampaign_page_owner_socialcontents extends page_xMarketingC
 			$g->addClass('social_grid');
 			$g->js('reload')->reload();
 
+			$g->addMethod('format_total_posts',function($g,$f)use($total_posts_vp){
+				$g->current_row_html[$f]= '<a href="javascript:void(0)" onclick="'.$g->js()->univ()->frameURL('Total Posts Of  "'.$g->model['name'].'"',$this->api->url($total_posts_vp->getURL(),array('socialpost_id'=>$g->model->id))).'">'.$g->current_row[$f].'</a>';
+			});
+			$g->addFormatter('total_posts','total_posts');
+
 			$g->addMethod('format_preview',function($g,$f)use($preview_vp){
 				$g->current_row_html[$f]='<a href="javascript:void(0)" onclick="'. $g->js()->univ()->frameURL($g->model['name'],$this->api->url($preview_vp->getURL(),array('socialpost_id'=>$g->model->id))) .'">'.$g->current_row[$f].'</a>';
 			});
@@ -168,6 +174,63 @@ class page_xMarketingCampaign_page_owner_socialcontents extends page_xMarketingC
 			
 		}
 	
+	}
+
+	function total_posts_vp(){
+		$total_posts_vp = $this->add('VirtualPage');
+		$total_posts_vp->set(function($p){
+			$p->api->stickyGET('socialpost_id');
+
+			$p->add('xMarketingCampaign/Controller_SocialPosters_Base_Social'); // Need it just for Models to be accesed defined in this file
+
+			$crud= $p->add('CRUD',array('allow_add'=>false,'allow_del'=>true,'allow_edit'=>false));
+	    	
+	    	$postings_m = $p->add('xMarketingCampaign/Model_SocialPosting');
+	    	$postings_m->addCondition('post_id',$_GET['socialpost_id']);
+	    	$postings_m->setOrder('posted_on','desc');
+	    	
+	    	$crud->setModel($postings_m,array('social_app','user','campaign','postid_returned','post_type','likes','share','total_comments','posted_on','group_name','is_monitoring','force_monitor'));
+
+	    	$crud->addAction('keep_monitoring',array('toolbar'=>false));
+
+	    	if(!$crud->isEditing()){
+	    		$grid= $crud->grid;
+		    	$grid->addMethod('format_socialIcon',function($g,$f){
+		    		if($g->current_row[$f])
+			    		$g->current_row_html[$f]=$g->add('xMarketingCampaign/Controller_SocialPosters_'.$g->current_row[$f])->icon();
+
+		    	});
+		    	$grid->addFormatter('social_app','socialIcon');
+
+		    	$grid->addMethod('format_profileurl',function($g,$f){
+		    		if(!$g->current_row['social_app']) return;
+		    		if($url=$g->add('xMarketingCampaign/Controller_SocialPosters_'.$g->current_row['social_app'])->profileURL($g->model['user_id'])){
+		    			$g->current_row_html[$f] ="<a href='$url' target='_blank'>".$g->current_row[$f]. "</a>";
+		    		}
+
+		    	});
+		    	$grid->addFormatter('user','profileurl');
+
+		    	$grid->addMethod('format_posturl',function($g,$f){
+		    		if(!$g->current_row['social_app']) return;
+		    		if($url=$g->add('xMarketingCampaign/Controller_SocialPosters_'.$g->current_row['social_app'])->postURL($g->model['postid_returned'])){
+		    			if($g->current_row['post_type']=='Group Post')
+		    				$g->current_row[$f] = $g->current_row[$f] . ' : '. $g->current_row['group_name'];
+		    			$g->current_row_html[$f] ="<a href='$url' target='_blank'>".$g->current_row[$f]. "</a>";
+		    		}
+
+		    	});
+		    	$grid->addFormatter('post_type','posturl');
+
+
+		    	$grid->addPaginator(50);
+		    	$grid->addQuickSearch(array('social_app','user','campaign','group_name'));
+		    	$grid->add_sno();
+		    	$grid->removeColumn('postid_returned');
+		    	$grid->removeColumn('group_name');
+	    	}
+		});
+		return $total_posts_vp;
 	}
 
 	function page_post(){
@@ -193,11 +256,8 @@ class page_xMarketingCampaign_page_owner_socialcontents extends page_xMarketingC
     		}
     	}
 
-    	$grid= $v->add('Grid');
-    	$postings_m = $this->add('xMarketingCampaign/Model_SocialPosting');
-    	$postings_m->addCondition('post_id',$_GET['xMarketingCampaign_SocialPosts_id']);
-    	$postings_m->setOrder('posted_on','desc');
-    	$grid->setModel($postings_m);
+    	
+
 
 	}
 

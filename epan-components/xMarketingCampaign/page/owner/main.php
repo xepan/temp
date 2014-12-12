@@ -20,7 +20,8 @@ class page_xMarketingCampaign_page_owner_main extends page_componentBase_page_ow
 
 		$exec_m = $this->app->top_menu->addMenu('Executors');
 		$exec_m->addItem(array('Start Grabbing Data','icon'=>'gauge-1'),'xMarketingCampaign_page_owner_mrkt_dtgrb_exec');
-		$exec_m->addItem(array('Start Sending Mass Email','icon'=>'gauge-1'),'xEnquiryNSubscription_page_emailexec');
+		$exec_m->addItem(array('Start Sending Mass Email','icon'=>'gauge-1'),'xMarketingCampaign_page_emailexec');
+		$exec_m->addItem(array('Update Social Activities','icon'=>'gauge-1'),'xMarketingCampaign_page_updatesocialactivityexec');
 
 	}
  

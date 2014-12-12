@@ -37,7 +37,7 @@ class Model_SocialUsers extends \Model_Table{
 		$this->hasOne('xMarketingCampaign/SocialConfig','config_id');
 		
 		$this->addField('name');
-		$this->addField('userid');
+		$this->addField('userid'); // Used for profile in case different then api returned userid like facebook
 		$this->addField('userid_returned');
 		$this->addField('access_token')->system(false)->type('text');
 		$this->addField('access_token_secret')->system(false)->type('text');
@@ -66,7 +66,8 @@ class Model_SocialPosting extends \Model_Table{
 
 			return $config->fieldQuery('social_app');
 
-		});
+		})->caption('At');
+
 
 		$this->hasOne('xMarketingCampaign/Model_SocialUsers','user_id');
 		$this->hasOne('xMarketingCampaign/SocialPost','post_id');
@@ -82,10 +83,28 @@ class Model_SocialPosting extends \Model_Table{
 
 		$this->addField('likes'); // Change Caption in subsequent extended social controller, if nesecorry
 		$this->addField('share'); // Change Caption in subsequent extended social controller, if nesecorry
+		$this->addExpression('total_comments')->set(function($m,$q){
+			return $m->refSQL('xMarketingCampaign/Activity')->count();
+		});
+
+		$this->addField('is_monitoring')->type('boolean')->defaultValue(true);
+		$this->addField('force_monitor')->type('boolean')->defaultValue(false)->caption('Keep Monitoring');
 
 		$this->hasMany('xMarketingCampaign/Activity','posting_id');
 
 		$this->add('dynamic_model/Controller_AutoCreator');
+	}
+
+	function keep_monitoring(){
+		if($this['force_monitor']){
+			$this['force_monitor']=false;
+			$this['is_monitoring']=false;
+		}else{
+			$this['force_monitor']=true;
+			$this['is_monitoring']=true;
+		}
+		$this->save();
+		return $this;
 	}
 
 	function create($user_id, $social_post_id, $postid_returned, $post_type,$group_id=0,$group_name="", $campaign_id=0){
@@ -108,7 +127,7 @@ class Model_SocialPosting extends \Model_Table{
 
 // Model Post Activity/Comments
 class Model_Activity extends \SQL_Model{
-	public $tabel = "xMarketingCampaign_SocialPostings_Activities";
+	public $table = "xMarketingCampaign_SocialPostings_Activities";
 
 	function init(){
 		parent::init();
@@ -146,6 +165,22 @@ class Controller_SocialPosters_Base_Social extends \AbstractController{
 	function postAll($params){
 		throw $this->exception('Define in extnding class');
 		
+	}
+
+	function icon(){
+		throw $this->exception('Define in extnding class');
+	}
+
+	function profileURL($user_id){
+		throw $this->exception('Define in extnding class');
+	}
+
+	function postURL($post_id){
+		throw $this->exception('Define in extnding class');
+	}
+
+	function groupURL($group_id){
+		throw $this->exception('Define in extnding class');
 	}
 
 }

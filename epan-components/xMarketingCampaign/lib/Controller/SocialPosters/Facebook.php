@@ -225,6 +225,41 @@ class Controller_SocialPosters_Facebook extends Controller_SocialPosters_Base_So
 	function get_post_fields_using(){
 		return array('title','url','image','255');
 	}
+
+	function icon($only_css_class=false){
+		if($only_css_class) 
+			return "fa fa-facebook";
+		return "<i class='fa fa-facebook'></i>";
+	}
+
+	function profileURL($user_id_pk){
+		$user = $this->add('xMarketingCampaign/Model_SocialUsers')->tryLoad($user_id_pk);
+		if(!$user->loaded()) return false;
+
+
+		return "https://www.facebook.com/profile.php?id=".$user['userid'];
+	}
+
+	function postURL($post_id_returned){
+		$post = $this->add('xMarketingCampaign/Model_SocialPosting')->tryLoadBy('postid_returned',$post_id_returned);
+		if(!$post->loaded()) return false;
+		
+		$user= $post->ref('user_id');
+		if(!$user['userid']) return false;
+		
+		$post_id_returned = explode("_", $post_id_returned);
+		if(count($post_id_returned) !=2) return false;
+		
+		$post_id_returned = $post_id_returned[1];
+
+		return "https://www.facebook.com/permalink.php?story_fbid=".$post_id_returned."&id=".$user['userid'];
+		throw $this->exception('Define in extnding class');
+	}
+
+	function groupURL($group_id){
+		throw $this->exception('Define in extnding class');
+	}
+
 }
 
 
