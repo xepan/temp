@@ -177,8 +177,67 @@ class page_xMarketingCampaign_page_owner_socialcontents extends page_xMarketingC
 	}
 
 	function total_posts_vp(){
+
+		$comments_vp=$this->add('VirtualPage');
+		$comments_vp->set(function($p){
+			$p->add('xMarketingCampaign/Controller_SocialPosters_Base_Social'); // Need it just for Models to be accesed defined in this file
+
+			$p->api->stickyGET('posting_id');
+			
+			$comment_form = $p->add('Form');
+			$crud = $p->add('CRUD',array('allow_edit'=>false,'allow_add'=>false,'allow_del'=>false));
+
+			$comment_form->addClass('stacked');
+			$comment_form->addField('text','comment');
+			$comment_form->addField('hidden','posting_id')->set($_GET['posting_id']);
+			$comment_form->addSubmit('Comment');
+			
+			if($comment_form->isSubmitted()){
+				$posting_model = $p->add('xMarketingCampaign/Model_SocialPosting')->load($comment_form['posting_id']);
+				$cont = $p->add('xMarketingCampaign/Controller_SocialPosters_'.$posting_model['social_app']);
+				$cont->comment($posting_model,$comment_form['comment']);
+				$crud->grid->js(null,array($comment_form->js()->reload(),$comment_form->js()->univ()->successMessage('Commented')))->reload()->execute();
+			}
+
+
+
+
+
+			$activity_m = $p->add('xMarketingCampaign/Model_Activity');
+			$activity_m->addCondition('posting_id',$_GET['posting_id']);
+
+			$activity_m->getElement('name')->caption('Comment');
+			$activity_m->getElement('activity_by')->caption('Comment By');
+			$activity_m->getElement('activity_on')->caption('Comment On');
+
+			$activity_m->setOrder('activity_on','desc');
+
+
+
+			$crud->setModel($activity_m,array('name','activity_by','activity_on','action_allowed'));
+			
+
+
+			if(!$crud->isEditing()){
+				$g= $crud->grid;
+				$g->removeColumn('action_allowed');
+
+				$g->addMethod('format_activity_by',function($g,$f){
+					$id_name = $g->model[$f];
+					$id_name_array=explode("_", $id_name);
+					$id=$id_name_array[0];
+					$name=$id_name_array[1];
+					$g->current_row_html[$f]='<a href="https://www.facebook.com/app_scoped_user_id/'.$id.'" target="_blank">'.$name.'</a>';
+				});
+				$g->addFormatter('activity_by','activity_by');
+
+
+			}
+
+		});
+
 		$total_posts_vp = $this->add('VirtualPage');
-		$total_posts_vp->set(function($p){
+		$total_posts_vp->set(function($p)use($comments_vp){
 			$p->api->stickyGET('socialpost_id');
 
 			$p->add('xMarketingCampaign/Controller_SocialPosters_Base_Social'); // Need it just for Models to be accesed defined in this file
@@ -221,6 +280,17 @@ class page_xMarketingCampaign_page_owner_socialcontents extends page_xMarketingC
 
 		    	});
 		    	$grid->addFormatter('post_type','posturl');
+
+		    	$grid->addMethod('format_total_comments',function($g,$f)use($comments_vp){
+		    		// if(!$g->current_row['social_app']) return;
+		    		// if($url=$g->add('xMarketingCampaign/Controller_SocialPosters_'.$g->current_row['social_app'])->postURL($g->model['postid_returned'])){
+		    			// if($g->current_row['post_type']=='Group Post')
+		    				// $g->current_row[$f] = $g->current_row[$f] . ' : '. $g->current_row['group_name'];
+		    			$g->current_row_html[$f] ='<a href="javascript:void(0)" onclick="'.$g->js()->univ()->frameURL('Comments',$g->api->url($comments_vp->getURL(),array('posting_id'=>$g->model->id))).'">'.$g->current_row[$f]. "</a>";
+		    		// }
+
+		    	});
+		    	$grid->addFormatter('total_comments','total_comments');
 
 
 		    	$grid->addPaginator(50);

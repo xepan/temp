@@ -122,6 +122,17 @@ class Model_SocialPosting extends \Model_Table{
 		return $this;
 
 	}
+
+	function updateLikesCount($count){
+		$this['likes']=$count;
+		$this->save();
+	}
+
+	function updateShareCount($count){
+		$this['share']=$count;
+		$this->save();
+	}
+
 }
 
 
@@ -133,11 +144,13 @@ class Model_Activity extends \SQL_Model{
 		parent::init();
 		$this->hasOne('xMarketingCampaign/Model_SocialPosting','posting_id');
 
+		$this->addField('activityid_returned');
 		$this->addField('activity_type');
 		$this->addField('activity_on')->type('datetime'); // NOT DEFAuLT .. MUst get WHEN actual activity happened from social sites
 
 		$this->addField('activity_by');// Get the user from social site who did it.. might be an id of the user on that social site
-		$this->addField('name')->caption('Activity');
+		$this->addField('name')->caption('Activity')->allowHTML(true);
+		$this->addField('action_allowed'); // Can remove/ can edit etc if done by user itself
 
 		$this->add('dynamic_model/Controller_AutoCreator');		
 	}
@@ -180,6 +193,14 @@ class Controller_SocialPosters_Base_Social extends \AbstractController{
 	}
 
 	function groupURL($group_id){
+		throw $this->exception('Define in extnding class');
+	}
+
+	function updateActivities($posting_model){
+		throw $this->exception('Define in extnding class');
+	}
+
+	function comment($posting_model){
 		throw $this->exception('Define in extnding class');
 	}
 

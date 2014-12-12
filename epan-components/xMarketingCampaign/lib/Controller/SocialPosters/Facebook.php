@@ -236,8 +236,8 @@ class Controller_SocialPosters_Facebook extends Controller_SocialPosters_Base_So
 		$user = $this->add('xMarketingCampaign/Model_SocialUsers')->tryLoad($user_id_pk);
 		if(!$user->loaded()) return false;
 
-
-		return "https://www.facebook.com/profile.php?id=".$user['userid'];
+		return "https://www.facebook.com/app_scoped_user_id/".$user['userid_returned']."/";
+		// return "https://www.facebook.com/profile.php?id=".$user['userid'];
 	}
 
 	function postURL($post_id_returned){
@@ -249,7 +249,7 @@ class Controller_SocialPosters_Facebook extends Controller_SocialPosters_Base_So
 		
 		$post_id_returned = explode("_", $post_id_returned);
 		if(count($post_id_returned) !=2) return false;
-		
+
 		$post_id_returned = $post_id_returned[1];
 
 		return "https://www.facebook.com/permalink.php?story_fbid=".$post_id_returned."&id=".$user['userid'];
@@ -258,6 +258,107 @@ class Controller_SocialPosters_Facebook extends Controller_SocialPosters_Base_So
 
 	function groupURL($group_id){
 		throw $this->exception('Define in extnding class');
+	}
+
+	function updateActivities($posting_model){
+		if(! $posting_model instanceof xMarketingCampaign\Model_SocialPosting and !$posting_model->loaded())
+			throw $this->exception('Posting Model must be a loaded instance of Model_SocialPosting','Growl');
+
+		$user_model = $posting_model->ref('user_id');
+
+		$config_model = $user_model->ref('config_id');
+
+  		$config = array(
+				      'appId' => $config_model['appId'],
+				      'secret' => $config_model['secret'],
+				      'fileUpload' => true, // optional
+				      'allowSignedRequest' => false, // optional, but should be set to false for non-canvas apps
+				  );
+
+  		$post_content['access_token'] = $user_model['access_token'];
+
+  		$this->fb = $facebook = new \Facebook($config);
+		$this->fb->setFileUploadSupport(true);
+
+		$post_id_returned = explode("_", $posting_model['postid_returned']);
+		if(count($post_id_returned) !=2) return false;
+
+		$post_id_returned = $post_id_returned[1];
+
+
+  		$post_content['summary'] = 'true';
+
+  		// likes
+		$likes = $this->fb->api('/'. $post_id_returned .'/likes', 'GET',
+			  								$post_content
+		                                 );
+
+		$posting_model->updateLikesCount($likes['summary']['total_count']);
+
+		// shares
+		$share = $this->fb->api('/'. $post_id_returned .'/share', 'GET',
+			  								$post_content
+		                                 );
+
+		$posting_model->updateShareCount($share['summary']['total_count']);
+
+		// comments
+
+		$comments = $this->fb->api('/'. $post_id_returned .'/comments', 'GET',
+			  								$post_content
+		                                 );
+
+		foreach ($comments['data'] as $comment) {
+			$activity = $this->add('xMarketingCampaign/Model_Activity');
+			$activity->addCondition('posting_id',$posting_model->id);
+			$activity->addCondition('activityid_returned',$comment['id']);
+			$activity->tryLoadAny();
+
+			$activity['activity_type']='Comment';
+			$activity['activity_on']=$comment['created_time'];
+			$activity['activity_by']=$comment['from']['id'].'_'.$comment['from']['name'];
+			$activity['name']=$comment['message'];
+			if($comment['like_count']) $activity['name'] = $activity['name'] . '<br><i class="fa fa-thumbs-up">'.$comment['like_count'].'</i>';
+			$activity['action_allowed']=$comment['can_remove']?'can_remove':'';
+			$activity->save();
+
+		}
+
+	}
+
+	function comment($posting_model,$msg){
+		if(! $posting_model instanceof xMarketingCampaign\Model_SocialPosting and !$posting_model->loaded())
+			throw $this->exception('Posting Model must be a loaded instance of Model_SocialPosting','Growl');
+
+		$user_model = $posting_model->ref('user_id');
+
+		$config_model = $user_model->ref('config_id');
+
+  		$config = array(
+				      'appId' => $config_model['appId'],
+				      'secret' => $config_model['secret'],
+				      'fileUpload' => true, // optional
+				      'allowSignedRequest' => false, // optional, but should be set to false for non-canvas apps
+				  );
+
+  		$post_content['access_token'] = $user_model['access_token'];
+
+  		$this->fb = $facebook = new \Facebook($config);
+		$this->fb->setFileUploadSupport(true);
+
+		$post_id_returned = explode("_", $posting_model['postid_returned']);
+		if(count($post_id_returned) !=2) return false;
+
+		$post_id_returned = $post_id_returned[1];
+
+
+  		$post_content['message'] = $msg;
+
+  		// response
+		$response = $this->fb->api('/'. $post_id_returned .'/comments', 'POST',
+			  								$post_content
+		                                 );
+		$this->updateActivities($posting_model);
 	}
 
 }
