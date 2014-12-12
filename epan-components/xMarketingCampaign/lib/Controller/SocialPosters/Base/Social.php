@@ -11,8 +11,8 @@ class Model_SocialConfig extends \Model_Table{
 		$this->addField('social_app')->mandatory(true)->system(true); // Must Be Set In Extended class
 
 		$this->addField('name');
-		$this->addField('appId');
-		$this->addField('secret');
+		$this->addField('appId')->type('text');
+		$this->addField('secret')->type('text');
 		$this->addField('post_in_groups')->type('boolean')->defaultValue(true);
 		$this->addField('filter_repeated_posts')->type("boolean")->defaultValue(true);
 
@@ -171,7 +171,7 @@ class Controller_SocialPosters_Base_Social extends \AbstractController{
 		return array('title','image','255');
 	}
 
-	function postSingle($user_model,$params,$post_in_groups=true, &$groups_posted){
+	function postSingle($user_model,$params,$post_in_groups=true, &$groups_posted=array(),$under_campaign_id=0){
 		throw $this->exception('Define in extnding class');
 	}
 
@@ -180,7 +180,7 @@ class Controller_SocialPosters_Base_Social extends \AbstractController{
 		
 	}
 
-	function icon(){
+	function icon($only_css_class=false){
 		throw $this->exception('Define in extnding class');
 	}
 
