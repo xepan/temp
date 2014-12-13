@@ -150,7 +150,7 @@ class Model_Activity extends \SQL_Model{
 
 		$this->addField('activity_by');// Get the user from social site who did it.. might be an id of the user on that social site
 		$this->addField('name')->caption('Activity')->allowHTML(true);
-		$this->addField('action_allowed'); // Can remove/ can edit etc if done by user itself
+		$this->addField('action_allowed')->defaultValue(''); // Can remove/ can edit etc if done by user itself
 
 		$this->add('dynamic_model/Controller_AutoCreator');		
 	}

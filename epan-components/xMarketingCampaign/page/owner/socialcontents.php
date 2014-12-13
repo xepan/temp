@@ -223,11 +223,10 @@ class page_xMarketingCampaign_page_owner_socialcontents extends page_xMarketingC
 				$g->removeColumn('action_allowed');
 
 				$g->addMethod('format_activity_by',function($g,$f){
-					$id_name = $g->model[$f];
-					$id_name_array=explode("_", $id_name);
-					$id=$id_name_array[0];
-					$name=$id_name_array[1];
-					$g->current_row_html[$f]='<a href="https://www.facebook.com/app_scoped_user_id/'.$id.'" target="_blank">'.$name.'</a>';
+					$posting = $g->model->ref('posting_id');
+					$social_app_cont = $g->add('xMarketingCampaign/Controller_SocialPosters_'.$posting['social_app']);
+					$profile_detail = $social_app_cont->profileURL(0,$g->model[$f]);
+					$g->current_row_html[$f]='<a href="'.$profile_detail['url'].'" target="_blank">'.$profile_detail['name'].'</a>';
 				});
 				$g->addFormatter('activity_by','activity_by');
 
@@ -264,6 +263,7 @@ class page_xMarketingCampaign_page_owner_socialcontents extends page_xMarketingC
 		    	$grid->addMethod('format_profileurl',function($g,$f){
 		    		if(!$g->current_row['social_app']) return;
 		    		if($url=$g->add('xMarketingCampaign/Controller_SocialPosters_'.$g->current_row['social_app'])->profileURL($g->model['user_id'])){
+		    			$url=$url['url'];
 		    			$g->current_row_html[$f] ="<a href='$url' target='_blank'>".$g->current_row[$f]. "</a>";
 		    		}
 

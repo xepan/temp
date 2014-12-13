@@ -232,11 +232,19 @@ class Controller_SocialPosters_Facebook extends Controller_SocialPosters_Base_So
 		return "<i class='fa fa-facebook'></i>";
 	}
 
-	function profileURL($user_id_pk){
-		$user = $this->add('xMarketingCampaign/Model_SocialUsers')->tryLoad($user_id_pk);
-		if(!$user->loaded()) return false;
+	function profileURL($user_id_pk, $other_user_id=false){
+		if(!$other_user_id){
+			$user = $this->add('xMarketingCampaign/Model_SocialUsers')->tryLoad($user_id_pk);
+			if(!$user->loaded()) return false;
+			$other_user_id = $user['userid_returned'];
+			$name=$user['name'];
+		}else{
+			$id_name_array=explode("_", $other_user_id);
+			$other_user_id=$id_name_array[0];
+			$name=$id_name_array[1];
+		}
 
-		return "https://www.facebook.com/app_scoped_user_id/".$user['userid_returned']."/";
+		return array('url'=>"https://www.facebook.com/app_scoped_user_id/". $other_user_id ."/",'name'=>$name);
 		// return "https://www.facebook.com/profile.php?id=".$user['userid'];
 	}
 
