@@ -333,7 +333,7 @@ class page_xEnquiryNSubscription_page_owner_subscriptions extends page_xEnquiryN
 
 		$cat_crud=$cat_col->add('CRUD');
 
-		$cat_crud->setModel($newsletter_category_model,array('name'));
+		$cat_crud->setModel($newsletter_category_model,array('name','posts'));
 
 		if(!$cat_crud->isEditing()){
 			$g=$cat_crud->grid;

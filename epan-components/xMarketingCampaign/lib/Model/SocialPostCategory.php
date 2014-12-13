@@ -14,6 +14,10 @@ class Model_SocialPostCategory extends \Model_Table {
 		$f=$this->addField('name')->mandatory(true)->group('a1~6~Social Post Category')->sortable(true)->display(array('grid'=>'shorttext'));
 		$f->icon='fa fa-adn~red';
 
+		$this->addExpression('posts')->set(function($m,$q){
+			return $m->refSQL('xMarketingCampaign/SocialPost')->count();
+		});
+
 		$this->hasMany('xMarketingCampaign/SocialPost','category_id');
 
 		$this->addHook('beforeDelete',$this);
