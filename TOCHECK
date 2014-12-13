@@ -31,6 +31,11 @@ Shared location is not in php open base path ... Pathfinder line 190 and 245 com
 If extended class is not ok .. the error shown is Class is not defined in file for class that is trying to extend
 
 
+if crud grid is order set then on new page crud not having the same model/element gives error child element not found element ""
+
+grid selectable selects current onl;y on click and revoes other.. what if we want to toggle current row only not effecting others.. must be some option
+
+
 =============== TODO
 xEnquiryNSubs .. is Ok count and unsubscribe or delete all ! is_ok .. how to ??
 

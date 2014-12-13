@@ -2,8 +2,8 @@
 
 class page_xMarketingCampaign_page_owner_campaigns extends page_xMarketingCampaign_page_owner_main{
 
-	function init(){
-		parent::init();
+	function page_index(){
+		// parent::init();
 
 		$bg=$this->app->layout->add('View_BadgeGroup');
 		$data=$this->add('xEnquiryNSubscription/Model_NewsLetter')->count()->getOne();
@@ -12,9 +12,16 @@ class page_xMarketingCampaign_page_owner_campaigns extends page_xMarketingCampai
 		$data=$this->add('xEnquiryNSubscription/Model_NewsLetter')->addCondition('created_by','xMarketingCampaign')->count()->getOne();
 		$v=$bg->add('View_Badge')->set('By This App')->setCount($data)->setCountSwatch('ink');
 
+		$cat_toggle_btnset =$this->app->layout->add('ButtonSet');
+		$hide_cat_btn = $cat_toggle_btnset->addButton('Hide Category');
+		$show_cat_btn = $cat_toggle_btnset->addButton('Show Category');
+
 		$cols = $this->app->layout->add('Columns');
 		$cat_col = $cols->addColumn(3);
 		$camp_col = $cols->addColumn(9);
+
+		$hide_cat_btn->js('click',array($cat_col->js()->hide(),$camp_col->js()->addClass('atk-col-12')));
+		$show_cat_btn->js('click',array($cat_col->js()->show(),$camp_col->js()->removeClass('atk-col-12')));
 
 		$cat_crud = $cat_col->add('CRUD');
 		$cat_model = $this->add('xMarketingCampaign/Model_CampaignCategory');
@@ -71,8 +78,32 @@ class page_xMarketingCampaign_page_owner_campaigns extends page_xMarketingCampai
 	}	
 
 	function page_schedule(){
-		$campaign_id = $this->api->StickyGET('xmarketingcampaign_campaigns_id');	
-		$this->add('View_Box')->set("Campaign Scheduler Campaign Id".$campaign_id);
+		$campaign_id = $this->api->StickyGET('xmarketingcampaign_campaigns_id');
+		$page = $this->api->layout?$this->api->layout: $this;
+
+		$cols = $page->add('Columns');
+		$emails_col = $cols->addColumn(4);
+		$calendar_col = $cols->addColumn(6);
+		$social_col = $cols->addColumn(2);
+
+		$calendar_col->add('xMarketingCampaign/View_CampaignScheduler');
+
+		$emails_col_cols = $emails_col->add('Columns');
+
+		$category_col = $emails_col_cols->addColumn(6);
+		$newsletter_col = $emails_col_cols->addColumn(6);
+
+		$category_grid = $category_col->add('Grid');
+		$category_grid->setModel('xEnquiryNSubscription/Model_SubscriptionCategories',array('name'));
+
+		$form=$category_grid->add('Form',null,'grid_buttons');
+		$campaign_category_select_field=$form->addField('hidden','line');//->set(json_encode(array(25)));
+
+		$category_grid->addSelectable($campaign_category_select_field);
+
+		$newsletter_grid = $newsletter_col->add('Grid');
+		$newsletter_grid->setModel('xEnquiryNSubscription/NewsLetter',array('name'));
+
 	}
 
 
