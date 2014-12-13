@@ -18,7 +18,13 @@ class Model_CampaignCategory extends \Model_Table {
 		});
 
 		$this->hasMany('xMarketingCampaign/Campaign','category_id');
-
+		$this->addHook('beforeDelete',$this);
 		$this->add('dynamic_model/Controller_AutoCreator');
 	}
+
+	function beforeDelete(){
+		if($this->ref('xMarketingCampaign/Campaign')->count()->getOne() > 0)
+			throw $this->exception('Category contains Campaigns','Growl');
+	}
+
 }

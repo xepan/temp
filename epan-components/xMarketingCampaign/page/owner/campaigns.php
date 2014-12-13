@@ -19,26 +19,62 @@ class page_xMarketingCampaign_page_owner_campaigns extends page_xMarketingCampai
 		$cat_crud = $cat_col->add('CRUD');
 		$cat_model = $this->add('xMarketingCampaign/Model_CampaignCategory');
 		$cat_crud->setModel($cat_model,array('name','campaigns'));
-
-		$Campaign_crud = $camp_col->add('CRUD');		
 		
-		$Campaign_crud->setModel('xMarketingCampaign/Campaign',array('name','starting_date','ending_date','effective_start_date','is_active'));
-		if(!$Campaign_crud->isEditing()){
+		if(!$cat_crud->isEditing()){
+			$g=$cat_crud->grid;
+			$g->addMethod('format_filtercampaign',function($g,$f)use($camp_col){
+				$g->current_row_html[$f]='<a href="javascript:void(0)" onclick="'. $camp_col->js()->reload(array('category_id'=>$g->model->id)) .'">'.$g->current_row[$f].'</a>';
+			});
+			$g->addFormatter('name','filtercampaign');
+			$g->add_sno();
+		}
 
-			$Campaign_crud->grid->addColumn('expander','AddEmails','Add Subscription Category');
-			$Campaign_crud->grid->addColumn('expander','NewsLetterSubCampaign','News Letters To send');
-			$Campaign_crud->grid->addColumn('expander','social_campaigns','Social Posts To Include');
-			$btn=$Campaign_crud->grid->addButton('Schedule Emails Now');
-			$btn->setIcon('ui-icon-seek-end');
-			$btn->js('click')->univ()->frameURL('Campaign Executing',$this->api->url('xMarketingCampaign_page_owner_campaignexec'));
+		$campaign_model = $this->add('xMarketingCampaign/Model_Campaign');
+
+
+		//filter Campaigns as per selected category
+		if($_GET['category_id']){
+			$this->api->stickyGET('category_id');
+			$filter_box = $camp_col->add('View_Box')->setHTML('Campaigns for <b>'. $cat_model->load($_GET['category_id'])->get('name').'</b>' );
+			
+			$filter_box->add('Icon',null,'Button')
+            ->addComponents(array('size'=>'mega'))
+            ->set('cancel-1')
+            ->addStyle(array('cursor'=>'pointer'))
+            ->on('click',function($js) use($filter_box,$camp_col) {
+                $filter_box->api->stickyForget('category_id');
+                return $filter_box->js(null,$camp_col->js()->reload())->hide()->execute();
+            });
+
+			$campaign_model->addCondition('category_id',$_GET['category_id']);
+		}
+
+		$campaign_crud = $camp_col->add('CRUD');
+		$campaign_crud->setModel($campaign_model,null,array('category','name','starting_date','ending_date','effective_start_date','is_active'));
+		
+		if(!$campaign_crud->isEditing()){
+			$campaign_crud->grid->addColumn('expander','schedule');
+
+			$campaign_crud->grid->addColumn('expander','AddEmails','Add Subscription Category');
+			$campaign_crud->grid->addColumn('expander','NewsLetterSubCampaign','News Letters To send');
+			$campaign_crud->grid->addColumn('expander','social_campaigns','Social Posts To Include');
+			// $btn=$campaign_crud->grid->addButton('Schedule Emails Now');
+			// $btn->setIcon('ui-icon-seek-end');
+			// $btn->js('click')->univ()->frameURL('Campaign Executing',$this->api->url('xMarketingCampaign_page_owner_campaignexec'));
 	
-			$Campaign_crud->add_button->setIcon('ui-icon-plusthick');
+			$campaign_crud->add_button->setIcon('ui-icon-plusthick');
 			// $Campaign_crud->grid->addColumn('expander','BlogSubCampaign');
 		}
 
 		// $Campaign_crud->add('Controller_FormBeautifier');
 
 	}	
+
+	function page_schedule(){
+		$campaign_id = $this->api->StickyGET('xmarketingcampaign_campaigns_id');	
+		$this->add('View_Box')->set("Campaign Scheduler Campaign Id".$campaign_id);
+	}
+
 
 	function page_AddEmails(){
 		$campaign_id = $this->api->StickyGET('xmarketingcampaign_campaigns_id');
