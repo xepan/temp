@@ -5,7 +5,22 @@ class page_xMarketingCampaign_page_owner_campaigns extends page_xMarketingCampai
 	function init(){
 		parent::init();
 
-		$Campaign_crud = $this->app->layout->add('CRUD');		
+		$bg=$this->app->layout->add('View_BadgeGroup');
+		$data=$this->add('xEnquiryNSubscription/Model_NewsLetter')->count()->getOne();
+		$v=$bg->add('View_Badge')->set('Total NewsLetters')->setCount($data)->setCountSwatch('ink');
+
+		$data=$this->add('xEnquiryNSubscription/Model_NewsLetter')->addCondition('created_by','xMarketingCampaign')->count()->getOne();
+		$v=$bg->add('View_Badge')->set('By This App')->setCount($data)->setCountSwatch('ink');
+
+		$cols = $this->app->layout->add('Columns');
+		$cat_col = $cols->addColumn(3);
+		$camp_col = $cols->addColumn(9);
+
+		$cat_crud = $cat_col->add('CRUD');
+		$cat_model = $this->add('xMarketingCampaign/Model_CampaignCategory');
+		$cat_crud->setModel($cat_model,array('name','campaigns'));
+
+		$Campaign_crud = $camp_col->add('CRUD');		
 		
 		$Campaign_crud->setModel('xMarketingCampaign/Campaign',array('name','starting_date','ending_date','effective_start_date','is_active'));
 		if(!$Campaign_crud->isEditing()){
