@@ -32,7 +32,7 @@ class page_xMarketingCampaign_page_owner_newsletters extends page_xMarketingCamp
 
 		$cat_crud=$cat_col->add('CRUD');
 
-		$cat_crud->setModel($newsletter_category_model,array('name'));
+		$cat_crud->setModel($newsletter_category_model,array('name','posts'));
 
 		if(!$cat_crud->isEditing()){
 			$g=$cat_crud->grid;

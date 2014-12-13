@@ -97,7 +97,7 @@ class page_xMarketingCampaign_page_owner_socialcontents extends page_xMarketingC
 
 		$cat_crud=$cat_col->add('CRUD');
 
-		$cat_crud->setModel($social_category_model,array('name'));
+		$cat_crud->setModel($social_category_model,array('name','posts'));
 
 		if(!$cat_crud->isEditing()){
 			$g=$cat_crud->grid;
@@ -138,12 +138,31 @@ class page_xMarketingCampaign_page_owner_socialcontents extends page_xMarketingC
 
 			switch ($_GET['sort_by']) {
 				case 'created_at':
+					$social_model->_dsql()->del('order');
 					$social_model->setOrder('created_at',$_GET['order']);
 					break;
 				case 'updated_at':
+					$social_model->_dsql()->del('order');
 					$social_model->setOrder('updated_at',$_GET['order']);
 					break;
-				
+				case 'recent_posted':
+					$posting_j=$social_model->join('xMarketingCampaign_SocialPostings.post_id');
+					$posting_j->addField('posted_on');
+					$social_model->setOrder('posted_on',$_GET['order']);
+					$social_model->_dsql()->group('post_id');
+					$cols_array=array_merge(array('posted_on'),$cols_array);
+					break;
+				case 'recent_commented':
+					$posting_j=$social_model->join('xMarketingCampaign_SocialPostings.post_id');
+					$posting_j->addField('posted_on');
+
+					$activity_j = $posting_j->join('xMarketingCampaign_SocialPostings_Activities.posting_id');
+					$activity_j->addField('activity_on')->caption('Comment On');
+
+					$social_model->setOrder('activity_on',$_GET['order']);
+					$social_model->_dsql()->group('post_id');
+					$cols_array=array_merge(array('activity_on'),$cols_array);
+					break;
 				default:
 					# code...
 					break;
@@ -161,7 +180,7 @@ class page_xMarketingCampaign_page_owner_socialcontents extends page_xMarketingC
 			$sort_form->addClass('atk-form atk-move-right');
         	// $sort_form->template->trySet('fieldset', 'atk-row');
         	$sort_form->template->tryDel('button_row');
-			$sort_form_field= $sort_form->addField('DropDown','sort_by')->setValueList(array(0=>'Default','created_at'=>'Created Date','updated_at'=>'Updated Date','recent_posted'=>'Recent Posted On','recent_scheduled'=>'Recent Scheduled On'))->set($_GET['sort_by']?:"Default");
+			$sort_form_field= $sort_form->addField('DropDown','sort_by')->setValueList(array(0=>'Default','created_at'=>'Created Date','updated_at'=>'Updated Date','recent_posted'=>'Recent Posted On','recent_scheduled'=>'Recent Scheduled On','recent_commented'=>'Recent Commented On'))->set($_GET['sort_by']?:"Default");
 			$btn=$sort_form_field->beforeField()->add('Button')->set(array('','icon'=>'sort-alt-up'));
 			$btn->js('click',$g->js()->reload(array('sort_by'=>$sort_form_field->js()->val(),'order'=>'asc')));
 			$btn=$sort_form_field->afterField()->add('Button')->set(array('','icon'=>'sort-alt-down'));
