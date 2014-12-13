@@ -55,15 +55,15 @@ class Model_SocialPost extends \Model_Table {
 
     	$this->addExpression('total_posts')->set(function($m,$q){
     		return $m->refSQL('xMarketingCampaign/SocialPosting')->count();
-    	});
+    	})->sortable(true);
 
     	$this->addExpression('total_likes')->set(function($m,$q){
     		return $m->refSQL('xMarketingCampaign/SocialPosting')->sum('likes');
-    	});
+    	})->sortable(true);
 
     	$this->addExpression('total_share')->set(function($m,$q){
     		return $m->refSQL('xMarketingCampaign/SocialPosting')->sum('share');
-    	});
+    	})->sortable(true);
 
     	$this->addExpression('total_comments')->set(function($m,$q){
     		$act_m = $m->add('xMarketingCampaign/Model_Activity',array('table_alias'=>'temp'));
@@ -73,7 +73,18 @@ class Model_SocialPost extends \Model_Table {
     		$act_m->addCondition('post_id',$q->getField('id'));
 
     		return $act_m->count();
-    	});
+    	})->sortable(true);
+
+    	$this->addExpression('unread_comment')->set(function($m,$q){
+    		$act_m = $m->add('xMarketingCampaign/Model_Activity',array('table_alias'=>'temp'));
+    		$posting_j = $act_m->join('xMarketingCampaign_SocialPostings','posting_id');
+    		$posting_j->addField('post_id');
+    		$act_m->addCondition('post_id',$q->getField('id'));	
+    		
+    		$act_m->addCondition('is_read',false);
+
+    		return $act_m->count();
+    	})->sortable(true);
 
     	$this->hasMany('xMarketingCampaign/SocialPosting','post_id');
     	$this->hasMany('xMarketingCampaign/CampaignSocialPost','socialpost_id');

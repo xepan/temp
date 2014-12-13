@@ -70,11 +70,24 @@ class page_xMarketingCampaign_page_owner_socialcontents extends page_xMarketingC
 		$this->app->layout->template->trySetHTML('page_title','<i class="fa fa-bullhorn"></i> '.$this->component_name. '<small> Social Posts </small>');
 
 		$bg=$this->app->layout->add('View_BadgeGroup');
-		$data=$this->add('xEnquiryNSubscription/Model_NewsLetter')->count()->getOne();
-		$v=$bg->add('View_Badge')->set('Total NewsLetters')->setCount($data)->setCountSwatch('ink');
+		$data=$this->add('xMarketingCampaign/Model_SocialPost')->count()->getOne();
+		$v=$bg->add('View_Badge')->set('Total Post')->setCount($data)->setCountSwatch('ink');
 
-		$data=$this->add('xEnquiryNSubscription/Model_NewsLetter')->addCondition('created_by','xMarketingCampaign')->count()->getOne();
-		$v=$bg->add('View_Badge')->set('By This App')->setCount($data)->setCountSwatch('ink');
+		$data=$this->add('xMarketingCampaign/Model_SocialPosting')->count()->getOne();
+		$v=$bg->add('View_Badge')->set('Total Postings')->setCount($data)->setCountSwatch('ink');
+		
+		$data=$this->add('xMarketingCampaign/Model_SocialPosting')->sum('likes');
+		$v=$bg->add('View_Badge')->set('Total Likes')->setCount($data)->setCountSwatch('ink');	
+
+		$data=$this->add('xMarketingCampaign/Model_SocialPosting')->sum('share');
+		$v=$bg->add('View_Badge')->set('Total Share')->setCount($data)->setCountSwatch('ink');
+
+		$data=$this->add('xMarketingCampaign/Model_Activity')->count()->getOne();
+		$v=$bg->add('View_Badge')->set('Total Comments')->setCount($data)->setCountSwatch('ink');		
+
+		$data=$this->add('xMarketingCampaign/Model_Activity')->addCondition('is_read',false)->count()->getOne();
+		if($data)
+			$v=$bg->add('View_Badge')->set('Total Un-Read Comments')->setCount($data)->setCountSwatch('red');		
 
 		$cols = $this->app->layout->add('Columns');
 		$cat_col = $cols->addColumn(3);
@@ -116,7 +129,7 @@ class page_xMarketingCampaign_page_owner_socialcontents extends page_xMarketingC
 
 		$social_crud = $social_col->add('CRUD');
 		
-		$cols_array = array('category','name','is_active','total_posts','total_likes','total_share','total_comments');
+		$cols_array = array('category','name','is_active','total_posts','total_likes','total_share','total_comments','unread_comment');
 
 		if($_GET['sort_by']){
 			$this->api->stickyGET('sort_by');
@@ -169,6 +182,12 @@ class page_xMarketingCampaign_page_owner_socialcontents extends page_xMarketingC
 			});
 			$g->addFormatter('name','preview');
 
+			$g->addMethod('format_unread_comment',function($g,$f){
+				if($g->current_row[$f])
+					$g->current_row_html[$f] = '<i class="atk-label atk-swatch-ink" style="background-color:red"/>'.$g->current_row[$f];
+			});
+			$g->addFormatter('unread_comment','unread_comment');
+			
 			$g->addColumn('Expander','post');
 			$social_crud->add_button->setIcon('ui-icon-plusthick');
 			
@@ -200,23 +219,17 @@ class page_xMarketingCampaign_page_owner_socialcontents extends page_xMarketingC
 			}
 
 
-
-
-
 			$activity_m = $p->add('xMarketingCampaign/Model_Activity');
 			$activity_m->addCondition('posting_id',$_GET['posting_id']);
+
+			$p->api->db->dsql()->table('xMarketingCampaign_SocialPostings_Activities')->set('is_read',1)->where('posting_id',$_GET['posting_id'])->update();
 
 			$activity_m->getElement('name')->caption('Comment');
 			$activity_m->getElement('activity_by')->caption('Comment By');
 			$activity_m->getElement('activity_on')->caption('Comment On');
 
-			$activity_m->setOrder('activity_on','desc');
-
-
-
 			$crud->setModel($activity_m,array('name','activity_by','activity_on','action_allowed'));
 			
-
 
 			if(!$crud->isEditing()){
 				$g= $crud->grid;
@@ -247,7 +260,7 @@ class page_xMarketingCampaign_page_owner_socialcontents extends page_xMarketingC
 	    	$postings_m->addCondition('post_id',$_GET['socialpost_id']);
 	    	$postings_m->setOrder('posted_on','desc');
 	    	
-	    	$crud->setModel($postings_m,array('social_app','user','campaign','postid_returned','post_type','likes','share','total_comments','posted_on','group_name','is_monitoring','force_monitor'));
+	    	$crud->setModel($postings_m,array('social_app','user','posted_on','postid_returned','post_type','likes','share','unread_comments','total_comments','group_name','campaign','is_monitoring','force_monitor'));
 
 	    	$crud->addAction('keep_monitoring',array('toolbar'=>false));
 
@@ -291,7 +304,13 @@ class page_xMarketingCampaign_page_owner_socialcontents extends page_xMarketingC
 
 		    	});
 		    	$grid->addFormatter('total_comments','total_comments');
+		    	
+		    	$grid->addMethod('format_unread_comments',function($g,$f)use($comments_vp){
+		 			if($g->current_row[$f])
+						$g->current_row_html[$f] = '<i class="atk-label atk-swatch-ink" style="background-color:red">'.$g->current_row[$f].'</i>';	
+		    	});
 
+		    	$grid->addFormatter('unread_comments','unread_comments');
 
 		    	$grid->addPaginator(50);
 		    	$grid->addQuickSearch(array('social_app','user','campaign','group_name'));

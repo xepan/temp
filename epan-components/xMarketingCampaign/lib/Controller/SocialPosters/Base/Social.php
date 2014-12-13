@@ -66,29 +66,33 @@ class Model_SocialPosting extends \Model_Table{
 
 			return $config->fieldQuery('social_app');
 
-		})->caption('At');
+		})->caption('At')->sortable(true);
 
 
 		$this->hasOne('xMarketingCampaign/Model_SocialUsers','user_id');
 		$this->hasOne('xMarketingCampaign/SocialPost','post_id');
 		
-		$this->hasOne('xMarketingCampaign/Campaign','campaign_id');
+		$this->hasOne('xMarketingCampaign/Campaign','campaign_id')->sortable(true);
 
-		$this->addField('post_type')->mandatory(true); // Status Update / Share a link / Group Post etc.
+		$this->addField('post_type')->mandatory(true)->sortable(true); // Status Update / Share a link / Group Post etc.
 
 		$this->addField('postid_returned'); // Rturned by social site 
-		$this->addField('posted_on')->type('datetime')->defaultValue(date('Y-m-d H:i:s'));
-		$this->addField('group_id');
-		$this->addField('group_name');
+		$this->addField('posted_on')->type('datetime')->defaultValue(date('Y-m-d H:i:s'))->sortable(true);
+		$this->addField('group_id')->sortable(true);
+		$this->addField('group_name')->sortable(true);
 
-		$this->addField('likes'); // Change Caption in subsequent extended social controller, if nesecorry
-		$this->addField('share'); // Change Caption in subsequent extended social controller, if nesecorry
+		$this->addField('likes')->sortable(true)->defaultValue(0); // Change Caption in subsequent extended social controller, if nesecorry
+		$this->addField('share')->sortable(true)->defaultValue(0); // Change Caption in subsequent extended social controller, if nesecorry
 		$this->addExpression('total_comments')->set(function($m,$q){
 			return $m->refSQL('xMarketingCampaign/Activity')->count();
-		});
+		})->sortable(true);
 
-		$this->addField('is_monitoring')->type('boolean')->defaultValue(true);
-		$this->addField('force_monitor')->type('boolean')->defaultValue(false)->caption('Keep Monitoring');
+		$this->addExpression('unread_comments')->set(function($m,$q){
+			return $m->refSQL('xMarketingCampaign/Activity')->addCondition('is_read',false)->count();
+		})->sortable(true);
+
+		$this->addField('is_monitoring')->type('boolean')->defaultValue(true)->sortable(true);
+		$this->addField('force_monitor')->type('boolean')->defaultValue(false)->caption('Keep Monitoring')->sortable(true);
 
 		$this->hasMany('xMarketingCampaign/Activity','posting_id');
 
@@ -148,6 +152,7 @@ class Model_Activity extends \SQL_Model{
 		$this->addField('activity_type');
 		$this->addField('activity_on')->type('datetime'); // NOT DEFAuLT .. MUst get WHEN actual activity happened from social sites
 
+		$this->addField('is_read')->type('boolean')->defaultValue(false);// is read
 		$this->addField('activity_by');// Get the user from social site who did it.. might be an id of the user on that social site
 		$this->addField('name')->caption('Activity')->allowHTML(true);
 		$this->addField('action_allowed')->defaultValue(''); // Can remove/ can edit etc if done by user itself
