@@ -25,7 +25,7 @@ $.each({
 					console.log("success");
 				})
 				.fail(function(ret) {
-					eval(ret);
+					$(obj).fullCalendar('removeEvents',[new_event._id]);
 					console.log("error");
 				})
 				.always(function() {

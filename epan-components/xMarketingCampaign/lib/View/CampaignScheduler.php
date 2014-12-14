@@ -11,7 +11,7 @@ class View_CampaignScheduler extends \View{
 		// $this->app->layout->add('View_Error')->set('hello');
 		if($what=$_GET[$this->name.'_event_type']){
 
-			$func=$_GET[$this->name.'_event_act'].ucfirst($what);
+			$func=$_GET[$this->name.'_event_act'].$what;
 
 			$this->$func($_GET[$this->name.'_event_id'], $_GET[$this->name.'_ondate']);
 			// $s[] = $this->js()->univ()->successMessage($_GET[$this->name.'_ondate']);
@@ -22,7 +22,7 @@ class View_CampaignScheduler extends \View{
 		}
 	}
 
-	function addEvent($newsletter_id,$on_date){
+	function addNewsLetter($newsletter_id,$on_date){
 		$save = 0;
 		$error = 0;
 		$campaign = $this->add('xMarketingCampaign/Model_Campaign')->load($_GET['campaign_id']);	
@@ -41,9 +41,6 @@ class View_CampaignScheduler extends \View{
 				}	
 				break;	
 			
-			default:
-				# code...
-				break;
 		}
 
 		if($save){
@@ -55,7 +52,11 @@ class View_CampaignScheduler extends \View{
 			return true;
 		}
 
-		return $error;	
+		$s=array();
+		$s[]= $this->js()->fullCalendar('removeEvents',array($_GET[$this->name.'_event_jsid']));
+		$s[]= $this->js()->univ()->errorMessage('Could Not Save');
+		echo implode(";", $s);
+		exit;
 	}
 
 	function setModel($model){
@@ -68,12 +69,12 @@ class View_CampaignScheduler extends \View{
 		$events = array();
 		$news_letters_events = $campaign->ref('xMarketingCampaign/CampaignNewsLetter');
 		foreach ($news_letters_events as $junk) {
-			$events[] = array('title'=>$news_letters_events['newsletter'],'start'=>$news_letters_events['posting_date'], 'color'=>'#922');
+			$events[] = array('title'=>$news_letters_events['newsletter'],'start'=>$news_letters_events['posting_date'], 'color'=>'#922', "_eventtype"=> "NewsLetter");
 		}
 
 		$social_events = $campaign->ref('xMarketingCampaign/CampaignSocialPost');
 		foreach ($social_events as $junk) {
-			$events[] = array('title'=>$social_events['socialpost'],'start'=>$social_events['post_on_datetime'],'color'=>'#7a7');
+			$events[] = array('title'=>$social_events['socialpost'],'start'=>$social_events['post_on_datetime'],'color'=>'#7a7', "_eventtype"=> "SocialPost");
 		}
 
 		return $events;
