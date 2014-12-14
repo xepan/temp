@@ -57,7 +57,7 @@ class View_CampaignScheduler extends \View{
 		// 		center: 'title',
 		// 		right: 'month,agendaWeek,agendaDay'
 		// 	},
-		$this->js(true)->_load('full-calendar/lib/moment.min')->_load('full-calendar/fullcalendar.min')->_load('campaigncalendar')->univ()->campaigncalendar($this,$this->calendar_options, $this->api->url(null), $this->name);
+		$this->js(true)->_load('full-calendar/lib/moment.min')->_load('full-calendar/fullcalendar.min')->_load('campaigncalendar')->univ()->campaigncalendar($this,$this->calendar_options, $this->api->url(null), $this->name, $this->model->id);
 		parent::render();
 	}
 
