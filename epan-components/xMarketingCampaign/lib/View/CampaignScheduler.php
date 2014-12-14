@@ -22,7 +22,26 @@ class View_CampaignScheduler extends \View{
 		}
 	}
 
-	function moveNewsLetter($newsletter_id,$on_date){
+	function RemoveNewsletter($newsletter_id,$on_date){
+		$campaign = $this->add('xMarketingCampaign/Model_Campaign')->load($_GET['campaign_id']);	
+		$campaign_start_date = strtotime($campaign['starting_date']);
+		$campaign_end_date = strtotime($campaign['ending_date']);
+		$duration = $this->add('xDate')->diff(date('Y-m-d 00:00:00',strtotime($on_date)),$campaign['starting_date'],'days');
+
+		
+		$campaign_newsletter_model = $this->add('xMarketingCampaign/Model_CampaignNewsLetter');	
+		$campaign_newsletter_model->addCondition('newsletter_id',$newsletter_id);
+		$campaign_newsletter_model->addCondition('campaign_id',$_GET['campaign_id']);
+		$campaign_newsletter_model->addCondition('duration',$duration);
+		$campaign_newsletter_model->tryLoadAny();
+		if($campaign_newsletter_model->loaded()){
+			$campaign_newsletter_model->delete();
+			// throw new \Exception("ne".$newsletter_id."d".$duration."cam".$_GET['campaign_id']);
+			return true;
+		}
+	}
+
+	function MoveNewsLetter($newsletter_id,$on_date){
 		$fromdate = $_GET[$this->name.'_fromdate'];
 		$save = 0;
 		$campaign = $this->add('xMarketingCampaign/Model_Campaign')->load($_GET['campaign_id']);	
@@ -65,7 +84,7 @@ class View_CampaignScheduler extends \View{
 
 	}
 
-	function addNewsLetter($newsletter_id,$on_date){
+	function AddNewsLetter($newsletter_id,$on_date){
 		$save = 0;
 		$campaign = $this->add('xMarketingCampaign/Model_Campaign')->load($_GET['campaign_id']);	
 		$campaign_start_date = strtotime($campaign['starting_date']);
