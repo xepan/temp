@@ -6,6 +6,7 @@ $.each({
 			eventReceive: function(new_event) {
 				// External Object Dropped
 				var on_date = new_event._start.format('YYYY-MM-DD');
+				// console.log(on_date);
 				// do some ajax call to add this event in database
 				var param = {};
 				param[calendar_name+'_event_type']=new_event._eventtype;

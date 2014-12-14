@@ -14,11 +14,11 @@ class View_CampaignScheduler extends \View{
 			$func=$_GET[$this->name.'_event_act'].$what;
 
 			$this->$func($_GET[$this->name.'_event_id'], $_GET[$this->name.'_ondate']);
-			// $s[] = $this->js()->univ()->successMessage($_GET[$this->name.'_ondate']);
+			$s=array();
+			$s[] = $this->js()->univ()->successMessage("Done");
 			// $s[] = $this->js()->fullCalendar('removeEvents',array($_GET[$this->name.'_event_jsid']));
-			// $s=array();
-			// echo implode(";", $s);
-			// exit;
+			echo implode(";", $s);
+			exit;
 		}
 	}
 
@@ -26,28 +26,26 @@ class View_CampaignScheduler extends \View{
 		$save = 0;
 		$error = 0;
 		$campaign = $this->add('xMarketingCampaign/Model_Campaign')->load($_GET['campaign_id']);	
-		$on_date = strtotime($on_date);
 		$campaign_start_date = strtotime($campaign['starting_date']);
 		$campaign_end_date = strtotime($campaign['ending_date']);
-		$duration = $on_date - $campaign_start_date;
+		$duration = $this->add('xDate')->diff(date('Y-m-d 00:00:00',strtotime($on_date)),$campaign['starting_date'],'days');
 
 		switch ($campaign['effective_start_date']) {
 			case 'SubscriptionDate':
 				break;
 
 			case 'CampaignDate':
-				if($on_date > $campaign_start_date and $campaign_end_date > $on_date){
+				if(strtotime($on_date) > $campaign_start_date and $campaign_end_date > strtotime($on_date)){
 					$save = 1;						
 				}	
 				break;	
 			
 		}
-
 		if($save){
 			$campaign_newsletter_model = $this->add('xMarketingCampaign/Model_CampaignNewsLetter');
 			$campaign_newsletter_model['newsletter_id'] = $newsletter_id;
 			$campaign_newsletter_model['campaign_id'] = $_GET['campaign_id'];
-			$campaign_newsletter_model['duration'] = $on_date;
+			$campaign_newsletter_model['duration'] = $duration;
 			$campaign_newsletter_model->save();
 			return true;
 		}
