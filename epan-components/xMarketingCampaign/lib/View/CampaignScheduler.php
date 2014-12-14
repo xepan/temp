@@ -99,7 +99,7 @@ class View_CampaignScheduler extends \View{
 		$events = array();
 		$news_letters_events = $campaign->ref('xMarketingCampaign/CampaignNewsLetter');
 		foreach ($news_letters_events as $junk) {
-			$events[] = array('title'=>$news_letters_events['newsletter'],'start'=>$news_letters_events['posting_date'], 'color'=>'#922', "_eventtype"=> "NewsLetter");
+			$events[] = array('title'=>$news_letters_events['newsletter'],'start'=>$news_letters_events['posting_date'], 'color'=>'#922', "_eventtype"=> "NewsLetter", "_nid"=> $news_letters_events['newsletter_id']);
 		}
 
 		$social_events = $campaign->ref('xMarketingCampaign/CampaignSocialPost');

@@ -45,8 +45,8 @@ $.each({
 				event_moved_from = event.start.format('YYYY-MM-DD');
 			},
 			eventDrop: function(event, delta, revertFunc){
+				// console.log(event._nid);
 				// Internal Event Moved
-				console.log(event);
 				var param = {};
 				param[calendar_name+'_event_type']=event._eventtype;
 				param[calendar_name+'_event_act']='Move';
@@ -122,7 +122,6 @@ $.each({
 			},
 
 			eventClick: function(event, jsEvent, view) {
-
 		        // alert('Event: ' + calEvent.title);
 		        // alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
 		        // alert('View: ' + view.name);
@@ -159,17 +158,18 @@ $.each({
 		    },
 
 		    eventMouseover: function(event, jsEvent, view){
+		    	$(".n" + event._nid).addClass('atk-label atk-label-success');
 		    	$(obj+'-title').html(event.title);
 		    },
 		    eventMouseout: function(event, jsEvent, view){
+		    	$(".fc-event").removeClass('atk-label-success');
 		    	$(obj+'-title').html("");
 		    },
 
-		    dayClick: function(date, allDay, jsEvent, view) {
-			    $('#calendar').fullCalendar('gotoDate', date);
-			},   
-
-
+			eventRender: function(event, element, view){
+				$(element).addClass('n'+event._nid);
+				console.log(event);
+			}
 
 		},options);
 
