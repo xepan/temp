@@ -22,6 +22,8 @@ class View_CampaignScheduler extends \View{
 	}
 
 	function addEvent($newsletter_id,$on_date){
+		$campaign_newsletter_model = $this->add('xMarketingCampaign/Model_CampaignNewsLetter');
+										
 		return true;
 	}
 
