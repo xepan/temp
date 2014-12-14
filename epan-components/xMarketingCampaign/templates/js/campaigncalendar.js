@@ -1,10 +1,12 @@
 $.each({
 	campaigncalendar: function(obj, options, url, calendar_name, campaign_id){
+		var event_moved_from=null;
 		option_extended = $.extend({
 			droppable: true, // this allows things to be dropped onto the calendar
 				
 			eventReceive: function(new_event) {
 				// External Object Dropped
+
 				var on_date = new_event._start.format('YYYY-MM-DD');
 				// console.log(on_date);
 				// do some ajax call to add this event in database
@@ -16,6 +18,10 @@ $.each({
 				param[calendar_name+'_ondate']= on_date;
 				param['campaign_id']= campaign_id;
 				
+				var cogs=$('<div id="banner-loader" class="atk-banner atk-cells atk-visible"><div class="atk-cell atk-align-center atk-valign-middle"><div class="atk-box atk-inline atk-size-zetta atk-banner-cogs"></div></div></div>');
+		        cogs.appendTo('body');
+
+
 				$.ajax({
 					url: url,
 					type: 'GET',
@@ -30,19 +36,30 @@ $.each({
 					console.log("error");
 				})
 				.always(function() {
+					cogs.remove();
 					console.log("complete");
 				});
 				
 			},
+			eventDragStart: function(event, jsEvent, ui, view){
+				event_moved_from = event.start.format('YYYY-MM-DD');
+			},
 			eventDrop: function(event, delta, revertFunc){
 				// Internal Event Moved
+				console.log(event);
 				var param = {};
 				param[calendar_name+'_event_type']=event._eventtype;
 				param[calendar_name+'_event_act']='Move';
 				param[calendar_name+'_event_id']=event._nid;
 				param[calendar_name+'_event_jsid']= event._id;
+				param[calendar_name+'_fromdate']= event_moved_from;
 				param[calendar_name+'_ondate']= event.start.format('YYYY-MM-DD');
-				
+				param['campaign_id']= campaign_id;
+
+				// console.log('Moving from '+ event_moved_from + ' to ' + event.start.format('YYYY-MM-DD'));
+
+				event_moved_from =null;
+
 				$.ajax({
 					url: url,
 					type: 'GET',
@@ -80,6 +97,7 @@ $.each({
 						param[calendar_name+'_event_id']=event._nid;
 						param[calendar_name+'_event_jsid']= event._id;
 						param[calendar_name+'_ondate']= event.start.format('YYYY-MM-DD');
+						param['campaign_id']= campaign_id;
 
 						$.ajax({
 							url: url,
@@ -118,6 +136,7 @@ $.each({
 				param[calendar_name+'_event_id']=event._nid;
 				param[calendar_name+'_event_jsid']= event._id;
 				param[calendar_name+'_ondate']= event.start.format('YYYY-MM-DD');
+				param['campaign_id']= campaign_id;
 
 				$.ajax({
 					url: url,
