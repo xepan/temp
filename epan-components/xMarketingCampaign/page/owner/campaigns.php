@@ -111,7 +111,7 @@ class page_xMarketingCampaign_page_owner_campaigns extends page_xMarketingCampai
 		$social_posts_col = $social_col_cols->addColumn(6);
 		$social_users_col = $social_col_cols->addColumn(6);
 
-		$social_posts_grid = $social_posts_col->add('Grid');
+		$social_posts_grid = $social_posts_col->add('xMarketingCampaign/View_DroppableSocialPosts');
 		$social_posts_grid->setModel('xMarketingCampaign/SocialPost',array('name'));
 
 		$social_user_grid = $social_users_col->add('Grid');
