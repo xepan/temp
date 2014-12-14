@@ -9,15 +9,16 @@ class View_CampaignScheduler extends \View{
 		parent::init();
 		$this->calendar_options = array("editable"=> true,'header'=>array('left'=>'prev,next today','center'=> 'title','right'=> 'month,agendaWeek,agendaDay'));
 		// $this->app->layout->add('View_Error')->set('hello');
-		if($_GET[$this->name.'_add_event']){
-			$s=array();
-			if(!$this->addEvent($_GET[$this->name.'_add_event'], $_GET[$this->name.'_ondate'])){
-				$s[] = $this->js()->fullCalendar('removeEvents',array($_GET[$this->name.'_event_id']));
-			}else{
-				$s[] = $this->js()->univ()->successMessage($_GET[$this->name.'_ondate']);
-			}
-			echo implode(";", $s);
-			exit;
+		if($what=$_GET[$this->name.'_event_type']){
+
+			$func=$_GET[$this->name.'_event_act'].ucfirst($what);
+
+			$this->$func($_GET[$this->name.'_event_id'], $_GET[$this->name.'_ondate']);
+			// $s[] = $this->js()->univ()->successMessage($_GET[$this->name.'_ondate']);
+			// $s[] = $this->js()->fullCalendar('removeEvents',array($_GET[$this->name.'_event_jsid']));
+			// $s=array();
+			// echo implode(";", $s);
+			// exit;
 		}
 	}
 
@@ -67,12 +68,12 @@ class View_CampaignScheduler extends \View{
 		$events = array();
 		$news_letters_events = $campaign->ref('xMarketingCampaign/CampaignNewsLetter');
 		foreach ($news_letters_events as $junk) {
-			$events[] = array('title'=>$news_letters_events['newsletter'],'start'=>$news_letters_events['posting_date']);
+			$events[] = array('title'=>$news_letters_events['newsletter'],'start'=>$news_letters_events['posting_date'], 'color'=>'#922');
 		}
 
 		$social_events = $campaign->ref('xMarketingCampaign/CampaignSocialPost');
 		foreach ($social_events as $junk) {
-			$events[] = array('title'=>$social_events['socialpost'],'start'=>$social_events['post_on_datetime']);
+			$events[] = array('title'=>$social_events['socialpost'],'start'=>$social_events['post_on_datetime'],'color'=>'#7a7');
 		}
 
 		return $events;
