@@ -36,6 +36,10 @@ if crud grid is order set then on new page crud not having the same model/elemen
 grid selectable selects current onl;y on click and revoes other.. what if we want to toggle current row only not effecting others.. must be some option
 
 
+atk-move-center does not works where text-center works.. tried in a aView
+
+grid html /Pannel not proper
+
 =============== TODO
 xEnquiryNSubs .. is Ok count and unsubscribe or delete all ! is_ok .. how to ??
 

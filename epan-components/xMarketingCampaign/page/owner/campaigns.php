@@ -88,34 +88,55 @@ class page_xMarketingCampaign_page_owner_campaigns extends page_xMarketingCampai
 		$calendar_col = $cols->addColumn(4);
 		$social_col = $cols->addColumn(4);
 
-		$CALANDER = $calendar_col->add('xMarketingCampaign/View_CampaignScheduler');
-		$CALANDER->setModel($campaign);
+		// Subscriber Categories
 
 		$emails_col_cols = $emails_col->add('Columns');
 
 		$category_col = $emails_col_cols->addColumn(6);
 		$newsletter_col = $emails_col_cols->addColumn(6);
 
+		$category_col->add('H4')->set('Subscription Categories')->addClass('text-center');
 		$category_grid = $category_col->add('Grid');
 		$category_grid->setModel('xEnquiryNSubscription/Model_SubscriptionCategories',array('name'));
+		$category_grid->template->tryDel('Pannel');
+
+		// News letters
+		$newsletter_col->add('H4')->set('News Letters')->addClass('text-center');
+		$newsletter_grid = $newsletter_col->add('xMarketingCampaign/View_DroppableNewsLetters');
+		$newsletter_grid->setModel('xEnquiryNSubscription/NewsLetter',array('name'));
+		$newsletter_grid->template->tryDel('Pannel');
+
+		// calander
+		$calendar_col->add('View')->set($campaign['name'])->addClass('atk-size-peta text-center');
+		$range = $calendar_col->add('View');
+		$range->add('View')->set($campaign['starting_date'])->addClass('atk-size-milli atk-move-left');
+		$range->add('View')->set($campaign['ending_date'])->addClass('atk-size-milli atk-move-right');
+		$calendar_col->add('HR');
+		$CALANDER = $calendar_col->add('xMarketingCampaign/View_CampaignScheduler');
+		$CALANDER->setModel($campaign);
+
 
 		$form=$category_grid->add('Form',null,'grid_buttons');
 		$campaign_category_select_field=$form->addField('hidden','line');//->set(json_encode(array(25)));
 
 		$category_grid->addSelectable($campaign_category_select_field);
 
-		$newsletter_grid = $newsletter_col->add('xMarketingCampaign/View_DroppableNewsLetters');
-		$newsletter_grid->setModel('xEnquiryNSubscription/NewsLetter',array('name'));
-
+		// Social Section
 		$social_col_cols = $social_col->add('Columns');
 		$social_posts_col = $social_col_cols->addColumn(6);
 		$social_users_col = $social_col_cols->addColumn(6);
 
+		// social posts
+		$social_posts_col->add('H4')->set('Social Posts')->addClass('text-center');
 		$social_posts_grid = $social_posts_col->add('xMarketingCampaign/View_DroppableSocialPosts');
 		$social_posts_grid->setModel('xMarketingCampaign/SocialPost',array('name'));
+		$social_posts_grid->template->tryDel('Pannel');
 
+		// social users
+		$social_users_col->add('H4')->set('Social Users')->addClass('text-center');
 		$social_user_grid = $social_users_col->add('Grid');
 		$social_user_grid->setModel('xMarketingCampaign/SocialUsers',array('name'));
+		$social_user_grid->template->tryDel('Pannel');
 
 		$social_user_grid->addMethod('format_add_social',function($g,$f){
 			$cont = $g->add('xMarketingCampaign/Controller_SocialPosters_'.$g->model->ref('config_id')->get('social_app'));

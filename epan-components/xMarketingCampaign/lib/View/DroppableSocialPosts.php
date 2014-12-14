@@ -13,7 +13,7 @@ class View_DroppableSocialPosts extends \Grid{
 	}
 
 	function format_dropable($f){
-		$this->current_row_html[$f] = '<div class="draggable-socialpost" data-event=\'{"title":"'.$this->model['name'].'", "_nid": '.$this->model->id.', "_eventtype": "SocialPost", "color":"#7a7"}\'>'.$this->current_row[$f].'</div>';
+		$this->current_row_html[$f] = '<div class="draggable-socialpost" data-event=\'{"title":"'.$this->model['name'].'", "_nid": '.$this->model->id.', "_eventtype": "SocialPost", "color":"#7a7"}\'  style="cursor: move">'.$this->current_row[$f].'</div>';
 	}
 
 	function render(){

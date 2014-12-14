@@ -143,7 +143,11 @@ $.each({
 		    },
 		    eventMouseout: function(event, jsEvent, view){
 		    	$(obj+'-title').html("");
-		    }
+		    },
+
+		    dayClick: function(date, allDay, jsEvent, view) {
+			    $('#calendar').fullCalendar('gotoDate', date);
+			},   
 
 
 
