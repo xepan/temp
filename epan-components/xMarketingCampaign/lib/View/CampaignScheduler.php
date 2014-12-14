@@ -22,9 +22,17 @@ class View_CampaignScheduler extends \View{
 		}
 	}
 
+	function moveNewsLetter($newsletter_id,$on_date){
+		$save = 0;
+		$campaign = $this->add('xMarketingCampaign/Model_Campaign')->load($_GET['campaign_id']);	
+		$campaign_start_date = strtotime($campaign['starting_date']);
+		$campaign_end_date = strtotime($campaign['ending_date']);
+		$duration = $this->add('xDate')->diff(date('Y-m-d 00:00:00',strtotime($on_date)),$campaign['starting_date'],'days');
+
+	}
+
 	function addNewsLetter($newsletter_id,$on_date){
 		$save = 0;
-		$error = 0;
 		$campaign = $this->add('xMarketingCampaign/Model_Campaign')->load($_GET['campaign_id']);	
 		$campaign_start_date = strtotime($campaign['starting_date']);
 		$campaign_end_date = strtotime($campaign['ending_date']);
@@ -32,6 +40,11 @@ class View_CampaignScheduler extends \View{
 
 		switch ($campaign['effective_start_date']) {
 			case 'SubscriptionDate':
+				$s=array();
+				$s[]= $this->js()->fullCalendar('removeEvents',array($_GET[$this->name.'_event_jsid']));
+				$s[]= $this->js()->univ()->errorMessage('Campaign start from Subscription Date ');
+				echo implode(";", $s);
+				exit;				
 				break;
 
 			case 'CampaignDate':

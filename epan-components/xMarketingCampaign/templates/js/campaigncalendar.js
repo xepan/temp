@@ -42,7 +42,7 @@ $.each({
 				param[calendar_name+'_event_id']=event._nid;
 				param[calendar_name+'_event_jsid']= event._id;
 				param[calendar_name+'_ondate']= event.start.format('YYYY-MM-DD');
-
+				
 				$.ajax({
 					url: url,
 					type: 'GET',
