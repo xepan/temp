@@ -136,23 +136,13 @@ class View_CampaignScheduler extends \View{
 
 		$social_events = $campaign->ref('xMarketingCampaign/CampaignSocialPost');
 		foreach ($social_events as $junk) {
-			$events[] = array('title'=>$social_events['socialpost'],'start'=>$social_events['post_on_datetime'],'color'=>'#7a7', "_eventtype"=> "SocialPost");
+			$events[] = array('title'=>$social_events['socialpost'],'start'=>$social_events['post_on_datetime'],'color'=>'#7a7', "_eventtype"=> "SocialPost", "_nid"=> $social_events['socialpost_id']);
 		}
 
 		return $events;
 	}
 
-	function render(){
-		
-		// defaultDate: '2014-11-12',
-		// 	editable: true,
-		// 	eventLimit: true
-
-		// header: {
-		// 		left: 'prev,next today',
-		// 		center: 'title',
-		// 		right: 'month,agendaWeek,agendaDay'
-		// 	},
+	function render(){		
 		$this->js(true)->_load('full-calendar/lib/moment.min')->_load('full-calendar/fullcalendar.min')->_load('campaigncalendar')->univ()->campaigncalendar($this,$this->calendar_options, $this->api->url(null), $this->name, $this->model->id);
 		parent::render();
 	}

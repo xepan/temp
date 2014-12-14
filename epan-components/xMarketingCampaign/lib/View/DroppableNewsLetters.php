@@ -5,24 +5,16 @@ namespace xMarketingCampaign;
 
 class View_DroppableNewsLetters extends \Grid{
 
-	public $preview_vp;
+	public $preview_vp; // created in the page itself and passed here
 
 	function init(){
 		$this->rename('x');
 		parent::init();
-
-		$this->preview_vp = $preview_vp = $this->app->layout->add('VirtualPage');
-		$preview_vp->set(function($p){
-			$m=$p->add('xEnquiryNSubscription/Model_NewsLetter')->load($_GET['newsletter_id']);
-			$p->add('View')->set('Created '. $this->add('xDate')->diff(Carbon::now(),$m['created_at']) .', Last Modified '. $this->add('xDate')->diff(Carbon::now(),$m['updated_at']) )->addClass('atk-size-micro pull-right')->setStyle('color','#555');
-			$p->add('HR');
-			$p->add('View')->setHTML($m['matter']);
-		});
+		$this->setModel('xEnquiryNSubscription/NewsLetter',array('name','email_subject'));
+		$this->template->tryDel('Pannel');
+		$this->removeColumn('email_subject');
 	}
 
-	function setModel($model,$fields=array()){
-		parent::setModel($model,$fields);
-	}
 
 	function recursiveRender(){
 		$this->addFormatter('name','preview');

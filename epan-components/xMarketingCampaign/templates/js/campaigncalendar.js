@@ -158,11 +158,11 @@ $.each({
 		    },
 
 		    eventMouseover: function(event, jsEvent, view){
-		    	$(".n" + event._nid).addClass('atk-label atk-label-success');
+		    	$(".n" + event._nid).addClass('fc-highlight');
 		    	$(obj+'-title').html(event.title);
 		    },
 		    eventMouseout: function(event, jsEvent, view){
-		    	$(".fc-event").removeClass('atk-label-success');
+		    	$(".fc-event").removeClass('fc-highlight');
 		    	$(obj+'-title').html("");
 		    },
 
