@@ -35,24 +35,22 @@ class View_CampaignScheduler extends \View{
 				break;
 
 			case 'CampaignDate':
-				if(strtotime($on_date) > $campaign_start_date and $campaign_end_date > strtotime($on_date)){
-					$save = 1;						
+				if(strtotime($on_date) > $campaign_start_date and $campaign_end_date >= strtotime($on_date)){
+					$campaign_newsletter_model = $this->add('xMarketingCampaign/Model_CampaignNewsLetter');
+					if(!$campaign_newsletter_model->isExist($newsletter_id,$_GET['campaign_id'],$duration))
+						$save = 1;						
 				}	
-				break;	
-			
+				break;		
 		}
+
 		if($save){
 			$campaign_newsletter_model = $this->add('xMarketingCampaign/Model_CampaignNewsLetter');
-			$campaign_newsletter_model['newsletter_id'] = $newsletter_id;
-			$campaign_newsletter_model['campaign_id'] = $_GET['campaign_id'];
-			$campaign_newsletter_model['duration'] = $duration;
-			$campaign_newsletter_model->save();
-			return true;
+			return $campaign_newsletter_model->createNew($newsletter_id,$_GET['campaign_id'],$duration);
 		}
 
 		$s=array();
 		$s[]= $this->js()->fullCalendar('removeEvents',array($_GET[$this->name.'_event_jsid']));
-		$s[]= $this->js()->univ()->errorMessage('Could Not Save');
+		$s[]= $this->js()->univ()->errorMessage('Newsletter Already Exist');
 		echo implode(";", $s);
 		exit;
 	}
