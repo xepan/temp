@@ -26,6 +26,8 @@ class Model_Campaign extends \Model_Table {
 		$f->icon='fa fa-calendar~red';
 		// $this->addField('matter')->type('text')->display(array('form'=>'RichText'))->defaultValue('<p></p>');
 		$this->hasMany('xMarketingCampaign/CampaignSubscriptionCategory','campaign_id');
+		$this->hasMany('xMarketingCampaign/CampaignNewsLetter','campaign_id');
+		$this->hasMany('xMarketingCampaign/CampaignSocialPost','campaign_id');
 
 		$this->add('dynamic_model/Controller_AutoCreator');
 	}

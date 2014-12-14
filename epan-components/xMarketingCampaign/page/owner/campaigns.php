@@ -79,14 +79,17 @@ class page_xMarketingCampaign_page_owner_campaigns extends page_xMarketingCampai
 
 	function page_schedule(){
 		$campaign_id = $this->api->StickyGET('xmarketingcampaign_campaigns_id');
+		$campaign = $this->add('xMarketingCampaign/Model_Campaign')->load($_GET['xmarketingcampaign_campaigns_id']);
+
 		$page = $this->api->layout?$this->api->layout: $this;
 
 		$cols = $page->add('Columns');
 		$emails_col = $cols->addColumn(4);
-		$calendar_col = $cols->addColumn(6);
-		$social_col = $cols->addColumn(2);
+		$calendar_col = $cols->addColumn(4);
+		$social_col = $cols->addColumn(4);
 
-		$calendar_col->add('xMarketingCampaign/View_CampaignScheduler');
+		$CALANDER = $calendar_col->add('xMarketingCampaign/View_CampaignScheduler');
+		$CALANDER->setModel($campaign);
 
 		$emails_col_cols = $emails_col->add('Columns');
 
@@ -101,8 +104,31 @@ class page_xMarketingCampaign_page_owner_campaigns extends page_xMarketingCampai
 
 		$category_grid->addSelectable($campaign_category_select_field);
 
-		$newsletter_grid = $newsletter_col->add('Grid');
+		$newsletter_grid = $newsletter_col->add('xMarketingCampaign/View_DroppableNewsLetters');
 		$newsletter_grid->setModel('xEnquiryNSubscription/NewsLetter',array('name'));
+
+		$social_col_cols = $social_col->add('Columns');
+		$social_posts_col = $social_col_cols->addColumn(6);
+		$social_users_col = $social_col_cols->addColumn(6);
+
+		$social_posts_grid = $social_posts_col->add('Grid');
+		$social_posts_grid->setModel('xMarketingCampaign/SocialPost',array('name'));
+
+		$social_user_grid = $social_users_col->add('Grid');
+		$social_user_grid->setModel('xMarketingCampaign/SocialUsers',array('name'));
+
+		$social_user_grid->addMethod('format_add_social',function($g,$f){
+			$cont = $g->add('xMarketingCampaign/Controller_SocialPosters_'.$g->model->ref('config_id')->get('social_app'));
+			$g->current_row_html[$f] = $cont->icon() . ' '.$g->current_row[$f];
+		});
+
+		$social_user_grid->addFormatter('name','add_social');
+
+		
+		$form=$category_grid->add('Form',null,'grid_buttons');
+		$campaign_social_user_select_field=$form->addField('hidden','line');//->set(json_encode(array(25)));
+
+		$social_user_grid->addSelectable($campaign_social_user_select_field);
 
 	}
 
