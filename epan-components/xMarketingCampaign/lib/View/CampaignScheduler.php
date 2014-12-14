@@ -22,9 +22,39 @@ class View_CampaignScheduler extends \View{
 	}
 
 	function addEvent($newsletter_id,$on_date){
-		$campaign_newsletter_model = $this->add('xMarketingCampaign/Model_CampaignNewsLetter');
-										
-		return true;
+		$save = 0;
+		$error = 0;
+		$campaign = $this->add('xMarketingCampaign/Model_Campaign')->load($_GET['campaign_id']);	
+		$on_date = strtotime($on_date);
+		$campaign_start_date = strtotime($campaign['starting_date']);
+		$campaign_end_date = strtotime($campaign['ending_date']);
+		$duration = $on_date - $campaign_start_date;
+
+		switch ($campaign['effective_start_date']) {
+			case 'SubscriptionDate':
+				break;
+
+			case 'CampaignDate':
+				if($on_date > $campaign_start_date and $campaign_end_date > $on_date){
+					$save = 1;						
+				}	
+				break;	
+			
+			default:
+				# code...
+				break;
+		}
+
+		if($save){
+			$campaign_newsletter_model = $this->add('xMarketingCampaign/Model_CampaignNewsLetter');
+			$campaign_newsletter_model['newsletter_id'] = $newsletter_id;
+			$campaign_newsletter_model['campaign_id'] = $_GET['campaign_id'];
+			$campaign_newsletter_model['duration'] = $on_date;
+			$campaign_newsletter_model->save();
+			return true;
+		}
+
+		return $error;	
 	}
 
 	function setModel($model){

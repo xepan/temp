@@ -78,7 +78,6 @@ class page_xMarketingCampaign_page_owner_campaigns extends page_xMarketingCampai
 	}	
 
 	function page_schedule(){
-		
 		$campaign_id = $this->api->StickyGET('xmarketingcampaign_campaigns_id');
 		$campaign = $this->add('xMarketingCampaign/Model_Campaign')->load($_GET['xmarketingcampaign_campaigns_id']);
 
