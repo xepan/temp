@@ -79,8 +79,15 @@ class page_xMarketingCampaign_page_owner_campaigns extends page_xMarketingCampai
 
 	function page_schedule(){
 		$campaign_id = $this->api->StickyGET('xmarketingcampaign_campaigns_id');
-
 		$campaign = $this->add('xMarketingCampaign/Model_Campaign')->load($_GET['xmarketingcampaign_campaigns_id']);
+
+		$preview_vp = $this->add('VirtualPage');
+		$preview_vp->set(function($p){
+			$m=$p->add('xEnquiryNSubscription/Model_NewsLetter')->load($_GET['newsletter_id']);
+			$p->add('View')->set('Created '. $this->add('xDate')->diff(Carbon::now(),$m['created_at']) .', Last Modified '. $this->add('xDate')->diff(Carbon::now(),$m['updated_at']) )->addClass('atk-size-micro pull-right')->setStyle('color','#555');
+			$p->add('HR');
+			$p->add('View')->setHTML($m['matter']);
+		});
 
 		$page = $this->api->layout?$this->api->layout: $this;
 
@@ -103,10 +110,8 @@ class page_xMarketingCampaign_page_owner_campaigns extends page_xMarketingCampai
 
 		// News letters
 		$newsletter_col->add('H4')->set('News Letters')->addClass('text-center');
-		$newsletter_grid = $newsletter_col->add('xMarketingCampaign/View_DroppableNewsLetters');
-		$newsletter_grid->setModel('xEnquiryNSubscription/NewsLetter',array('name'));
-		$newsletter_grid->template->tryDel('Pannel');
-
+		$newsletter_grid = $newsletter_col->add('xMarketingCampaign/View_DroppableNewsLetters',array('preview_vp'=>$preview_vp));
+		
 
 		// calander
 		$calendar_col->add('View')->set($campaign['name'])->addClass('atk-size-peta text-center');
