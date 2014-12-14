@@ -79,6 +79,7 @@ class page_xMarketingCampaign_page_owner_campaigns extends page_xMarketingCampai
 
 	function page_schedule(){
 		$campaign_id = $this->api->StickyGET('xmarketingcampaign_campaigns_id');
+
 		$campaign = $this->add('xMarketingCampaign/Model_Campaign')->load($_GET['xmarketingcampaign_campaigns_id']);
 
 		$page = $this->api->layout?$this->api->layout: $this;
@@ -105,6 +106,7 @@ class page_xMarketingCampaign_page_owner_campaigns extends page_xMarketingCampai
 		$newsletter_grid = $newsletter_col->add('xMarketingCampaign/View_DroppableNewsLetters');
 		$newsletter_grid->setModel('xEnquiryNSubscription/NewsLetter',array('name'));
 		$newsletter_grid->template->tryDel('Pannel');
+
 
 		// calander
 		$calendar_col->add('View')->set($campaign['name'])->addClass('atk-size-peta text-center');

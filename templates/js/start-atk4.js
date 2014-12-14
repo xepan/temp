@@ -159,7 +159,6 @@ $.extend($.atk4,{
 		if(typeof(url)==="string"){
             url={url:url};
         }
-
 		// Another file is being loaded.
         this.loading++;
         return $.ajax($.extend({

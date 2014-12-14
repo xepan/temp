@@ -4,17 +4,38 @@ namespace xMarketingCampaign;
 
 
 class View_DroppableNewsLetters extends \Grid{
+
+	public $preview_vp;
+
+	function init(){
+		$this->rename('x');
+		parent::init();
+
+		$this->preview_vp = $preview_vp = $this->app->layout->add('VirtualPage');
+		$preview_vp->set(function($p){
+			$m=$p->add('xEnquiryNSubscription/Model_NewsLetter')->load($_GET['newsletter_id']);
+			$p->add('View')->set('Created '. $this->add('xDate')->diff(Carbon::now(),$m['created_at']) .', Last Modified '. $this->add('xDate')->diff(Carbon::now(),$m['updated_at']) )->addClass('atk-size-micro pull-right')->setStyle('color','#555');
+			$p->add('HR');
+			$p->add('View')->setHTML($m['matter']);
+		});
+	}
+
 	function setModel($model,$fields=array()){
 		parent::setModel($model,$fields);
 	}
 
 	function recursiveRender(){
+		$this->addFormatter('name','preview');
 		$this->addFormatter('name','dropable');
 		parent::recursiveRender();
 	}
 
 	function format_dropable($f){
-		$this->current_row_html[$f] = '<div class="draggable-newsletter" data-event=\'{"title":"'.$this->model['name'].'", "_nid": '.$this->model->id.', "_eventtype": "NewsLetter", "color":"#922" }\' style="cursor: move">'.$this->current_row[$f].'</div>';
+		$this->current_row_html[$f] = '<div class="draggable-newsletter" data-event=\'{"title":"'.$this->model['name'].'", "_nid": '.$this->model->id.', "_eventtype": "NewsLetter", "color":"#922" }\' style="cursor: move">'.$this->current_row_html[$f].'</div>';
+	}
+
+	function format_preview($f){
+		$this->current_row_html[$f]='<a href="javascript:void(0)" onclick="'. $this->js()->univ()->frameURL($this->model['email_subject'],$this->api->url($this->preview_vp->getURL(),array('newsletter_id'=>$this->model->id))) .'">'.$this->current_row[$f].'</a>';
 	}
 
 	function render(){
