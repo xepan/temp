@@ -168,7 +168,7 @@ $.each({
 
 			eventRender: function(event, element, view){
 				$(element).addClass('n'+event._nid);
-				console.log(event);
+				// console.log(event);
 			}
 
 		},options);

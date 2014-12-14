@@ -23,28 +23,41 @@ class View_CampaignScheduler extends \View{
 	}
 
 	function moveNewsLetter($newsletter_id,$on_date){
+		$fromdate = $_GET[$this->name.'_fromdate'];
 		$save = 0;
 		$campaign = $this->add('xMarketingCampaign/Model_Campaign')->load($_GET['campaign_id']);	
 		$campaign_start_date = strtotime($campaign['starting_date']);
 		$campaign_end_date = strtotime($campaign['ending_date']);
 		$duration = $this->add('xDate')->diff(date('Y-m-d 00:00:00',strtotime($on_date)),$campaign['starting_date'],'days');
+		$last_duration = $this->add('xDate')->diff(date('Y-m-d 00:00:00',strtotime($fromdate)),$campaign['starting_date'],'days');
+		// throw new \Exception("Error Processing Request".$last_duration);
+		
+		// throw new \Exception("news = ".$newsletter_id."cam = ".$_GET['campaign_id']."dur =".$duration);
 		
 		if($campaign['effective_start_date'] == "CampaignDate"){
 			if(strtotime($on_date) > $campaign_start_date and $campaign_end_date >= strtotime($on_date)){
 				$campaign_newsletter_model = $this->add('xMarketingCampaign/Model_CampaignNewsLetter');
 				if(!$campaign_newsletter_model->isExist($newsletter_id,$_GET['campaign_id'],$duration)){
 					$save = 1;
-				}
-
+				}				
 			}
 
 		}
 			
 		if($save){
-
+			$campaign_newsletter_model = $this->add('xMarketingCampaign/Model_CampaignNewsLetter');
+			$campaign_newsletter_model->addCondition('newsletter_id',$newsletter_id);
+			$campaign_newsletter_model->addCondition('campaign_id',$_GET['campaign_id']);
+			$campaign_newsletter_model->addCondition('duration',$last_duration);
+			$campaign_newsletter_model->tryLoadAny();
+			if($campaign_newsletter_model->loaded()){
+				$campaign_newsletter_model['duration'] = $duration;
+				$campaign_newsletter_model->saveAndUnload();
+			}
+			return true;
 		}else{
 			$s=array();
-			$s[]= $this->js()->fullCalendar('removeEvents',array($_GET[$this->name.'_event_jsid']));
+			$s[]= "revertFunc();";
 			$s[]= $this->js()->univ()->errorMessage('Could Not Saved');
 			echo implode(";", $s);
 			exit;

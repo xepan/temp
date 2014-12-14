@@ -51,6 +51,7 @@ class Model_CampaignNewsLetter extends \Model_Table {
 		return true;
 	}
 
+
 	function isExist($newsletter_id,$campaign_id,$duration){
 		$this->addCondition('campaign_id',$campaign_id);
 		$this->addCondition('newsletter_id',$newsletter_id);
