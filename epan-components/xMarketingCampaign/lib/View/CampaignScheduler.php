@@ -22,6 +22,7 @@ class View_CampaignScheduler extends \View{
 		}
 	}
 
+	
 	function RemoveNewsletter($newsletter_id,$on_date){
 		$campaign = $this->add('xMarketingCampaign/Model_Campaign')->load($_GET['campaign_id']);	
 		$campaign_start_date = strtotime($campaign['starting_date']);
