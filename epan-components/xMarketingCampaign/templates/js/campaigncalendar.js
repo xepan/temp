@@ -7,7 +7,7 @@ $.each({
 			eventReceive: function(new_event) {
 				// External Object Dropped
 
-				var on_date = new_event._start.format('YYYY-MM-DD');
+				var on_date = new_event._start.format('YYYY-MM-DD HH:mm:ss');
 				// console.log(on_date);
 				// do some ajax call to add this event in database
 				var param = {};
@@ -42,7 +42,7 @@ $.each({
 				
 			},
 			eventDragStart: function(event, jsEvent, ui, view){
-				event_moved_from = event.start.format('YYYY-MM-DD H:m:s');
+				event_moved_from = event.start.format('YYYY-MM-DD HH:mm:ss');
 			},
 			eventDrop: function(event, delta, revertFunc){
 				// console.log(event._nid);
@@ -53,10 +53,10 @@ $.each({
 				param[calendar_name+'_event_id']=event._nid;
 				param[calendar_name+'_event_jsid']= event._id;
 				param[calendar_name+'_fromdate']= event_moved_from;
-				param[calendar_name+'_ondate']= event.start.format('YYYY-MM-DD H:m:s');
+				param[calendar_name+'_ondate']= event.start.format('YYYY-MM-DD HH:mm:ss');
 				param['campaign_id']= campaign_id;
 
-				console.log('Moving from '+ event_moved_from + ' to ' + event.start.format('YYYY-MM-DD'));
+				// console.log('Moving from '+ event_moved_from + ' to ' + event.start.format('YYYY-MM-DD'));
 
 				event_moved_from =null;
 
@@ -96,7 +96,7 @@ $.each({
 						param[calendar_name+'_event_act']='Remove';
 						param[calendar_name+'_event_id']=event._nid;
 						param[calendar_name+'_event_jsid']= event._id;
-						param[calendar_name+'_ondate']= event.start.format('YYYY-MM-DD H:m:s');
+						param[calendar_name+'_ondate']= event.start.format('YYYY-MM-DD HH:mm:ss');
 						param['campaign_id']= campaign_id;
 
 						$.ajax({
@@ -134,7 +134,7 @@ $.each({
 				param[calendar_name+'_event_act']='Clicked';
 				param[calendar_name+'_event_id']=event._nid;
 				param[calendar_name+'_event_jsid']= event._id;
-				param[calendar_name+'_ondate']= event.start.format('YYYY-MM-DD');
+				param[calendar_name+'_ondate']= event.start.format('YYYY-MM-DD HH:mm:ss');
 				param['campaign_id']= campaign_id;
 
 				$.ajax({
@@ -159,6 +159,7 @@ $.each({
 
 		    eventMouseover: function(event, jsEvent, view){
 		    	$(".n" + event._nid).addClass('fc-highlight');
+		    	$(".n" + event._nid).effect('highlight');
 		    	$(obj+'-title').html(event.title);
 		    },
 		    eventMouseout: function(event, jsEvent, view){

@@ -175,10 +175,15 @@ class page_xMarketingCampaign_page_owner_campaigns extends page_xMarketingCampai
 		$category_grid->template->tryDel('Pannel');
 
 		$category_grid->addSelectable($campaign_category_select_field);
-		$form->add('Button')->set(array('All'))->js('click',$category_grid->js()->atk4_checkboxes('select_all'));
-		$form->add('Button')->set('None')->js('click',$category_grid->js()->atk4_checkboxes('unselect_all'));
-		$form->add('Button')->set(array('Reset','icon'=>'retweet','swatch'=>'red'))->js('click',$category_col->js()->reload(array('xmarketingcampaign_campaigns_id'=>$_GET['xmarketingcampaign_campaigns_id'])));
-		$form->add('Button')->set(array('Apply','swatch'=>'green'))->js('click',$form->js()->submit());
+		$all_btn=$form->add('Button')->set(array('All'));
+		$none_btn=$form->add('Button')->set('None');
+		$reset_btn=$form->add('Button')->set(array('Reset','icon'=>'retweet','swatch'=>'red'));
+		$reset_btn->js('click',$category_col->js()->reload(array('xmarketingcampaign_campaigns_id'=>$_GET['xmarketingcampaign_campaigns_id'])));
+		$apply_btn=$form->add('Button')->set(array('Apply','swatch'=>'green'));
+		$apply_btn->js('click',$form->js()->submit());
+		
+		$all_btn->js('click',array($category_grid->js()->atk4_checkboxes('select_all'),$apply_btn->js()->effect('highlight')));
+		$none_btn->js('click',array($category_grid->js()->atk4_checkboxes('unselect_all'),$apply_btn->js()->effect('highlight')));
 		// News letters
 		$newsletter_col->add('H4')->set('News Letters')->addClass('text-center');
 
@@ -275,12 +280,15 @@ class page_xMarketingCampaign_page_owner_campaigns extends page_xMarketingCampai
 
 		$social_user_grid->addSelectable($campaign_social_user_select_field);
 		$all_btn=$form->add('Button')->set('All');
-		$nne_btn =$form->add('Button')->set('None')->js('click',$social_user_grid->js()->atk4_checkboxes('unselect_all'));
-		$reset_btn=$form->add('Button')->set(array('Reset','swatch'=>'red'))->js('click',$social_users_col->js()->reload(array('xmarketingcampaign_campaigns_id'=>$_GET['xmarketingcampaign_campaigns_id'])));
+		$none_btn =$form->add('Button')->set('None');
+		
+		$reset_btn=$form->add('Button')->set(array('Reset','swatch'=>'red'));
 		$apply_btn=$form->add('Button')->set(array('Apply','swatch'=>'green'));
 		$apply_btn->js('click',$form->js()->submit());
 
-		$all_btn->js('click',array($social_user_grid->js()->atk4_checkboxes('select_all'),$apply_btn->js()->effect('bounce')));
+		$none_btn->js('click',array($social_user_grid->js()->atk4_checkboxes('unselect_all'),$apply_btn->js()->effect('highlight')));
+		$all_btn->js('click',array($social_user_grid->js()->atk4_checkboxes('select_all'),$apply_btn->js()->effect('highlight')));
+		$reset_btn->js('click',array($social_users_col->js()->reload(array('xmarketingcampaign_campaigns_id'=>$_GET['xmarketingcampaign_campaigns_id']))));
 
 		if($form->isSubmitted()){
 			$campaign_id = $form['campaign_id'];
