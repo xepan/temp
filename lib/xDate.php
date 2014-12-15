@@ -29,10 +29,10 @@ class xDate extends AbstractController{
 	}
 
 	function getHour($ondate){
-		return (Carbon::createFromFormat("Y-m-d H:i:s",$ondate)->__get('hour'));
+		return (Carbon::createFromFormat("Y-m-d H:i:s",$ondate)->format('H'));
 	}
 	function getMinute($ondate){
-		return (Carbon::createFromFormat("Y-m-d H:i:s",$ondate)->__get('minute'));
+		return (Carbon::createFromFormat("Y-m-d H:i:s",$ondate)->format('i'));
 	}
 
 }

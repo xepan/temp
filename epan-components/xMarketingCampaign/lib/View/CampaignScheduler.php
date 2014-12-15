@@ -289,7 +289,7 @@ class View_CampaignScheduler extends \View{
 		foreach ($social_events as $junk) {
 			$events[] = array('title'=>$social_events['socialpost'],'start'=>$social_events['post_on_datetime'],'color'=>'#7a7', "_eventtype"=> "SocialPost", "_nid"=> $social_events['socialpost_id']);
 		}
-
+		// print_r($events);
 		return $events;
 	}
 

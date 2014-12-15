@@ -8,7 +8,7 @@ $.each({
 				// External Object Dropped
 
 				var on_date = new_event._start.format('YYYY-MM-DD HH:mm:ss');
-				// console.log(on_date);
+				console.log(on_date);
 				// do some ajax call to add this event in database
 				var param = {};
 				param[calendar_name+'_event_type']=new_event._eventtype;
@@ -137,22 +137,22 @@ $.each({
 				param[calendar_name+'_ondate']= event.start.format('YYYY-MM-DD HH:mm:ss');
 				param['campaign_id']= campaign_id;
 
-				$.ajax({
-					url: url,
-					type: 'GET',
-					data: param,
-				})
-				.done(function(ret) {
-					eval(ret);
-					console.log("success");
-				})
-				.fail(function(ret) {
-					eval(ret);
-					console.log("error");
-				})
-				.always(function() {
-					console.log("complete");
-				});
+				// $.ajax({
+				// 	url: url,
+				// 	type: 'GET',
+				// 	data: param,
+				// })
+				// .done(function(ret) {
+				// 	eval(ret);
+				// 	console.log("success");
+				// })
+				// .fail(function(ret) {
+				// 	eval(ret);
+				// 	console.log("error");
+				// })
+				// .always(function() {
+				// 	console.log("complete");
+				// });
 
 
 		    },
