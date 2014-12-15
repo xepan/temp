@@ -9,6 +9,8 @@ class Model_Campaign extends \Model_Table {
 	function init(){
 		parent::init();
 
+		$this->add('xMarketingCampaign/Controller_SocialPosters_Base_Social'); // Just in case of needed files
+
 		$this->hasOne('Epan','epan_id');
 		$this->addCondition('epan_id',$this->api->current_website->id);
 
@@ -27,6 +29,7 @@ class Model_Campaign extends \Model_Table {
 		// $this->addField('matter')->type('text')->display(array('form'=>'RichText'))->defaultValue('<p></p>');
 		$this->hasMany('xMarketingCampaign/CampaignSubscriptionCategory','campaign_id');
 		$this->hasMany('xMarketingCampaign/CampaignNewsLetter','campaign_id');
+		$this->hasMany('xMarketingCampaign/CampaignSocialUser','campaign_id');
 		$this->hasMany('xMarketingCampaign/CampaignSocialPost','campaign_id');
 
 		$this->add('dynamic_model/Controller_AutoCreator');

@@ -8,11 +8,10 @@ class View_DroppableNewsLetters extends \Grid{
 	public $preview_vp; // created in the page itself and passed here
 
 	function init(){
-		$this->rename('x');
+		// $this->rename('x');
 		parent::init();
-		$this->setModel('xEnquiryNSubscription/NewsLetter',array('name','email_subject'));
 		$this->template->tryDel('Pannel');
-		$this->removeColumn('email_subject');
+		
 	}
 
 
