@@ -25,6 +25,14 @@ class xDate extends AbstractController{
 	}
 
 	function isInBetween($date_one, $date_two, $check_date){
-		
+			
 	}
+
+	function getHour($ondate){
+		return (Carbon::createFromFormat("Y-m-d H:i:s",$ondate)->__get('hour'));
+	}
+	function getMinute($ondate){
+		return (Carbon::createFromFormat("Y-m-d H:i:s",$ondate)->__get('minute'));
+	}
+
 }

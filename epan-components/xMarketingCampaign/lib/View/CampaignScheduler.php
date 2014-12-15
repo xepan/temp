@@ -22,13 +22,111 @@ class View_CampaignScheduler extends \View{
 		}
 	}
 
-	function AddSocialPost($newsletter_id,$on_date){
+	function RemoveSocialPost($socialpost_id,$on_date){
+		$save = 0;
+		$fromdate = $_GET[$this->name.'_fromdate'];
+		$campaign = $this->add('xMarketingCampaign/Model_Campaign')->load($_GET['campaign_id']);
+		$campaign_start_date = strtotime($campaign['starting_date']);
+		$campaign_end_date = strtotime($campaign['ending_date']);
+		$on_date_only = date('Y-m-d',strtotime($on_date));
+		$time  = date("H:i:s",strtotime($on_date));
+		$duration = $this->add('xDate')->diff(date('Y-m-d 00:00:00',strtotime($on_date)),$campaign['starting_date'],'days');
+		$hour = $this->add('xDate')->getHour(date('Y-m-d H:i:s',strtotime($on_date)));
+		$minute = $this->add('xDate')->getMinute(date('Y-m-d H:i:s',strtotime($on_date)));
+
+		// throw new \Exception("c=".$_GET['campaign_id']."s=".$socialpost_id."on".$on_date_only."h".$hour."m".$minute);
+		$campaign_socialpost_model = $this->add('xMarketingCampaign/Model_CampaignSocialPost');
+		// $campaign_socialpost_model->addCondition('is_posted',false);
+		$campaign_socialpost_model->addCondition('campaign_id',$_GET['campaign_id']);
+		$campaign_socialpost_model->addCondition('socialpost_id',$socialpost_id);
+		$campaign_socialpost_model->addCondition('post_on',$on_date_only);
+		$campaign_socialpost_model->addCondition('at_hour',$hour);
+		$campaign_socialpost_model->addCondition('at_minute',$minute);
+		$campaign_socialpost_model->tryLoadAny();
+		if($campaign_socialpost_model->loaded()){
+			$campaign_socialpost_model->delete();
+			return true;	
+		}
+		
+	}
+
+	function MoveSocialPost($socialpost_id,$on_date){
+		$save = 0;
+		$fromdate = $_GET[$this->name.'_fromdate'];
+		$campaign = $this->add('xMarketingCampaign/Model_Campaign')->load($_GET['campaign_id']);
+		$campaign_start_date = strtotime($campaign['starting_date']);
+		$campaign_end_date = strtotime($campaign['ending_date']);
+		$today = strtotime(date('Y-m-d'));
+		$on_date_only = date('Y-m-d',strtotime($on_date));
+		$time  = date("H:i:s",strtotime($on_date));
+		$duration = $this->add('xDate')->diff(date('Y-m-d 00:00:00',strtotime($on_date)),$campaign['starting_date'],'days');
+		$hour = $this->add('xDate')->getHour(date('Y-m-d H:i:s',strtotime($on_date)));
+		$minute = $this->add('xDate')->getMinute(date('Y-m-d H:i:s',strtotime($on_date)));
+		
+		if($campaign['effective_start_date'] == "CampaignDate"){
+			// throw new \Exception("c.".$_GET['campaign_id']."post".$socialpost_id."date".$on_date_only."h-".$hour."m".$minute."=ondate..".$on_date);
+			// $_GET['campaign_id'],$socialpost_id,$on_date_only,$hour,$minute
+			if(strtotime($on_date_only) < $today){
+				$s=array();
+				$s[]= "revertFunc();";
+				$s[]= $this->js()->univ()->errorMessage('Could Not Saved');
+				echo implode(";", $s);
+				exit;		
+			}
+
+			if(strtotime($on_date_only) > $campaign_start_date and $campaign_end_date >= strtotime($on_date_only)){
+				$campaign_socialpost_model = $this->add('xMarketingCampaign/Model_CampaignSocialPost');
+				if(!$campaign_socialpost_model->isExist($_GET['campaign_id'],$socialpost_id,$on_date_only,$hour,$minute)){
+					$save = 1;
+				}				
+			}
+		}
+			
+		if($save){
+			$from_date_only = date('Y-m-d',strtotime($fromdate));
+			$from_hour = $this->add('xDate')->getHour(date('Y-m-d H:i:s',strtotime($fromdate)));
+			$from_minute = $this->add('xDate')->getMinute(date('Y-m-d H:i:s',strtotime($fromdate)));
+
+			$campaign_socialpost_model = $this->add('xMarketingCampaign/Model_CampaignSocialPost');
+			$campaign_socialpost_model->addCondition('is_posted',false);
+			$campaign_socialpost_model->addCondition('campaign_id',$_GET['campaign_id']);
+			$campaign_socialpost_model->addCondition('socialpost_id',$socialpost_id);
+			$campaign_socialpost_model->addCondition('post_on',$from_date_only);
+			$campaign_socialpost_model->addCondition('at_hour',$from_hour);
+			$campaign_socialpost_model->addCondition('at_minute',$from_minute);
+			$campaign_socialpost_model->tryLoadAny();
+			if($campaign_socialpost_model->loaded()){
+				if($hour==0)
+					$hour = '00';
+				if($minute==0)
+					$minute = '00';
+				$campaign_socialpost_model['post_on'] = $on_date_only;
+				$campaign_socialpost_model['at_hour'] = $hour;
+				$campaign_socialpost_model['at_minute'] = $minute;
+				$campaign_socialpost_model->saveAndUnload();
+			}
+			return true;
+		}else{
+			$s=array();
+			$s[]= "revertFunc();";
+			$s[]= $this->js()->univ()->errorMessage('Could Not Saved');
+			echo implode(";", $s);
+			exit;
+		}
+
+	}
+
+	function AddSocialPost($socialpost_id,$on_date){
 		$save = 0;
 		$campaign = $this->add('xMarketingCampaign/Model_Campaign')->load($_GET['campaign_id']);
 		$campaign_start_date = strtotime($campaign['starting_date']);
 		$campaign_end_date = strtotime($campaign['ending_date']);
-		
-		//$duration = $this->add('xDate')->diff(date('Y-m-d 00:00:00',strtotime($on_date)),$campaign['starting_date'],'days');
+		$on_date_only = date('Y-m-d',strtotime($on_date));
+		$time  = date("H:i:s",strtotime($on_date));
+		$duration = $this->add('xDate')->diff(date('Y-m-d 00:00:00',strtotime($on_date)),$campaign['starting_date'],'days');
+		$hour = $this->add('xDate')->getHour(date('Y-m-d H:i:s',strtotime($on_date)));
+		$minute = $this->add('xDate')->getMinute(date('Y-m-d H:i:s',strtotime($on_date)));
+		// throw new \Exception("Error Processing Request".$hour."m".$minute);		
 
 		switch ($campaign['effective_start_date']) {
 			case 'SubscriptionDate':
@@ -40,24 +138,29 @@ class View_CampaignScheduler extends \View{
 				break;
 
 			case 'CampaignDate':
-				if(strtotime($on_date) > $campaign_start_date and $campaign_end_date >= strtotime($on_date)){
-					$campaign_newsletter_model = $this->add('xMarketingCampaign/Model_CampaignNewsLetter');
-					if(!$campaign_newsletter_model->isExist($newsletter_id,$_GET['campaign_id'],$duration))
+				if(strtotime($on_date_only) > $campaign_start_date and $campaign_end_date >= strtotime($on_date_only)){
+					$campaign_scialpost_model = $this->add('xMarketingCampaign/Model_CampaignSocialPost');
+					if(!$campaign_scialpost_model->isExist($_GET['campaign_id'],$socialpost_id,$on_date_only,$hour,$minute))
 						$save = 1;						
 				}	
 				break;		
 		}
 
-		// if($save){
-		// 	$campaign_newsletter_model = $this->add('xMarketingCampaign/Model_CampaignNewsLetter');
-		// 	return $campaign_newsletter_model->createNew($newsletter_id,$_GET['campaign_id'],$duration);
-		// }
+		if($save){
+			if($hour==0)
+				$hour = '00';
+			if($minute==0)
+				$minute = '00';
 
-		// $s=array();
-		// $s[]= $this->js()->fullCalendar('removeEvents',array($_GET[$this->name.'_event_jsid']));
-		// $s[]= $this->js()->univ()->errorMessage('Could Not Saved');
-		// echo implode(";", $s);
-		// exit;
+			$campaign_scialpost_model = $this->add('xMarketingCampaign/Model_CampaignSocialPost');
+			return $campaign_scialpost_model->createNew($_GET['campaign_id'],$socialpost_id,$on_date_only,$hour,$minute);
+		}
+
+		$s=array();
+		$s[]= $this->js()->fullCalendar('removeEvents',array($_GET[$this->name.'_event_jsid']));
+		$s[]= $this->js()->univ()->errorMessage('Could Not Saved');
+		echo implode(";", $s);
+		exit;
 
 	}	
 
@@ -83,6 +186,7 @@ class View_CampaignScheduler extends \View{
 	function MoveNewsLetter($newsletter_id,$on_date){
 		$fromdate = $_GET[$this->name.'_fromdate'];
 		$save = 0;
+		$today = strtotime(date('Y-m-d'));
 		$campaign = $this->add('xMarketingCampaign/Model_Campaign')->load($_GET['campaign_id']);	
 		$campaign_start_date = strtotime($campaign['starting_date']);
 		$campaign_end_date = strtotime($campaign['ending_date']);
@@ -93,6 +197,14 @@ class View_CampaignScheduler extends \View{
 		// throw new \Exception("news = ".$newsletter_id."cam = ".$_GET['campaign_id']."dur =".$duration);
 		
 		if($campaign['effective_start_date'] == "CampaignDate"){
+			if(strtotime($on_date) < $today){
+				$s=array();
+				$s[]= "revertFunc();";
+				$s[]= $this->js()->univ()->errorMessage('Could Not Saved');
+				echo implode(";", $s);
+				exit;	
+			}
+
 			if(strtotime($on_date) > $campaign_start_date and $campaign_end_date >= strtotime($on_date)){
 				$campaign_newsletter_model = $this->add('xMarketingCampaign/Model_CampaignNewsLetter');
 				if(!$campaign_newsletter_model->isExist($newsletter_id,$_GET['campaign_id'],$duration)){
