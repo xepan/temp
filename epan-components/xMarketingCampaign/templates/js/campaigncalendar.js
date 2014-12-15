@@ -42,7 +42,7 @@ $.each({
 				
 			},
 			eventDragStart: function(event, jsEvent, ui, view){
-				event_moved_from = event.start.format('YYYY-MM-DD');
+				event_moved_from = event.start.format('YYYY-MM-DD HH:mm:ss');
 			},
 			eventDrop: function(event, delta, revertFunc){
 				// console.log(event._nid);
@@ -159,6 +159,7 @@ $.each({
 
 		    eventMouseover: function(event, jsEvent, view){
 		    	$(".n" + event._nid).addClass('fc-highlight');
+		    	$(".n" + event._nid).effect('highlight');
 		    	$(obj+'-title').html(event.title);
 		    },
 		    eventMouseout: function(event, jsEvent, view){
