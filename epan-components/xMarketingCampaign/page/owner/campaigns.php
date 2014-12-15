@@ -169,16 +169,16 @@ class page_xMarketingCampaign_page_owner_campaigns extends page_xMarketingCampai
 		$form->addField('hidden','campaign_id')->set($_GET['xmarketingcampaign_campaigns_id']);
 		$campaign_category_select_field=$form->addField('hidden','categories')->set(json_encode(iterator_to_array(new RecursiveIteratorIterator(new RecursiveArrayIterator($selected)),false)));
 		$campaign_category_select_reset_field=$form->addField('hidden','reset')->set(json_encode(iterator_to_array(new RecursiveIteratorIterator(new RecursiveArrayIterator($selected)),false)));
-		$form->add('Button')->set(array('Reset','icon'=>'user','swatch'=>'red'))->js('click',$category_col->js()->reload(array('xmarketingcampaign_campaigns_id'=>$_GET['xmarketingcampaign_campaigns_id'])));
-		$form->add('Button')->set('Apply')->js('click',$form->js()->submit());
 		
 		$category_grid = $category_col->add('Grid');
 		$category_grid->setModel('xEnquiryNSubscription/Model_SubscriptionCategories',array('name'));
 		$category_grid->template->tryDel('Pannel');
 
 		$category_grid->addSelectable($campaign_category_select_field);
-		$form->add('Button')->set('Select All')->js('click',$category_grid->js()->atk4_checkboxes('select_all'));
-		$form->add('Button')->set('Select None')->js('click',$category_grid->js()->atk4_checkboxes('unselect_all'));
+		$form->add('Button')->set(array('All'))->js('click',$category_grid->js()->atk4_checkboxes('select_all'));
+		$form->add('Button')->set('None')->js('click',$category_grid->js()->atk4_checkboxes('unselect_all'));
+		$form->add('Button')->set(array('Reset','icon'=>'retweet','swatch'=>'red'))->js('click',$category_col->js()->reload(array('xmarketingcampaign_campaigns_id'=>$_GET['xmarketingcampaign_campaigns_id'])));
+		$form->add('Button')->set(array('Apply','swatch'=>'green'))->js('click',$form->js()->submit());
 		// News letters
 		$newsletter_col->add('H4')->set('News Letters')->addClass('text-center');
 
@@ -261,9 +261,7 @@ class page_xMarketingCampaign_page_owner_campaigns extends page_xMarketingCampai
 		$form->addField('hidden','campaign_id')->set($_GET['xmarketingcampaign_campaigns_id']);
 		$campaign_social_user_select_field=$form->addField('hidden','socialusers')->set(json_encode(iterator_to_array(new RecursiveIteratorIterator(new RecursiveArrayIterator($selected)),false)));
 		$campaign_social_user_select_reset_field=$form->addField('hidden','reset')->set(json_encode(iterator_to_array(new RecursiveIteratorIterator(new RecursiveArrayIterator($selected)),false)));
-		$form->add('Button')->set(array('Reset','icon'=>'user','swatch'=>'red'))->js('click',$social_users_col->js()->reload(array('xmarketingcampaign_campaigns_id'=>$_GET['xmarketingcampaign_campaigns_id'])));
-		$form->add('Button')->set('Apply')->js('click',$form->js()->submit());
-		
+
 		$social_user_grid = $social_users_col->add('Grid');
 		$social_user_grid->setModel('xMarketingCampaign/SocialUsers',array('name'));
 		$social_user_grid->template->tryDel('Pannel');
@@ -276,9 +274,13 @@ class page_xMarketingCampaign_page_owner_campaigns extends page_xMarketingCampai
 		$social_user_grid->addFormatter('name','add_social');
 
 		$social_user_grid->addSelectable($campaign_social_user_select_field);
-		$form->add('Button')->set('Select All')->js('click',$social_user_grid->js()->atk4_checkboxes('select_all'));
-		$form->add('Button')->set('Select None')->js('click',$social_user_grid->js()->atk4_checkboxes('unselect_all'));
+		$all_btn=$form->add('Button')->set('All');
+		$nne_btn =$form->add('Button')->set('None')->js('click',$social_user_grid->js()->atk4_checkboxes('unselect_all'));
+		$reset_btn=$form->add('Button')->set(array('Reset','swatch'=>'red'))->js('click',$social_users_col->js()->reload(array('xmarketingcampaign_campaigns_id'=>$_GET['xmarketingcampaign_campaigns_id'])));
+		$apply_btn=$form->add('Button')->set(array('Apply','swatch'=>'green'));
+		$apply_btn->js('click',$form->js()->submit());
 
+		$all_btn->js('click',array($social_user_grid->js()->atk4_checkboxes('select_all'),$apply_btn->js()->effect('bounce')));
 
 		if($form->isSubmitted()){
 			$campaign_id = $form['campaign_id'];
