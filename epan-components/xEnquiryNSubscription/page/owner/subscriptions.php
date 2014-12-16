@@ -168,14 +168,14 @@ class page_xEnquiryNSubscription_page_owner_subscriptions extends page_xEnquiryN
 
 			$g->addMethod('format_web_entries',function($g,$f)use($web_entries_vp){
 				// VP defined at top of init function
-				$g->current_row_html[$f]= '<a href="javascript:void(0)" onclick="'.$g->js()->univ()->frameURL('Web Entries',$this->api->url($web_entries_vp->getURL(),array('category_id'=>$g->model->id))).'">'.$g->current_row[$f].'</a>';
+				$g->current_row_html[$f]= '<a href="javascript:void(0)" onclick="'.$g->js()->univ()->frameURL('Web Entries',$g->api->url($web_entries_vp->getURL(),array('category_id'=>$g->model->id))).'">'.$g->current_row[$f].'</a>';
 			});
 
 			$g->addFormatter('web_entries','web_entries');
 
 			$g->addMethod('format_other_entries',function($g,$f)use($other_entries_vp){
 				// VP defined at top of init function
-				$g->current_row_html[$f]= '<a href="javascript:void(0)" onclick="'.$g->js()->univ()->frameURL('Web Entries',$this->api->url($other_entries_vp->getURL(),array('category_id'=>$g->model->id))).'">'.$g->current_row[$f].'</a>';
+				$g->current_row_html[$f]= '<a href="javascript:void(0)" onclick="'.$g->js()->univ()->frameURL('Web Entries',$g->api->url($other_entries_vp->getURL(),array('category_id'=>$g->model->id))).'">'.$g->current_row[$f].'</a>';
 			});
 
 			$g->addFormatter('other_entries','other_entries');
@@ -390,7 +390,7 @@ class page_xEnquiryNSubscription_page_owner_subscriptions extends page_xEnquiryN
 			}
 
 			$g->addMethod('format_preview',function($g,$f)use($preview_vp){
-				$g->current_row_html[$f]='<a href="javascript:void(0)" onclick="'. $g->js()->univ()->frameURL($g->model['email_subject'],$this->api->url($preview_vp->getURL(),array('newsletter_id'=>$g->model->id))) .'">'.$g->current_row[$f].'</a>';
+				$g->current_row_html[$f]='<a href="javascript:void(0)" onclick="'. $g->js()->univ()->frameURL($g->model['email_subject'],$g->api->url($preview_vp->getURL(),array('newsletter_id'=>$g->model->id))) .'">'.$g->current_row[$f].'</a>';
 			});
 			$g->addFormatter('name','preview');
 

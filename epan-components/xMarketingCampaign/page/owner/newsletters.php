@@ -90,7 +90,7 @@ class page_xMarketingCampaign_page_owner_newsletters extends page_xMarketingCamp
 			}
 
 			$g->addMethod('format_preview',function($g,$f)use($preview_vp){
-				$g->current_row_html[$f]='<a href="javascript:void(0)" onclick="'. $g->js()->univ()->frameURL($g->model['email_subject'],$this->api->url($preview_vp->getURL(),array('newsletter_id'=>$g->model->id))) .'">'.$g->current_row[$f].'</a>';
+				$g->current_row_html[$f]='<a href="javascript:void(0)" onclick="'. $g->js()->univ()->frameURL($g->model['email_subject'],$g->api->url($preview_vp->getURL(),array('newsletter_id'=>$g->model->id))) .'">'.$g->current_row[$f].'</a>';
 			});
 			$g->addFormatter('name','preview');
 

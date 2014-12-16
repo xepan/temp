@@ -192,12 +192,12 @@ class page_xMarketingCampaign_page_owner_socialcontents extends page_xMarketingC
 			$g->js('reload')->reload();
 
 			$g->addMethod('format_total_posts',function($g,$f)use($total_posts_vp){
-				$g->current_row_html[$f]= '<a href="javascript:void(0)" onclick="'.$g->js()->univ()->frameURL('Total Posts Of  "'.$g->model['name'].'"',$this->api->url($total_posts_vp->getURL(),array('socialpost_id'=>$g->model->id))).'">'.$g->current_row[$f].'</a>';
+				$g->current_row_html[$f]= '<a href="javascript:void(0)" onclick="'.$g->js()->univ()->frameURL('Total Posts Of  "'.$g->model['name'].'"',$g->api->url($total_posts_vp->getURL(),array('socialpost_id'=>$g->model->id))).'">'.$g->current_row[$f].'</a>';
 			});
 			$g->addFormatter('total_posts','total_posts');
 
 			$g->addMethod('format_preview',function($g,$f)use($preview_vp){
-				$g->current_row_html[$f]='<a href="javascript:void(0)" onclick="'. $g->js()->univ()->frameURL($g->model['name'],$this->api->url($preview_vp->getURL(),array('socialpost_id'=>$g->model->id))) .'">'.$g->current_row[$f].'</a>';
+				$g->current_row_html[$f]='<a href="javascript:void(0)" onclick="'. $g->js()->univ()->frameURL($g->model['name'],$g->api->url($preview_vp->getURL(),array('socialpost_id'=>$g->model->id))) .'">'.$g->current_row[$f].'</a>';
 			});
 			$g->addFormatter('name','preview');
 
