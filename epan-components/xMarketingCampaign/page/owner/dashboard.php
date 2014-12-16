@@ -41,7 +41,7 @@ class page_xMarketingCampaign_page_owner_dashboard extends page_xMarketingCampai
 		$grid = $v->add('Grid');
 		if($email_queue->loaded()){
 			$grid->addMethod('format_sentto',function($g,$f){
-				$subscription_model = $this->add('xEnquiryNSubscription/Model_Subscription');
+				$subscription_model = $g->add('xEnquiryNSubscription/Model_Subscription');
 				$subscription_model->addCondition('id',$g->model['subscriber_id']);
 				$subscription_model->tryLoadAny();
 				$sent_to = $subscription_model['email'];

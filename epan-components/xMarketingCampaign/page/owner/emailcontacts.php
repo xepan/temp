@@ -91,32 +91,32 @@ class page_xMarketingCampaign_page_owner_emailcontacts extends page_xMarketingCa
 			$crud->add_button->setIcon('ui-icon-plusthick');
 
 			$g->addMethod('format_total_phrases',function($g,$f)use($total_phrases_vp){
-				$g->current_row_html[$f]= '<a href="javascript:void(0)" onclick="'.$g->js()->univ()->frameURL('Phrases For "'.$g->model['name'].'"',$this->api->url($total_phrases_vp->getURL(),array('category_id'=>$g->model->id))).'">'.$g->current_row[$f].'</a>';
+				$g->current_row_html[$f]= '<a href="javascript:void(0)" onclick="'.$g->js()->univ()->frameURL('Phrases For "'.$g->model['name'].'"',$g->api->url($total_phrases_vp->getURL(),array('category_id'=>$g->model->id))).'">'.$g->current_row[$f].'</a>';
 			});
 			$g->addFormatter('total_phrases','total_phrases');
 
 			$g->addMethod('format_ungrabbed_phrases',function($g,$f)use($un_grabbed_phrases_vp){
-				$g->current_row_html[$f]= '<a href="javascript:void(0)" onclick="'.$g->js()->univ()->frameURL('Phrases For "'.$g->model['name'].'"',$this->api->url($un_grabbed_phrases_vp->getURL(),array('category_id'=>$g->model->id))).'">'.$g->current_row[$f].'</a>';
+				$g->current_row_html[$f]= '<a href="javascript:void(0)" onclick="'.$g->js()->univ()->frameURL('Phrases For "'.$g->model['name'].'"',$g->api->url($un_grabbed_phrases_vp->getURL(),array('category_id'=>$g->model->id))).'">'.$g->current_row[$f].'</a>';
 			});
 			$g->addFormatter('un_grabbed_phrases','ungrabbed_phrases');
 
 			$g->addMethod('format_total_assos_emails',function($g,$f)use($total_assos_emails_vp){
-				$g->current_row_html[$f]= '<a href="javascript:void(0)" onclick="'.$g->js()->univ()->frameURL('Emails Associated in "'.$g->model['name'].'"',$this->api->url($total_assos_emails_vp->getURL(),array('category_id'=>$g->model->id))).'">'.$g->current_row[$f].'</a>';
+				$g->current_row_html[$f]= '<a href="javascript:void(0)" onclick="'.$g->js()->univ()->frameURL('Emails Associated in "'.$g->model['name'].'"',$g->api->url($total_assos_emails_vp->getURL(),array('category_id'=>$g->model->id))).'">'.$g->current_row[$f].'</a>';
 			});
 			$g->addFormatter('total_emails','total_assos_emails');
 
 			$g->addMethod('format_grabbed_emails',function($g,$f)use($grabbed_emails_vp){
-				$g->current_row_html[$f]= '<a href="javascript:void(0)" onclick="'.$g->js()->univ()->frameURL('Grabbed Emails in "'.$g->model['name'].'"',$this->api->url($grabbed_emails_vp->getURL(),array('category_id'=>$g->model->id))).'">'.$g->current_row[$f].'</a>';
+				$g->current_row_html[$f]= '<a href="javascript:void(0)" onclick="'.$g->js()->univ()->frameURL('Grabbed Emails in "'.$g->model['name'].'"',$g->api->url($grabbed_emails_vp->getURL(),array('category_id'=>$g->model->id))).'">'.$g->current_row[$f].'</a>';
 			});
 			$g->addFormatter('grabbed_emails','grabbed_emails');
 
 			$g->addMethod('format_other_email_by_other_apps',function($g,$f)use($other_email_by_other_apps_vp){
-				$g->current_row_html[$f]= '<a href="javascript:void(0)" onclick="'.$g->js()->univ()->frameURL('Other Emails in "'.$g->model['name'].'"',$this->api->url($other_email_by_other_apps_vp->getURL(),array('category_id'=>$g->model->id))).'">'.$g->current_row[$f].'</a>';
+				$g->current_row_html[$f]= '<a href="javascript:void(0)" onclick="'.$g->js()->univ()->frameURL('Other Emails in "'.$g->model['name'].'"',$g->api->url($other_email_by_other_apps_vp->getURL(),array('category_id'=>$g->model->id))).'">'.$g->current_row[$f].'</a>';
 			});
 			$g->addFormatter('emails_by_other_apps','other_email_by_other_apps');
 
 			$g->addMethod('format_bounced_emails',function($g,$f)use($bounced_email_vp){
-				$g->current_row_html[$f]= '<a href="javascript:void(0)" onclick="'.$g->js()->univ()->frameURL('Total Bounced Emails in "'.$g->model['name'].'"',$this->api->url($bounced_email_vp->getURL(),array('category_id'=>$g->model->id))).'">'.$g->current_row[$f].'</a>';
+				$g->current_row_html[$f]= '<a href="javascript:void(0)" onclick="'.$g->js()->univ()->frameURL('Total Bounced Emails in "'.$g->model['name'].'"',$g->api->url($bounced_email_vp->getURL(),array('category_id'=>$g->model->id))).'">'.$g->current_row[$f].'</a>';
 			});
 			$g->addFormatter('bounced_emails','bounced_emails');
 
