@@ -2,6 +2,11 @@
 
 class page_xMarketingCampaign_page_owner_campaigns extends page_xMarketingCampaign_page_owner_main{
 
+	function init(){
+		$this->rename('x');
+		parent::init();
+	}
+
 	function page_index(){
 		// parent::init();
 
@@ -57,7 +62,11 @@ class page_xMarketingCampaign_page_owner_campaigns extends page_xMarketingCampai
 		}
 
 		if($_GET['schedule']){
-			$this->api->redirect($this->api->url('./schedule',array('xmarketingcampaign_campaigns_id'=>$_GET['schedule'])));
+			$test_campaign_model= $this->add('xMarketingCampaign/Model_Campaign')->load($_GET['schedule']);
+			if($test_campaign_model['effective_start_date']=='CampaignDate')
+				$this->api->redirect($this->api->url('./campaignDate_based_schedule',array('xmarketingcampaign_campaigns_id'=>$_GET['schedule'])));
+			else
+				$this->api->redirect($this->api->url('./subscriptionDate_based_schedule',array('xmarketingcampaign_campaigns_id'=>$_GET['schedule'])));
 		}
 
 		$campaign_crud = $camp_col->add('CRUD');
@@ -79,9 +88,101 @@ class page_xMarketingCampaign_page_owner_campaigns extends page_xMarketingCampai
 
 		// $Campaign_crud->add('Controller_FormBeautifier');
 
-	}	
+	}
 
-	function page_schedule(){
+	function page_subscriptionDate_based_schedule(){
+		$page = $this->api->layout?$this->api->layout: $this;
+
+		$campaign_id = $this->api->stickyGET('xmarketingcampaign_campaigns_id');
+		$campaign = $this->add('xMarketingCampaign/Model_Campaign')->load($_GET['xmarketingcampaign_campaigns_id']);
+
+		$preview_newsletetr_vp = $this->add('VirtualPage');
+		$preview_newsletetr_vp->set(function($p){
+			$m=$p->add('xEnquiryNSubscription/Model_NewsLetter')->load($_GET['newsletter_id']);
+			$p->add('View')->set('Created '. $this->add('xDate')->diff(Carbon::now(),$m['created_at']) .', Last Modified '. $this->add('xDate')->diff(Carbon::now(),$m['updated_at']) )->addClass('atk-size-micro pull-right')->setStyle('color','#555');
+			$p->add('HR');
+			$p->add('View')->setHTML($m['matter']);
+		});
+
+		$cols = $page->add('Columns');
+		$emails_col = $cols->addColumn(6);
+		$calendar_col = $cols->addColumn(6);
+
+		// Subscriber Categories
+		$emails_col_cols = $emails_col->add('Columns');
+
+		$category_col = $emails_col_cols->addColumn(6);
+		$newsletter_col = $emails_col_cols->addColumn(6);
+
+		$category_col->add('H4')->set('Subscription Categories')->addClass('text-center');
+		$form=$category_col->add('Form');
+		$selected = $campaign->ref('xMarketingCampaign/CampaignSubscriptionCategory')->_dsql()->del('fields')->field('category_id')->getAll();
+		$form->addField('hidden','campaign_id')->set($_GET['xmarketingcampaign_campaigns_id']);
+		$campaign_category_select_field=$form->addField('hidden','categories')->set(json_encode(iterator_to_array(new RecursiveIteratorIterator(new RecursiveArrayIterator($selected)),false)));
+		$campaign_category_select_reset_field=$form->addField('hidden','reset')->set(json_encode(iterator_to_array(new RecursiveIteratorIterator(new RecursiveArrayIterator($selected)),false)));
+		
+		$category_grid = $category_col->add('Grid');
+		$category_grid->setModel('xEnquiryNSubscription/Model_SubscriptionCategories',array('name'));
+		$category_grid->template->tryDel('Pannel');
+
+		$category_grid->addSelectable($campaign_category_select_field);
+		$all_btn=$form->add('Button')->set(array('All'));
+		$none_btn=$form->add('Button')->set('None');
+		$reset_btn=$form->add('Button')->set(array('Reset','icon'=>'retweet','swatch'=>'red'));
+		$reset_btn->js('click',$category_col->js()->reload(array('xmarketingcampaign_campaigns_id'=>$_GET['xmarketingcampaign_campaigns_id'])));
+		$apply_btn=$form->add('Button')->set(array('Apply','swatch'=>'green'));
+		$apply_btn->js('click',$form->js()->submit());
+		
+		$all_btn->js('click',array($category_grid->js()->atk4_checkboxes('select_all'),$apply_btn->js()->effect('highlight')));
+		$none_btn->js('click',array($category_grid->js()->atk4_checkboxes('unselect_all'),$apply_btn->js()->effect('highlight')));
+		
+		if($form->isSubmitted()){
+			$campaign_id = $form['campaign_id'];
+			$categories = json_decode($form['categories'],true);
+
+			$campaign_m = $this->add('xMarketingCampaign/Model_Campaign')->load($campaign_id);
+			$campaign_m->ref('xMarketingCampaign/CampaignSubscriptionCategory')->deleteAll();
+
+			$assos = $this->add('xMarketingCampaign/Model_CampaignSubscriptionCategory');
+			foreach ($categories as $cat_id) {
+				$assos['campaign_id'] = $campaign_id;
+				$assos['category_id'] = $cat_id;
+				$assos->saveAndUnload();
+			}
+
+			$category_col->js()->reload(array('xmarketingcampaign_campaigns_id'=>$form['campaign_id']))->execute();
+		}
+
+		// News letters
+		$newsletter_col->add('H4')->set('News Letters')->addClass('text-center');
+
+		$form = $newsletter_col->add('Form');
+		$news_cat_field = $form->addField('DropDown','category','')->setEmptyText('All Categories');
+		$news_cat_field->setModel('xEnquiryNSubscription/NewsLetterCategory');
+		$news_cat_field->afterField()->add('Button')->set(array('','icon'=>'user'))->js('click',$form->js()->submit());
+
+		$newsletter_grid = $newsletter_col->add('xMarketingCampaign/View_DroppableNewsLetters',array('preview_vp'=>$preview_newsletetr_vp));
+
+		$newsletter_model =$this->add('xEnquiryNSubscription/Model_NewsLetter');
+		if($_GET['newsletter_category_filter_id']){
+			$newsletter_model->addCondition('category_id',$_GET['newsletter_category_filter_id']);
+		}
+		$newsletter_grid->setModel($newsletter_model,array('name','email_subject'));
+		$newsletter_grid->removeColumn('email_subject');
+
+		if($form->isSubmitted()){
+			$newsletter_grid->js()->reload(array('newsletter_category_filter_id'=>$form['category']))->execute();
+		}
+
+		$calendar_col->add('xMarketingCampaign/View_SubscriptionScheduler');
+		$calendar_col->add('View')->addClass('xxx');
+		$calendar_col->js(true)->_selector('.xxx')->xepan_subscriptioncalander();
+		// $calendar_col->js(true)->_selector('.xxx')->xepan_subscriptioncalander('render');
+		// $('.xyz').xepan_subscriptioncalander();
+
+	}
+
+	function page_campaignDate_based_schedule(){
 		$campaign_id = $this->api->stickyGET('xmarketingcampaign_campaigns_id');
 		$campaign = $this->add('xMarketingCampaign/Model_Campaign')->load($_GET['xmarketingcampaign_campaigns_id']);
 
@@ -156,8 +257,8 @@ class page_xMarketingCampaign_page_owner_campaigns extends page_xMarketingCampai
 		$calendar_col = $cols->addColumn(4);
 		$social_col = $cols->addColumn(4);
 
-		// Subscriber Categories
 
+		// Subscriber Categories
 		$emails_col_cols = $emails_col->add('Columns');
 
 		$category_col = $emails_col_cols->addColumn(6);
@@ -184,6 +285,24 @@ class page_xMarketingCampaign_page_owner_campaigns extends page_xMarketingCampai
 		
 		$all_btn->js('click',array($category_grid->js()->atk4_checkboxes('select_all'),$apply_btn->js()->effect('highlight')));
 		$none_btn->js('click',array($category_grid->js()->atk4_checkboxes('unselect_all'),$apply_btn->js()->effect('highlight')));
+		
+		if($form->isSubmitted()){
+			$campaign_id = $form['campaign_id'];
+			$categories = json_decode($form['categories'],true);
+
+			$campaign_m = $this->add('xMarketingCampaign/Model_Campaign')->load($campaign_id);
+			$campaign_m->ref('xMarketingCampaign/CampaignSubscriptionCategory')->deleteAll();
+
+			$assos = $this->add('xMarketingCampaign/Model_CampaignSubscriptionCategory');
+			foreach ($categories as $cat_id) {
+				$assos['campaign_id'] = $campaign_id;
+				$assos['category_id'] = $cat_id;
+				$assos->saveAndUnload();
+			}
+
+			$category_col->js()->reload(array('xmarketingcampaign_campaigns_id'=>$form['campaign_id']))->execute();
+		}
+
 		// News letters
 		$newsletter_col->add('H4')->set('News Letters')->addClass('text-center');
 
@@ -214,25 +333,6 @@ class page_xMarketingCampaign_page_owner_campaigns extends page_xMarketingCampai
 		$calendar_col->add('HR');
 		$CALANDER = $calendar_col->add('xMarketingCampaign/View_CampaignScheduler');
 		$CALANDER->setModel($campaign);
-
-
-
-		if($form->isSubmitted()){
-			$campaign_id = $form['campaign_id'];
-			$categories = json_decode($form['categories'],true);
-
-			$campaign_m = $this->add('xMarketingCampaign/Model_Campaign')->load($campaign_id);
-			$campaign_m->ref('xMarketingCampaign/CampaignSubscriptionCategory')->deleteAll();
-
-			$assos = $this->add('xMarketingCampaign/Model_CampaignSubscriptionCategory');
-			foreach ($categories as $cat_id) {
-				$assos['campaign_id'] = $campaign_id;
-				$assos['category_id'] = $cat_id;
-				$assos->saveAndUnload();
-			}
-
-			$category_col->js()->reload(array('xmarketingcampaign_campaigns_id'=>$form['campaign_id']))->execute();
-		}
 
 		// Social Section
 		$social_col_cols = $social_col->add('Columns');
