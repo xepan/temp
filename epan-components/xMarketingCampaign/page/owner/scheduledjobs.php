@@ -5,9 +5,11 @@ class page_xMarketingCampaign_page_owner_scheduledjobs extends page_xMarketingCa
 	function init(){
 		parent::init();
 
-		$tabs = $this->app->layout->add('Tabs');
-		$email_tab = $tabs->addTabURL('./email','<i class="fa fa-reorder"></i> Email Jobs');
-		$social_tab = $tabs->addTabURL('./social','<i class="fa fa-reorder"></i> Social Jobs');
+		$timeline = $this->app->layout->add('xMarketingCampaign/View_CampaignTimeline');
+		// $tabs = $this->app->layout->add('Tabs');
+		// $email_tab = $tabs->addTabURL('./email','<i class="fa fa-reorder"></i> Email Jobs');
+		// $social_tab = $tabs->addTabURL('./social','<i class="fa fa-reorder"></i> Social Jobs');
+
 
 
 

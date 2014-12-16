@@ -174,11 +174,8 @@ class page_xMarketingCampaign_page_owner_campaigns extends page_xMarketingCampai
 			$newsletter_grid->js()->reload(array('newsletter_category_filter_id'=>$form['category']))->execute();
 		}
 
-		$calendar_col->add('xMarketingCampaign/View_SubscriptionScheduler');
-		$calendar_col->add('View')->addClass('xxx');
-		$calendar_col->js(true)->_selector('.xxx')->xepan_subscriptioncalander();
-		// $calendar_col->js(true)->_selector('.xxx')->xepan_subscriptioncalander('render');
-		// $('.xyz').xepan_subscriptioncalander();
+		$CALANDER = $calendar_col->add('xMarketingCampaign/View_SubscriptionScheduler');
+		$CALANDER->setModel($campaign);
 
 	}
 
