@@ -9,6 +9,11 @@ class View_SubscriptionScheduler extends \View{
 
 	function init(){
 		parent::init();
+
+		if($_GET[$this->name.'_event_act']){
+			$this->js()->univ()->successMessage($_GET[$this->name.'_event_act']. ' ' . $_GET[$this->name.'_onday'])->execute();
+			exit;
+		}
 		
 	}
 
@@ -32,6 +37,10 @@ class View_SubscriptionScheduler extends \View{
 
 	function render(){
 		// $this->app->jui->addInclude('subscriptioncalendar');
+		$this->calendar_options['url']=$this->api->url(null);
+		$this->calendar_options['schedular_name']=$this->name;
+		$this->calendar_options['campaign_id']=$this->model->id;
+
 		$this->js(true)->xepan_subscriptioncalander($this->calendar_options);
 		parent::render();
 	}
