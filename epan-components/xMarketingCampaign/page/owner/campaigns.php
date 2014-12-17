@@ -75,9 +75,9 @@ class page_xMarketingCampaign_page_owner_campaigns extends page_xMarketingCampai
 		if(!$campaign_crud->isEditing()){
 			$campaign_crud->grid->addColumn('Button','schedule');
 
-			$campaign_crud->grid->addColumn('expander','AddEmails','Add Subscription Category');
-			$campaign_crud->grid->addColumn('expander','NewsLetterSubCampaign','News Letters To send');
-			$campaign_crud->grid->addColumn('expander','social_campaigns','Social Posts To Include');
+			// $campaign_crud->grid->addColumn('expander','AddEmails','Add Subscription Category');
+			// $campaign_crud->grid->addColumn('expander','NewsLetterSubCampaign','News Letters To send');
+			// $campaign_crud->grid->addColumn('expander','social_campaigns','Social Posts To Include');
 			// $btn=$campaign_crud->grid->addButton('Schedule Emails Now');
 			// $btn->setIcon('ui-icon-seek-end');
 			// $btn->js('click')->univ()->frameURL('Campaign Executing',$this->api->url('xMarketingCampaign_page_owner_campaignexec'));

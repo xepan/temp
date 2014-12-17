@@ -32,7 +32,7 @@ var xepan_subscriptionday = function(duration){
 var xepan_subscriptionevent = function(evt) { // Json Data of a event
 	this.event = evt;
 	this.render= function(parent){
-		$('<div class="label label-success added_event atk-padding-small" style="margin: 5px">'+this.event.title+'</div>').appendTo(parent).data('event',this.event);
+		$('<div class="label label-success added_event atk-padding-small pull-left" style="margin: 5px">'+this.event.title+'</div>').appendTo(parent).data('event',this.event);
 		// console.log('rendering '+ this.event.title);
 	};
 }
@@ -155,6 +155,7 @@ jQuery.widget("ui.xepan_subscriptioncalander",{
 		param[calendar_name+'_fromday']= from_day;
 		param['campaign_id']= self.options.campaign_id;
 
+		var success=true;
 		$.ajax({
 			url: self.options.url,
 			type: 'GET',
