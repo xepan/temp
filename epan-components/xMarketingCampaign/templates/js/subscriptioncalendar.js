@@ -7,6 +7,7 @@ var xepan_subscriptionday = function(duration){
 	this.addEvent= function(evt){ // xepan_subscriptionevent object
 		// CALL AJAX
 		this.events[evt.event._nid] = evt;// event_html.appendTo($(this.element).closest('.days'));
+		this.events[evt.event._nid] = evt;// event_html.appendTo($(this.element).closest('.days'));
 	};
 	this.hasEvent=function(evt){ // xepan_subscriptionevent object
 		return this.events[evt.event._nid] != undefined;
@@ -84,6 +85,7 @@ jQuery.widget("ui.xepan_subscriptioncalander",{
 				self.days[ui.sender.data('duration')].removeEvent(new xepan_subscriptionevent(ui.item.data('event')));
 				self.render(this.schedular);
 				self.inform('removeEvent',ui.sender.data('duration'),ui.item.data('event')._nid);
+				// console.log(ui.sender.data('duration'));
 				ui.item.remove();
 			}
 		});
