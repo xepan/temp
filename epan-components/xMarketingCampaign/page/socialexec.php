@@ -14,8 +14,9 @@ class page_xMarketingCampaign_page_socialexec extends Page{
 			$social_users = $campaign->ref('xMarketingCampaign/CampaignSocialUser');
 
 			foreach ($social_users as $junk) {
-				$social_app = $social_users->ref('config_id')->get('social_app');
-				$this->add('xMarketingCampaign/Controller_SocialPosters_'.$social_app)->postSingle($social_users,$all_postable_contents->ref('socialpost_id'),$post_in_groups=true, $groups_posted=array(),$under_campaign_id=$all_postable_contents['campaign_id']);
+				$config = $social_users->ref('config_id');
+				$social_app = $config->get('social_app');
+				$this->add('xMarketingCampaign/Controller_SocialPosters_'.$social_app)->postSingle($social_users,$all_postable_contents->ref('socialpost_id'),$config['post_in_groups', $groups_posted=array(),$under_campaign_id=$all_postable_contents['campaign_id']);
 			}	
 			$all_postable_contents['is_posted']=true;
 			$all_postable_contents->saveAndUnload();

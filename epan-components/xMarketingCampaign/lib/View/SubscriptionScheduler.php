@@ -93,8 +93,6 @@ class View_SubscriptionScheduler extends \View{
 
 	function RemoveEvent($newsletter_id,$on_day){
 
-		throw new \Exception("o".$_GET[$this->name.'_fromday']." act =".$_GET[$this->name.'_event_act']." event id=".$_GET[$this->name.'_event_id']." on day=".$_GET[$this->name.'_onday']);
-		
 		$campaign_newsletter_model = $this->add('xMarketingCampaign/Model_CampaignNewsLetter');
 		$campaign_newsletter_model->addCondition('campaign_id',$_GET['campaign_id']);
 		$campaign_newsletter_model->addCondition('newsletter_id',$newsletter_id);

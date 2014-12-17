@@ -8,6 +8,7 @@ var xepan_subscriptionday = function(duration){
 		// CALL AJAX
 		this.events[evt.event._nid] = evt;// event_html.appendTo($(this.element).closest('.days'));
 		this.events[evt.event._nid] = evt;// event_html.appendTo($(this.element).closest('.days'));
+		return evt;
 	};
 	this.hasEvent=function(evt){ // xepan_subscriptionevent object
 		return this.events[evt.event._nid] != undefined;
@@ -20,8 +21,7 @@ var xepan_subscriptionday = function(duration){
 	
 	this.render= function(parent){
 		console.log('day rendered '+ this.duration);
-		day_obj = $('<div class="days clearfix panel panel-default atk-padding-small"></div>').appendTo($(parent)).data('duration',this.duration);
-
+		day_obj = $('<div class="days clearfix panel panel-default atk-padding-small day-'+this.duration+'"></div>').appendTo($(parent)).data('duration',this.duration);
 		duration_title = $('<div class="atk-size-tera pull-left panel panel-default atk-padding-large">'+this.duration+'</div>').appendTo(day_obj);
 		$.each(this.events, function(index, e) {
 			e.render(day_obj);
@@ -50,19 +50,21 @@ jQuery.widget("ui.xepan_subscriptioncalander",{
 		events: {}, // User send json for all days and events from database as initialization of widget
 		url: '',
 		schedular_name:'',
-		campaign_id:''
+		campaign_id:'',
+		height:'400px'
 	},
 
 	_create: function(){
 		var self=this;
 		this.add_day_inp = $('<input type="number" class="input"/>').appendTo(this.element);//.spinner();
 		this.add_day_btn = $('<button class="btn btn-default">Add Day</button>').appendTo(this.element);
-		this.trash = $('<div class="days"></div>').addClass('fa fa-trash fa-4x').appendTo(this.element).css('width','50px').css('height','50px').css('border','1px solid gray');
 		this.schedular = $('<div></div>').appendTo(this.element);
-		this.schedular.addClass('well');
+		this.trash = $('<div class="days pull-right"></div>').addClass('ui-corner-all').prependTo(this.schedular).css('width','50px').css('background-color','red').css('height',this.options.height);
+		this.schedular = $('<div></div>').appendTo(this.schedular);
+		this.schedular.addClass('well well-sm').css('max-height',this.options.height).css('overflow-y','scroll');
 
 		this.add_day_btn.bind('click', undefined, function(event) {
-			var inp = self.add_day_inp.val();
+			var inp = parseInt(self.add_day_inp.val());
 			if(!inp){
 				$(self.add_day_inp).effect('highlight');
 				return;
@@ -70,7 +72,6 @@ jQuery.widget("ui.xepan_subscriptioncalander",{
 
 			if(self.days[inp]){
 				self.add_day_inp.effect('shake');
-				self.days[inp].effect('highlight').effect('bounce');
 				return;	
 			}
 
@@ -82,10 +83,10 @@ jQuery.widget("ui.xepan_subscriptioncalander",{
 		this.trash.sortable({
 			connectWith: ".days",
 			receive: function(event,ui){
+				var duration = ui.sender.data('duration');
 				self.days[ui.sender.data('duration')].removeEvent(new xepan_subscriptionevent(ui.item.data('event')));
-				self.render(this.schedular);
-				self.inform('removeEvent',ui.sender.data('duration'),ui.item.data('event')._nid);
-				// console.log(ui.sender.data('duration'));
+				// self.render(this.schedular);
+				self.inform('removeEvent',duration,ui.item.data('event')._nid);
 				ui.item.remove();
 			}
 		});
@@ -136,8 +137,9 @@ jQuery.widget("ui.xepan_subscriptioncalander",{
 				drop: function(event, ui){
 					if(!ui.helper.is('.added_event')){
 						if(!day.hasEvent(new xepan_subscriptionevent(ui.helper.data('event')))){
-							day.addEvent(new xepan_subscriptionevent(ui.helper.data('event')));
-							self.render();
+							new_evt=day.addEvent(new xepan_subscriptionevent(ui.helper.data('event')));
+							new_evt.render($('.day-'+day.duration));
+							// $('.day-'+ day.duration).scrollTop();
 							self.inform('addEvent',day.duration,ui.helper.data('event')._nid);
 						}
 					}
@@ -158,6 +160,9 @@ jQuery.widget("ui.xepan_subscriptioncalander",{
 		param['campaign_id']= self.options.campaign_id;
 
 		var success=true;
+		var cogs=$('<div id="banner-loader" class="atk-banner atk-cells atk-visible"><div class="atk-cell atk-align-center atk-valign-middle"><div class="atk-box atk-inline atk-size-zetta atk-banner-cogs"></div></div></div>');
+        cogs.appendTo('body');
+
 		$.ajax({
 			url: self.options.url,
 			type: 'GET',
@@ -172,6 +177,7 @@ jQuery.widget("ui.xepan_subscriptioncalander",{
 			console.log("error");
 		})
 		.always(function() {
+			cogs.remove();
 			console.log("complete");
 		});
 		
