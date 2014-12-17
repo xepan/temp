@@ -10,8 +10,12 @@ class View_SubscriptionScheduler extends \View{
 	function init(){
 		parent::init();
 
-		if($_GET[$this->name.'_event_act']){
-			$this->js()->univ()->successMessage($_GET[$this->name.'_event_act']. ' ' . $_GET[$this->name.'_onday'])->execute();
+		if($func = $_GET[$this->name.'_event_act']){
+			// throw new \Exception("event_act=".$_GET[$this->name.'_event_act']."event_id=".$_GET[$this->name.'_event_id']."ondate=".$_GET[$this->name.'_onday']."fromdate=".$_GET[$this->name.'_fromday']."campaign_id=".$_GET['campaign_id']);
+			if($this->$func($_GET[$this->name.'_event_id'],$_GET[$this->name.'_onday']))		
+				$this->js()->univ()->successMessage($_GET[$this->name.'_event_act']. ' ' . $_GET[$this->name.'_onday'])->execute();
+			else
+				$this->js()->univ()->errorMessage($_GET[$this->name.'_event_act']. 'not save on ' . $_GET[$this->name.'_onday'])->execute();
 			exit;
 		}
 		
@@ -43,6 +47,65 @@ class View_SubscriptionScheduler extends \View{
 
 		$this->js(true)->xepan_subscriptioncalander($this->calendar_options);
 		parent::render();
+	}
+
+	//Subscription Campaign Add Event 
+	function AddEvent($newsletter_id,$on_day){
+		$campaign = $this->add('xMarketingCampaign/Model_Campaign')->load($_GET['campaign_id']);
+		$campaign_start_date = strtotime($campaign['starting_date']);
+		$campaign_end_date = strtotime($campaign['ending_date']);
+		$duration = $on_day;
+
+		switch ($campaign['effective_start_date']) {
+			case 'SubscriptionDate':
+				$campaign_newsletter_model = $this->add('xMarketingCampaign/Model_CampaignNewsLetter');
+				if(!$campaign_newsletter_model->isExist($newsletter_id,$_GET['campaign_id'],$duration))
+					return $campaign_newsletter_model->createNew($newsletter_id,$_GET['campaign_id'],$duration);
+				
+			break;
+
+			case 'CampaignDate':	
+				$s=array();
+				$s[]= $this->js()->fullCalendar('removeEvents',array($_GET[$this->name.'_event_jsid']));
+				$s[]= $this->js()->univ()->errorMessage('Campaign start from Subscription Date ');
+				echo implode(";", $s);
+				break;		
+		}
+	}
+
+	//Subscription Campaign Move Event
+	function MoveEvent($newsletter_id,$on_day){
+		$from_day = $_GET[$this->name.'_fromday'];
+		$campaign = $this->add('xMarketingCampaign/Model_Campaign')->load($_GET['campaign_id']);	
+		$campaign_start_date = strtotime($campaign['starting_date']);
+		$campaign_end_date = strtotime($campaign['ending_date']);		
+		
+		if($campaign['effective_start_date'] == "SubscriptionDate"){
+			$campaign_newsletter_model = $this->add('xMarketingCampaign/Model_CampaignNewsLetter');
+			if($campaign_newsletter_model->isExist($newsletter_id,$_GET['campaign_id'],$from_day)){
+				$campaign_newsletter_model['duration'] = $on_day;
+				$campaign_newsletter_model->saveAndUnload();
+				return true;
+			}
+		}
+
+	}
+
+	function RemoveEvent($newsletter_id,$on_day){
+
+		throw new \Exception("o".$_GET[$this->name.'_fromday']." act =".$_GET[$this->name.'_event_act']." event id=".$_GET[$this->name.'_event_id']." on day=".$_GET[$this->name.'_onday']);
+		
+		$campaign_newsletter_model = $this->add('xMarketingCampaign/Model_CampaignNewsLetter');
+		$campaign_newsletter_model->addCondition('campaign_id',$_GET['campaign_id']);
+		$campaign_newsletter_model->addCondition('newsletter_id',$newsletter_id);
+		$campaign_newsletter_model->addCondition('duration',$on_day);
+		$campaign_newsletter_model->tryLoadAny();
+		if($campaign_newsletter_model->loaded()){
+			$campaign_newsletter_model->delete();
+			return true;
+		}
+
+		return false;
 	}
 
 	function defaultTemplate(){
