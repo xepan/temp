@@ -6,15 +6,22 @@ class page_componentBase_page_owner_main extends page_base_owner {
 	public $component_name;
 
 	function init() {
-		parent::init();
-
-
 		$class = get_class( $this );
 		preg_match( '/page_(.*)_page_(.*)/', $class, $match );
 
 		$this->component_namespace = $match[1];
 		$mp=$this->add('Model_MarketPlace')->loadBy('namespace',$this->component_namespace);
 		$this->component_name = $mp['name'];
+
+		// Parent page is now also having component_namespace and component_name if SET
+		parent::init();
+
+
+		// Check for Autheticity of current user to use this page base
+		if(!$this->api->auth->model->isAllowedApp($mp->ref('InstalledComponents')->tryLoadAny()->get('id'))){
+			$this->api->redirect('owner/not-allowed');
+			exit;
+		}
 
 		$this->app->pathfinder->base_location->addRelativeLocation(
 		    'epan-components/'.$this->component_namespace, array(

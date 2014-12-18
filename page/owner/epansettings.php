@@ -2,6 +2,13 @@
 
 class page_owner_epansettings extends page_base_owner {
 	public $tabs;
+
+	function init(){
+		parent::init();
+		if(!$this->api->auth->model->isGeneralSettingsAllowed())
+			$this->api->redirect('owner/not-allowed');
+	}
+
 	function page_index(){
 		// parent::init();
 

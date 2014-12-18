@@ -15,7 +15,7 @@ class page_owner_epanpages extends page_base_owner {
 
 		$this->add( 'H3' )->setHTML('<i class="fa fa-files-o"></i> '.  strtoupper($this->api->current_website['name']) . " :: Pages <small>Pages and snapshots for your current website / application </small>" );
 
-		$crud = $this->add('CRUD');
+		$crud = $this->app->layout->add('CRUD');
 		
 		if($f=$crud->form){
 			$duplicate_field = $f->addField('dropdown','duplicate_content_from');

@@ -6065,3 +6065,7 @@ th {
   padding-left: 0 !important;
   padding-right: 0 !important;
 }
+
+input[readonly], div.atk-form-field-readonly{
+  background: none !important;
+}

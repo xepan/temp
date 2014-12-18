@@ -6,6 +6,9 @@ class Model_InstalledComponents extends Model_Table {
 		parent::init();
 
 		$this->hasOne('Epan','epan_id');
+		$this->addCondition('epan_id',$this->api->current_website->id);
+
+		
 		$this->hasOne('MarketPlace','component_id');
 		$this->addField('params')->system(true);
 		$this->addField('enabled')->type('boolean')->defaultValue(true);
@@ -26,6 +29,8 @@ class Model_InstalledComponents extends Model_Table {
 		$marketplace_j->addField('has_owner_modules');
 		$marketplace_j->addField('has_plugins');
 		$marketplace_j->addField('has_live_edit_app_page');
+
+		$this->hasMany('UserAppAccess','installed_app_id');
 
 		// $this->add('dynamic_model/Controller_AutoCreator');
 	}

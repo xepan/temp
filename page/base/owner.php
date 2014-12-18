@@ -11,10 +11,7 @@ class page_base_owner extends Page {
 			$this->api->template->tryDel('admin_template');
 		}
 
-		$user_model = $this->add('Model_Users')
-						->addCondition('type','<>','FrontEndUser')
-						->addCondition('is_active',true)
-						;
+		$user_model = $this->add('Model_User_FrontEnd');
 		$this->api->auth->setModel($user_model,'username','password');
 		$this->api->auth->addHook('updateForm',function($auth){
 			$auth->form->addClass('stacked');
@@ -44,6 +41,13 @@ class page_base_owner extends Page {
 		foreach ($installed_components as $comp) {
 			$components_m->addItem(array($comp['name'],'icon'=>'right-hand'),$comp['namespace'].'_page_owner_dashboard');
 		}
+
+		// Pages and Templates
+
+		$web_designing_menu = $m->addMenu('WebSite');
+		$web_designing_menu->addItem(array('Epan Pages','icon'=>'gauge-1'),'owner/epanpages');		
+		$web_designing_menu->addItem(array('Epan Templates','icon'=>'gauge-1'),'owner/epantemplates');		
+		
 
 	}
 

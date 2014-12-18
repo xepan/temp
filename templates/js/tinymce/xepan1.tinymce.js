@@ -41,7 +41,7 @@ $.each({
             // toolbar2: "print preview media | forecolor backcolor emoticons",
             image_advtab: true,
 
-            content_css: 'templates/default/css/epan.css',
+            content_css: 'templates/css/epan.css',
             setup: function(ed) {
                 ed.on("change", function(ed) {
                     tinyMCE.triggerSave();

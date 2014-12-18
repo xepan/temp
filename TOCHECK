@@ -42,6 +42,10 @@ grid html /Pannel not proper
 
 exception page is gettingits css from css.agiletoolkit ????
 
+Bind Conditional Show not working
+
+
+Auth basic 307 line.. new Instance must not be there as no condition on models are reapplied here
 
 =============== TODO
 xEnquiryNSubs .. is Ok count and unsubscribe or delete all ! is_ok .. how to ??

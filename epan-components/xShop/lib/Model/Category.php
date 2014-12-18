@@ -46,7 +46,7 @@ class Model_Category extends \Model_Table{
 	function beforeSave($m){
 
 		$old_cat_model=$this->add('xShop/Model_Category');
-		$old_cat_model->setOrder('order','desc');
+		$old_cat_model->setOrder('order','desc'); // Display order in grid
 		$old_cat_model->tryLoadAny();
 		if(!$m->loaded())
 			$m['order']=$old_cat_model['order']+1;

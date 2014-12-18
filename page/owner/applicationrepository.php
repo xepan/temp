@@ -2,8 +2,12 @@
 
 class page_owner_applicationrepository extends page_base_owner {
 	public $add_component_btn;
+
 	function init(){
 		parent::init();
+
+		if(!$this->api->auth->model->isApplicationManagementAllowed())
+			$this->api->redirect('owner/not-allowed');
 
 		$this->app->layout->add('H3')->setHtml('<i class="glyphicon glyphicon-list-alt"></i> xEpan Components Repository <small>Search and install from components available </small>');
 
