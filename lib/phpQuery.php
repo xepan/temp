@@ -2958,7 +2958,7 @@
 		public function html($html = null, $callback1 = null, $callback2 = null, $callback3 = null) {
 			if (isset($html)) {
 				// INSERT
-				$nodes =& $this->documentWrapper->import($html);
+				$nodes = $this->documentWrapper->import($html);
 				$this->empty();
 				foreach($this->stack(1) as $alreadyAdded => $node) {
 					// for now, limit events for textarea

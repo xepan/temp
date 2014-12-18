@@ -41,7 +41,7 @@ class Plugins_ImplementIntelligence extends \componentBase\Plugin {
 	}
 
 
-  	function Plugins_SelectIBlock($obj,$page){
+  	function Plugins_SelectIBlock($obj,&$page){
 
   		if(strpos($this->api->page, 'owner') !== false or strpos($this->api->page, 'install') !== false ) return;
 
@@ -95,7 +95,7 @@ class Plugins_ImplementIntelligence extends \componentBase\Plugin {
 
 		include_once (getcwd().'/lib/phpQuery.php');
 		$pq = new \phpQuery();
-		$doc =& $pq->newDocument(trim($page['content']));
+		$doc = $pq->newDocument(trim($page['content']));
 
 		// remove inner Iblocks first 
 		foreach ($doc['[component_type=IntelligentBlock] [component_type=IntelligentBlock]'] as $inners) {
