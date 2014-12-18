@@ -50,8 +50,8 @@ class Frontend extends ApiFrontend{
 
 	function init() {
 		parent::init();
+		$this->requires( 'atk', '4.2.0' );
 
-		// A lot of the functionality in Agile Toolkit requires jUI
 		if ( !file_exists('config-default.php') ) {
 			// Not installed and installation required
 			// TODO : check security issues
@@ -61,7 +61,6 @@ class Frontend extends ApiFrontend{
 			$this->setConfig($config);
 			$this->add( 'jUI' );
 
-			// A lot of the functionality in Agile Toolkit requires jUI
 			$this->js()
 			// ->_load( 'atk4_univ' )
 			->_load( 'ui.atk4_notify' )
@@ -72,15 +71,18 @@ class Frontend extends ApiFrontend{
 			// already installed connect to provided settings and go on
 			$this->dbConnect();
 
-			$this->requires( 'atk', '4.2.0' );
-
+			$this->addLocation(array(
+				'js'=>'atk4/public/atk4/js'
+				))->setParent( $this->pathfinder->base_location );
 
 			$this->addLocation(array(
 					'addons'=>array( 'epan-addons', 'epan-components', 'atk4-addons' ) )
 			)->setParent( $this->pathfinder->base_location );
 
 			$this->addLocation(array(
-	            'page'=>array('epan-components','epan-addons')
+	            'page'=>array('epan-components','epan-addons'),
+	            'js'=>array('templates/js'),
+	            'css'=>array('templates/js','templates/css'),
 	        ))->setParent($this->pathfinder->base_location);
 
 			$this->add( 'jUI' );

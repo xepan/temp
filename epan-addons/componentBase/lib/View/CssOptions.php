@@ -8,12 +8,13 @@ class View_CssOptions extends \View{
 	}
 
 	function render(){
-		$this->api->jquery->addStaticStyleSheet('pick-a-color-1.1.8.min');
+		$this->api->jquery->addStaticStyleSheet('utilities/colorpicker/pick-a-color-1.1.8.min');
 		$this->js()
-			->_load('tinycolor-0.9.15.min')
-			->_load('pick-a-color-1.1.8.min')
+			->_load('utilities/colorpicker/tinycolor-0.9.15.min')
+			->_load('utilities/colorpicker/pick-a-color-1.1.8.min')
+			->_load('utilities/colorpicker/colorpicker');
 			;
-		$this->js(true)->_selector('.epan-color-picker')->pickAColor();
+		$this->js(true)->_selector('.epan-color-picker')->univ()->xEpanColorPicker();
 		parent::render();
 	}
 

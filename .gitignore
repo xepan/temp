@@ -1,0 +1,11 @@
+epans
+epan-components/*
+!epan-components/baseElements/
+*.zip
+config-default.php
+/nbproject/private/
+nbproject
+*.orig
+ftpsync.settings
+_atk4
+_js

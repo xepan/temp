@@ -51,7 +51,7 @@ class page_index extends Page {
 					'templates/js/popline/css/normalize.css',
 					'templates/js/popline/themes/default.css',
 					'templates/font-awesome/css/font-awesome.min.css',
-					'templates/js/fontselect.css',
+					'templates/js/google-fonts/fontselect.css',
 					'elfinder/css/elfinder.min.css',
 					'elfinder/css/theme.css',
 				);
@@ -63,7 +63,7 @@ class page_index extends Page {
 			$scripts =array(
 					'templates/js/shortcut.js',
 					'templates/js/popline/build/jquery.popline.min.js',
-					'templates/js/jquery.fontselect.js',
+					'templates/js/google-fonts/jquery.fontselect.js',
 					'elfinder/js/elfinder.min.js',
 				);
 
