@@ -34,6 +34,12 @@ class page_base_owner extends Page {
         // $admin_m->addSeparator();
         $admin_m->addItem(array('Logout','icon'=>'logout'),'/logout');
 
+		// Pages and Templates
+		$web_designing_menu = $m->addMenu('WebSite');
+		$web_designing_menu->addItem(array('Epan Pages','icon'=>'gauge-1'),'owner/epanpages');		
+		$web_designing_menu->addItem(array('Epan Templates','icon'=>'gauge-1'),'owner/epantemplates');		
+        
+
         $installed_components = $this->add('Model_InstalledComponents');
 		$installed_components->addCondition('epan_id',$this->api->current_website->id);
 
@@ -42,11 +48,7 @@ class page_base_owner extends Page {
 			$components_m->addItem(array($comp['name'],'icon'=>'right-hand'),$comp['namespace'].'_page_owner_dashboard');
 		}
 
-		// Pages and Templates
 
-		$web_designing_menu = $m->addMenu('WebSite');
-		$web_designing_menu->addItem(array('Epan Pages','icon'=>'gauge-1'),'owner/epanpages');		
-		$web_designing_menu->addItem(array('Epan Templates','icon'=>'gauge-1'),'owner/epantemplates');		
 		
 
 	}
