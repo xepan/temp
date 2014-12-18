@@ -10,22 +10,43 @@ class page_owner_users extends page_base_owner {
 
 	function page_index(){
 
-		$this->app->layout->add( 'H3' )->setHTML( "<i class='fa fa-users'></i> User Management <small>Manage your website / applications registered users</small>" );
+		$this->app->layout->template->trySetHTML('page_title',"<i class='fa fa-users'></i> User Management <small>Manage your website / applications registered users</small>");
+		
+		//User Badges
+		$bg=$this->app->layout->add('View_BadgeGroup');
+		$data=$this->add('Model_Users')->count()->getOne();
+		$v=$bg->add('View_Badge')->set('Total Users')->setCount($data)->setCountSwatch('ink');
+		
+		$data=$this->add('Model_Users')->addCondition('type',50)->count()->getOne();
+		if($data!= 0)
+			$v=$bg->add('View_Badge')->set('Total Front End Users')->setCount($data)->setCountSwatch('ink');
+		
+		$data=$this->add('Model_Users')->addCondition('type',80)->count()->getOne();
+		if($data!= 0)
+			$v=$bg->add('View_Badge')->set('Total Back End Users')->setCount($data)->setCountSwatch('ink');
+		
+		$data=$this->add('Model_Users')->addCondition('type',100)->count()->getOne();
+		if($data!= 0)
+			$v=$bg->add('View_Badge')->set('Total Super End Users')->setCount($data)->setCountSwatch('ink');
+		
+		$data=$this->add('Model_Users')->addCondition('is_active',false)->count()->getOne();
+		if($data!= 0)
+			$v=$bg->add('View_Badge')->set('Total Un-active Users')->setCount($data)->setCountSwatch('red');
+
+		//end of Badges
 
 		$crud=$this->app->layout->add('CRUD_User',array('option_page'=>$this->api->url('./options'),'config_page'=>$this->api->url('./customfieldconfig'),'app_page'=>$this->api->url('./xyz')));
 
 		$usr=$this->add('Model_Users');
 		$usr->addCondition('epan_id',$this->api->current_website->id);
-		
+		$usr->getElement('epan')->destroy();
 		$crud->setModel($usr);
-		
+
 	}
 
 	function page_xyz(){
 		$this->api->stickyGET('users_id');
 		$user = $this->add('Model_Users')->load($_GET['users_id']);
-
-
 
 		$install_app = $this->add('Model_InstalledComponents');
 		$grid = $this->add('Grid');

@@ -13,7 +13,7 @@ class page_owner_epanpages extends page_base_owner {
 			exit;
 		}
 
-		$this->add( 'H3' )->setHTML('<i class="fa fa-files-o"></i> '.  strtoupper($this->api->current_website['name']) . " :: Pages <small>Pages and snapshots for your current website / application </small>" );
+		$this->app->layout->template->trySetHTML('page_title','<i class="fa fa-files-o"></i> '.  strtoupper($this->api->current_website['name']) . " :: Pages <small>Pages and snapshots for your current website / application </small>" );
 
 		$crud = $this->app->layout->add('CRUD');
 		
@@ -31,7 +31,7 @@ class page_owner_epanpages extends page_base_owner {
 			$epan_page_model->getElement('parent_page_id')->getModel()->addCondition('id','<>',$crud->id);
 		}
 
-		$crud->setModel($epan_page_model,array('template_id','parent_page_id','name','menu_caption','title','description','keywords','access_level'),array('template','parent_page_id','name','menu_caption','title','description','keywords','access_level'));
+		$crud->setModel($epan_page_model,array('template_id','parent_page_id','name','menu_caption','title','description','keywords','access_level'),array('template','parent_page_id','name','menu_caption','access_level'));
 
 		if($crud->isEditing()){
 			$f=$crud->form;
@@ -54,8 +54,8 @@ class page_owner_epanpages extends page_base_owner {
 			}
 		}
 
-		if($g=$crud->grid){
-
+		if(!$crud->isEditing()){
+			$g=$crud->grid;
 			$g->addMethod('format_disableHomeDelete',function($grid,$field){
 				if($grid->model['name']==$grid->api->getConfig('default_page')){
 					$grid->current_row_html[$field]='';
@@ -67,9 +67,12 @@ class page_owner_epanpages extends page_base_owner {
 			$g->addColumn('Expander','snapshots');
 			$g->addClass('pages_grid');
 			$g->js('reload_me')->reload();
+			$g->addPaginator(100);
+			$g->addQuickSearch(array('name','menu_caption'));
+			$g->add_sno();
 		}
 
-		$crud->add('Controller_FormBeautifier');
+		// $crud->add('Controller_FormBeautifier');
 
 	}
 

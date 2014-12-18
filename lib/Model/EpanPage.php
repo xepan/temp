@@ -17,12 +17,12 @@ class Model_EpanPage extends Model_Table {
 		$f->group='tmp~6';
 		$f->icon='fa fa-clipboard~blue';
 
-		$f=$this->addField('name')->caption('Url')->group('a~4~<i class="fa fa-link"></i> Page Access Details'); // Menu name for this page default is 'Home'
+		$f=$this->addField('name')->caption('Url')->group('a~4~<i class="fa fa-link"></i> Page Access Details')->sortable(true); // Menu name for this page default is 'Home'
 		$f->icon="fa fa-anchor~red";
-		$f=$this->addField('menu_caption')->caption('Menu')->hint('Leave blank if you don\'t want page in menus')->group('a~4'); // Menu name for this page default is 'Home'
+		$f=$this->addField('menu_caption')->caption('Menu')->hint('Leave blank if you don\'t want page in menus')->group('a~4')->sortable(true); // Menu name for this page default is 'Home'
 		$f->icon = 'fa fa-eye~blue';
 
-		$f=$this->addField('access_level')->setValueList(array(0=>'Public',50=>'Registered User',80=>'Back End User',100=>'Super user'))->defaultValue('public')->mandatory(true)->group('a~4');
+		$f=$this->addField('access_level')->setValueList(array(0=>'Public',50=>'Registered User',80=>'Back End User',100=>'Super user'))->defaultValue('public')->mandatory(true)->group('a~4')->sortable(true);
 		$f->icon= 'fa fa-unlock-alt~red';
 		$this->addField('is_template')->type('boolean')->defaultValue(false);
 

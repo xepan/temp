@@ -8,6 +8,12 @@ class CRUD_User extends CRUD{
 
 	function init(){
 		parent::init();
+
+		if(!$this->isEditing()){
+			$this->grid->addQuickSearch(array('name','username','email'));
+			$this->grid->addPaginator(100);
+			$this->grid->add_sno();
+		}
 	}
 
 	function recursiveRender(){
@@ -33,9 +39,7 @@ class CRUD_User extends CRUD{
 
 			$this->grid->addFormatter('edit','edit2');
 
-
 		}
-
 
 		parent::recursiveRender();
 	}
@@ -50,7 +54,6 @@ class CRUD_User extends CRUD{
 				$this->form->getElement('website_desinging')->destroy();
 			}
 		}
-
 		parent::render();
 	}
 
