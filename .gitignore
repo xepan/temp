@@ -1,5 +1,5 @@
 epans
-epan-components/*
+#epan-components/*
 !epan-components/baseElements/
 *.zip
 config-default.php
