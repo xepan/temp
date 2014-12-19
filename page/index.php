@@ -65,6 +65,7 @@ class page_index extends Page {
 					'templates/js/popline/build/jquery.popline.min.js',
 					'templates/js/google-fonts/jquery.fontselect.js',
 					'elfinder/js/elfinder.min.js',
+					'elfinder/js/jquery.dialogelfinder.js'
 				);
 
 			foreach ($scripts as $script_file) {
