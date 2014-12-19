@@ -23,7 +23,7 @@ class page_owner_save extends Page {
 			
 			include_once (getcwd().'/lib/phpQuery.php');
 			$pq = new \phpQuery();
-			$doc =& $pq->newDocument(trim($content));
+			$doc = $pq->newDocument(trim($content));
 			// include_once getcwd().'/lib/phpQuery.php';
 			// $doc = \phpQuery::newDocument( $content );
 

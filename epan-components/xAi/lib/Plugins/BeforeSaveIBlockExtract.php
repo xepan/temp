@@ -16,7 +16,7 @@ class Plugins_BeforeSaveIBlockExtract extends \componentBase\Plugin {
 		
 		include_once (getcwd().'/lib/phpQuery.php');
 		$pq = new \phpQuery();
-		$doc =& $pq->newDocument(trim($page['content']));
+		$doc = $pq->newDocument(trim($page['content']));
 
 		// include_once (getcwd().'/lib/phpQuery/phpQuery/phpQuery.php');
 		// $doc = \phpQuery::newDocument($page['content']);
