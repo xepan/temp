@@ -8,17 +8,16 @@ class Model_Category extends \Model_Table{
 	function init(){
 		parent::init();
 
-		//TODO for Mutiple Epan website
 		$this->hasOne('Epan','epan_id');
 		$this->addCondition('epan_id',$this->api->current_website->id);
-		$this->hasOne('xShop/CategoryGroup','categorygroup_id');
+		$this->hasOne('xShop/Application','application_id');
 
-		//Todo for category model with self loop of parent category
+		//Do for category model with self loop of parent category
 		$this->hasOne('xShop/ParentCategory','parent_id')->defaultValue('Null');
 
 		$f = $this->addField('name')->Caption('Category Name')->mandatory(true)->sortable(true)->group('a~6');
 		$f->icon = "fa fa-folder~red";
-		$f = $this->addField('order')->type('int')->hint('Greatest order number display first and only integer number require')->defaultValue(0)->sortable(true)->group('a~4');
+		$f = $this->addField('order_no')->type('int')->hint('Greatest order number display first and only integer number require')->defaultValue(0)->sortable(true)->group('a~4');
 		$f->icon = "fa fa-sort-amount-desc~blue";
 		$f = $this->addField('is_active')->type('boolean')->defaultValue(true)->group('a~2');
 		$f->icon = "fa fa-exclamation~blue";		
@@ -29,9 +28,10 @@ class Model_Category extends \Model_Table{
 		$f = $this->addField('description')->type('text')->display(array('form'=>'RichText'))->group('c~12');
 		$f->icon = "fa fa-pencil~blue";
 
-		//$this->addField('meta_title');
-		//$this->addField('meta_description')->type('text');
-		//$this->addField('meta_keywords');
+		$this->addField('meta_title');
+		$this->addField('meta_description')->type('text');
+		$this->addField('meta_keywords');
+
 		$this->hasMany('xShop/Category','parent_id',null,'SubCategories');
 		$this->hasMany('xShop/CategoryProduct','category_id');
 		
@@ -64,7 +64,7 @@ class Model_Category extends \Model_Table{
 			// else
 		$new_cat['name']=$this['name']."-(copy)";
 		$new_cat['parent_id']=$this['parent_id'];
-		$new_cat['categorygroup_id']=$this['categorygroup_id'];
+		$new_cat['application_id']=$this['application_id'];
 		$new_cat['description']=$this['description'];
 		$new_cat['meta_title']=$this['meta_title'];
 		$new_cat['meta_description']=$this['meta_description'];
@@ -86,6 +86,19 @@ class Model_Category extends \Model_Table{
 		$m->ref('xShop/CategoryProduct')->deleteAll();
 	}
 
+	function getActiveCategory($app_id){
+		$this->addCondition('application_id',$app_id);
+		$this->addCondition('is_active',true);
+		$this->tryLoadAny();
+		return $this;
+	}
+
+	function getUnActiveCategory($app_id){
+		$this->addCondition('application_id',$app_id);
+		$this->addCondition('is_active',false);
+		$this->tryLoadAny();
+		return $this;
+	}
 
 }
 

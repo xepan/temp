@@ -10,7 +10,7 @@ class page_xShop_page_owner_main extends page_componentBase_page_owner_main {
 		$xshop_m = $this->app->top_menu->addMenu($this->component_name);
 		$xshop_m->addItem(array('Dashboard','icon'=>'gauge-1'),'xShop_page_owner_dashboard');
 		$xshop_m->addItem(array('Shops & Blogs','icon'=>'gauge-1'),'xShop_page_owner_shopsnblogs');
-		$xshop_m->addItem(array('Category','icon'=>'gauge-1'),'xShop_page_owner_categorygroup');
+		$xshop_m->addItem(array('Category','icon'=>'gauge-1'),'xShop_page_owner_category');
 		$xshop_m->addItem(array('Product','icon'=>'gauge-1'),'xShop_page_owner_product');
 		$xshop_m->addItem(array('Manufacturer','icon'=>'gauge-1'),'xShop_page_owner_manufacturer');
 		$xshop_m->addItem(array('supplier','icon'=>'gauge-1'),'xShop_page_owner_supplier');
