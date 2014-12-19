@@ -186,18 +186,18 @@ class Frontend extends ApiFrontend{
 						$pq = new \phpQuery();
 						$doc = $pq->newDocument($current_template['content']);
 						
-						$content_divs = $doc['div:contains("{{Content}}")'];
+						$content_divs = $doc['div:contains("~~Content~~")'];
 						$i=0;
 						foreach($content_divs as $temp){
 							$i++;
 						}
 
 						if($i==0){
-							$current_template['content'] .= "{{Content}}";
+							$current_template['content'] .= "~~Content~~";
 						}
 
 
-						$current_template['content'] = str_replace("{{Content}}", '{$Content}', $current_template['content']);
+						$current_template['content'] = str_replace("~~Content~~", '{$Content}', $current_template['content']);
 						$shared_template = str_replace('{$Content}', $current_template['content'], $shared_template);	
 					}else{
 						$shared_template = str_replace('{$Content}', $current_template['content'], $shared_template);
