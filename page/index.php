@@ -45,7 +45,7 @@ class page_index extends Page {
 			$this->js()->_load('epan_live_edit');
 
 			$css=array(
-					'templates/css/compact.css',
+					// 'templates/css/compact.css',
 					'templates/css/epan_live.css',
 					// Popline
 					'templates/js/popline/css/normalize.css',
@@ -64,7 +64,7 @@ class page_index extends Page {
 					'templates/js/shortcut.js',
 					'templates/js/popline/build/jquery.popline.min.js',
 					'templates/js/google-fonts/jquery.fontselect.js',
-					'elfinder/js/elfinder.min.js',
+					'elfinder/js/elfinder.full.js',
 					'elfinder/js/jquery.dialogelfinder.js'
 				);
 

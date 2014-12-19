@@ -275,7 +275,7 @@ class page_xMarketingCampaign_page_owner_emailcontacts extends page_xMarketingCa
 			$grid = $p->add('Grid');
 			$grid->setModel($m,array('subscriber','last_updated_on','send_news_letters','unsubscribed_on','from_app'));
 			$grid->addPaginator(100);
-			$grid->addQuickSearch(array('name'));
+			$grid->addQuickSearch(array('subscriber'));
 			$grid->add_sno();
 
 		});	

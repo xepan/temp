@@ -12140,7 +12140,7 @@ elFinder.prototype.commands.upload = function() {
 				upload({input : input[0]});
 			});
 
-		button = $('<div class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"><span class="ui-button-text">'+fm.i18n('selectForUpload')+'</span></div>')
+		button = $('<div class="ui-button_removed ui-widget ui-state-default ui-corner-all ui-button-text-only"><span class="ui-button-text">'+fm.i18n('selectForUpload')+'</span></div>')
 			.append($('<form/>').append(input))
 			.hover(function() {
 				button.toggleClass(hover)
