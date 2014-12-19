@@ -27,7 +27,7 @@
   padding-top: 30px;
 }
 .component-outline {
-  outline: 1px dotted lightgray;
+  outline: 1px dotted lightgray !important;
 }
 .epan-frontend-editing-toolbar {
   width: 100%;
