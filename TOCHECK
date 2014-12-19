@@ -44,8 +44,9 @@ exception page is gettingits css from css.agiletoolkit ????
 
 Bind Conditional Show not working
 
-
 Auth basic 307 line.. new Instance must not be there as no condition on models are reapplied here
+
+Quicksearch on next tab grid gives error if no same field  (that has been searched in last) is also there on new page
 
 =============== TODO
 xEnquiryNSubs .. is Ok count and unsubscribe or delete all ! is_ok .. how to ??

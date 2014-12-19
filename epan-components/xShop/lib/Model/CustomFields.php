@@ -8,7 +8,7 @@ class Model_CustomFields extends \Model_Table{
 	function init(){
 		parent::init();
 
-		$this->hasOne('xShop/Product','product_id');
+		$this->hasOne('xShop/Item','item_id');
 		//TODO for Mutiple Epan website
 		$this->hasOne('Epan','epan_id');
 		$this->addCondition('epan_id',$this->api->current_website->id);
@@ -20,7 +20,7 @@ class Model_CustomFields extends \Model_Table{
 
 		$this->hasMany('xShop/CustomFieldValue','customefield_id');
 
-		// $this->add('dynamic_model/Controller_AutoCreator');
+		$this->add('dynamic_model/Controller_AutoCreator');
 	}
 }
 
