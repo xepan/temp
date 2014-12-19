@@ -58,46 +58,6 @@ class Grid extends Grid_Advanced{
         }
     }
 
-    function format_expander($field, $column)
-    {
-
-        $class = $this->columns[$field]['button_class'].' button_'.$field;
-        $icon = isset($this->columns[$field]['icon'])
-                    ? $this->columns[$field]['icon']
-                    : '';
-
-        if (!@$this->current_row[$field]) {
-            $this->current_row[$field] = $column['descr'];
-        }
-
-        // TODO:
-        // reformat this using Button, once we have more advanced system to
-        // bypass rendering of sub-elements.
-        // $this->current_row[$field] = $this->add('Button',null,false)
-        $key   = $this->name . '_' . $field . '_';
-        $id    = $key . $this->api->normalizeName($this->model->id);
-        $class = $key . 'expander';
-
-        @$this->current_row_html[$field] =
-            '<button type="button" '.
-                'class="'.$class.'" '.
-                'id="'.$id.'" '.
-                'rel="'.$this->api->url(
-                    $column['page'] ?: './'.$field,
-                    array(
-                        'expander' => $field,
-                        'expanded' => $this->name,
-                        'cut_page' => 1,
-                        // TODO: id is obsolete
-                        //'id' => $this->model->id,
-                        $this->columns[$field]['refid'].'_id' => $this->model->id
-                    )
-                ).'" '.
-            '>'.
-            $this->current_row[$field] . 
-            '</button>';
-    }
-
 	function recursiveRender(){
 		if($this->hasColumn('edit'))
 			$this->order->move('edit','last');

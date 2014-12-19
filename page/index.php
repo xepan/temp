@@ -45,7 +45,7 @@ class page_index extends Page {
 			$this->js()->_load('epan_live_edit');
 
 			$css=array(
-					'templates/css/compact.css',
+					// 'templates/css/compact.css',
 					'templates/css/epan_live.css',
 					// Popline
 					'templates/js/popline/css/normalize.css',
