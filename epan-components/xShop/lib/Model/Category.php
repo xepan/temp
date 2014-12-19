@@ -33,7 +33,7 @@ class Model_Category extends \Model_Table{
 		$this->addField('meta_keywords');
 
 		$this->hasMany('xShop/Category','parent_id',null,'SubCategories');
-		$this->hasMany('xShop/CategoryProduct','category_id');
+		$this->hasMany('xShop/CategoryItem','category_id');
 		
 		$parent_join = $this->leftJoin('xshop_categories','parent_id');
 				
@@ -83,7 +83,7 @@ class Model_Category extends \Model_Table{
 		}
 
 		// Delete category and its product associatations
-		$m->ref('xShop/CategoryProduct')->deleteAll();
+		$m->ref('xShop/CategoryItem')->deleteAll();
 	}
 
 	function getActiveCategory($app_id){
@@ -101,4 +101,3 @@ class Model_Category extends \Model_Table{
 	}
 
 }
-

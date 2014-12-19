@@ -34,14 +34,15 @@ class Model_Manufacturer extends \Model_Table {
 		
 		$f = $this->addField('description')->type('text')->display(array('form'=>'RichText'));
 		$f->icon = "fa fa-pencil~blue";
-		$this->hasMany('xShop/Product','manufacturer_id');
+		
+		$this->hasMany('xShop/Item','manufacturer_id');
 
 		$this->addHook('beforeDelete',$this);
 		// $this->add('dynamic_model/Controller_AutoCreator');
 	}
 
 	function beforeDelete($m){
-		if($m->ref('xShop/Product')->count()->getOne())
+		if($m->ref('xShop/Item')->count()->getOne())
 			$this->api->js(true)->univ()->errorMessage('First Delete its associated Item')->execute();		
 	}
 	

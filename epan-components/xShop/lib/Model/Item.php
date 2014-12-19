@@ -2,35 +2,37 @@
 
 namespace xShop;
 
-class Model_Product extends \Model_Table{
-	public $table='xshop_products';
+class Model_Item extends \Model_Table{
+	public $table='xshop_items';
 	public $table_alias='Item';
 
 	function init(){
 		parent::init();	
+		
 		$f = $this->hasOne('xShop/Supplier','supplier_id')->group('a~6');
 		$f->icon = "fa fa-user~blue";
 		$f = $this->hasOne('xShop/Manufacturer','manufacturer_id')->group('a~6');
 		$f->icon = "fa fa-user~blue";
+		$this->hasOne('xShop/Application','application_id');
 		// $f->group='a/6';
-		//TODO for Mutiple Epan website
+		//for Mutiple Epan website
 		$this->hasOne('Epan','epan_id');
 		$this->addCondition('epan_id',$this->api->current_website->id);
 
-		$f = $this->addField('name')->mandatory(true)->group('b~6');
+		$f = $this->addField('name')->mandatory(true)->group('b~6')->sortable(true);
 		$f->icon = "fa fa-puzzle-piece~red";
-		$f = $this->addField('sku')->PlaceHolder('Insert Unique Referance Code')->caption('Code')->hint('Place your unique product code ')->mandatory(true)->group('b~4');
+		$f = $this->addField('sku')->PlaceHolder('Insert Unique Referance Code')->caption('Code')->hint('Place your unique Item code ')->mandatory(true)->group('b~4')->sortable(true);
 		$f->icon = "fa fa-puzzle-piece~red";
-		$f = $this->addField('is_publish')->type('boolean')->defaultValue(true)->group('b~2');
+		$f = $this->addField('is_publish')->type('boolean')->defaultValue(true)->group('b~2')->sortable(true);
 		$f->icon = "fa fa-exclamation~blue";
 
 		$f = $this->addField('short_description')->type('text')->group('d~6');//->display(array('form'=>'RichText'));
 		$f->icon = "fa fa-pencil~blue";
 		$f = $this->addField('original_price')->mandatory(true)->group('d~3');
 		$f->icon = "fa fa-money~blue";
-		$f = $this->addField('sale_price')->type('int')->mandatory(true)->group('d~3');
+		$f = $this->addField('sale_price')->type('int')->mandatory(true)->group('d~3')->sortable(true);
 		$f->icon = "fa fa-money~blue";
-		$f = $this->addField('rank_weight')->defaultValue(0)->hint('Higher Rank Weight Product Display First')->mandatory(true)->group('d~6~dl');
+		$f = $this->addField('rank_weight')->defaultValue(0)->hint('Higher Rank Weight Item Display First')->mandatory(true)->group('d~6~dl');
 		$f->icon = "glyphicon glyphicon-sort-by-attributes~blue";
 		$f = $this->addField('created_at')->type('date')->defaultValue(date('Y-m-d'))->group('d~3~dl');				
 		$f->icon = "fa fa-calendar~blue";
@@ -78,8 +80,8 @@ class Model_Product extends \Model_Table{
 		$f = $this->addField('enquiry_send_to_supplier')->caption('Supplier')->type('boolean')->group('e~3');
 		$f->icon = "glyphicon glyphicon-send~#5cb85c";		
 		$f= $this->addField('enquiry_send_to_manufacturer')->caption('Manufacturer')->type('boolean')->group('e~3');
-		$f->icon = "glyphicon glyphicon-send~#5cb85c";		
-		$f = $this->addField('product_enquiry_auto_reply')->caption('Item Enquiry Auto Reply')->type('boolean')->group('e~3');
+		$f->icon = "glyphicon glyphicon-send~#5cb85c";
+		$f = $this->addField('Item_enquiry_auto_reply')->caption('Item Enquiry Auto Reply')->type('boolean')->group('e~3');
 		$f->icon = "glyphicon glyphicon-send~#5cb85c";		
 
 		//Item Comment Options
@@ -103,12 +105,12 @@ class Model_Product extends \Model_Table{
 		$f = $this->addField('tags')->type('text')->PlaceHolder('Comma Separated Value')->group('o~5~bl');
 		$f->icon = "glyphicon glyphicon-pencil~blue";	
 
-		$this->hasMany('xShop/CategoryProduct','product_id');
-		$this->hasMany('xShop/ProductImages','product_id');
-		$this->hasMany('xShop/CustomFields','product_id');
-		$this->hasMany('xShop/Attachments','product_id');
-		$this->hasMany('xShop/ProductEnquiry','product_id');
-		$this->hasMany('xShop/OrderDetails','product_id');
+		$this->hasMany('xShop/CategoryItem','item_id');
+		$this->hasMany('xShop/ItemImages','item_id');
+		$this->hasMany('xShop/CustomFields','item_id');
+		$this->hasMany('xShop/Attachments','item_id');
+		$this->hasMany('xShop/ItemEnquiry','item_id');
+		$this->hasMany('xShop/OrderDetails','item_id');
 			
 		$this->addHook('beforeSave',$this);
 		$this->addHook('beforeDelete',$this);
@@ -117,19 +119,19 @@ class Model_Product extends \Model_Table{
 
 	function beforeSave($m){
 		// todo checking SKU value must be unique
-		$product_old=$this->add('xShop/Model_Product');
+		$item_old=$this->add('xShop/Model_Item');
 		if($this->loaded())
-			$product_old->addCondition('id','<>',$this->id);
+			$item_old->addCondition('id','<>',$this->id);
 
-		$product_old->addCondition('sku',$this['sku']);		
-		$product_old->tryLoadAny();
+		$item_old->addCondition('sku',$this['sku']);		
+		$item_old->tryLoadAny();
 		//TODO Rank Weight Auto Increment 
-		if($product_old->loaded())
-			throw new \Exception("Product Code is Allready Exist");
+		if($item_old->loaded())
+			throw $this->Exception('Item Code is Allready Exist','ValidityCheck')->setField('sku');
 
 
 		//do inserting search string for full text search
-		// $p_model=$this->add('xShop/Model_Product');
+		// $p_model=$this->add('xShop/Model_Item');
 		$this['search_string']= implode(" ", $this->getCategory($this['id'])). " ".
 								$this["name"]. " ".
 								$this['sku']. " ".
@@ -140,11 +142,11 @@ class Model_Product extends \Model_Table{
 								$this['sale_price']
 							;
 
-	}	
+	}
 
-	function getCategory($product_id){
-		$cat_pro_model=$this->add('xShop/Model_CategoryProduct');
-		$cat_pro_model->addCondition('product_id',$product_id);
+	function getCategory($item_id){
+		$cat_pro_model=$this->add('xShop/Model_CategoryItem');
+		$cat_pro_model->addCondition('item_id',$item_id);
 		$cat_name=array();
 		foreach ($cat_pro_model as $j) {
 			$cat_name[]=$cat_pro_model->ref('category_id')->get('name');
@@ -154,20 +156,20 @@ class Model_Product extends \Model_Table{
 
 	function beforeDelete($m){
 		$order_count = $m->ref('xShop/OrderDetails')->count()->getOne();
-		$product_enquiry_count = $m->ref('xShop/ProductEnquiry')->count()->getOne();						
+		$item_enquiry_count = $m->ref('xShop/ItemEnquiry')->count()->getOne();						
 		
-		if($this->api->auth->model['type'] and($order_count or $product_enquiry_count)){
+		if($this->api->auth->model['type'] and($order_count or $item_enquiry_count)){
 			$this->api->js(true)->univ()->errorMessage('Cannot Delete,first delete Orders or Enquiry')->execute();	
 		}
 
-		$m->ref('xShop/CategoryProduct')->deleteAll();
-		$m->ref('xShop/ProductImages')->deleteAll();
+		$m->ref('xShop/CategoryItem')->deleteAll();
+		$m->ref('xShop/ItemImages')->deleteAll();
 		$m->ref('xShop/CustomFields')->deleteAll();
 		$m->ref('xShop/Attachments')->deleteAll();	 
 		
 	}
 
-	function updateSearchString($product_id){
+	function updateSearchString($item_id){
 		if($this->loaded()){
 			$this['search_string']= implode(" ", $this->getCategory($this['id'])). " ".
 								$this["name"]. " ".
@@ -182,13 +184,13 @@ class Model_Product extends \Model_Table{
 		}
 	}
 
-	function sendEnquiryMail($to_mail,$name=null,$contact=null,$email_id=null,$message=null,$form=null,$product_name,$product_code,$reply_email='0'){
+	function sendEnquiryMail($to_mail,$name=null,$contact=null,$email_id=null,$message=null,$form=null,$item_name,$item_code,$reply_email='0'){
 						
 		$tm=$this->add( 'TMail_Transport_PHPMailer' );
 		$msg=$this->add( 'SMLite' );
 		if(!$reply_email){
-			$msg->loadTemplate( 'mail/xShop_productenquiry' );		
-			$msg_body = "<h3>Enquiry Related to Product:".$product_name."<br> Product Code ".$product_code."</h3>";			
+			$msg->loadTemplate( 'mail/xShop_itemenquiry' );		
+			$msg_body = "<h3>Enquiry Related to Item:".$item_name."<br> Item Code ".$item_code."</h3>";	
 			$msg_body .= "<b>Name : </b>".$name."<br>";
 			$msg_body .= "<b>Email id :</b>".$email_id."<br>";
 			$msg_body .= "<b>Contact No :</b>".$contact."<br>";
@@ -201,12 +203,12 @@ class Model_Product extends \Model_Table{
 			$config_model->tryLoadAny();
 
 			$subject =$config_model['subject'];
-			$msg->loadTemplate( 'mail/xShop_productenquiryreply' );		
+			$msg->loadTemplate( 'mail/xShop_itemenquiryreply' );		
 			$msg_body = $config_model['message'];
 			// throw new \Exception("Error Processing Request".$msg_body);			
-			$msg_body .= '<b>Product_name : </b>'.$product_name."<br>";
-			$msg_body .= '<b>Product_code : </b>'.$product_code."<br>";
-			$msg->setHTML('enquiry_product_reply_detail',$msg_body);
+			$msg_body .= '<b>Item_name : </b>'.$item_name."<br>";
+			$msg_body .= '<b>Item_code : </b>'.$item_code."<br>";
+			$msg->setHTML('enquiry_item_reply_detail',$msg_body);
 		}
 
 		$email_body=$msg->render();
@@ -221,34 +223,55 @@ class Model_Product extends \Model_Table{
 
 	function updateContent($id,$content){
 		if($this->loaded())
-			throw new \Exception("Model_loaded at time of product");
+			throw new \Exception("Model_loaded at time of item");
 		$this->load($id);
 		$this['description']=$content;
 		$this->save();
 		return 'true';
 	}
 
-	function getProduct($id){
+	function getItem($id){
 		$this->load($id);				
 		return $this;
 	}
 
-	function getAllProductCount(){
+	function getItemCount($app_id){
 		if($this->loaded())
-			throw new \Exception("Product Model Loaded at Count All Product");	
+			throw new \Exception("Item Model Loaded at Count All Item");
+		if($app_id)
+			$this->addCondition('application_id',$app_id);
 		return $this->count()->getOne();
 	}
 
-	function getPublishCount(){
+	function getPublishCount($app_id){
 		if($this->loaded())
-			throw new \Exception("Product Model Loaded at Count Active Product");	
+			throw new \Exception("Item Model Loaded at Count Active Item");	
+		if($app_id)
+			$this->addCondition('application_id',$app_id);
 		return $this->addCondition('is_publish',true)->count();
 	}
 
-	function getUnpublishCount(){
+	function getUnpublishCount($app_id){
 		if($this->loaded())
-			throw new \Exception("Product Model Loaded at Count Unactive Product");	
+			throw new \Exception("Item Model Loaded at Count Unactive Item");
+		if($app_id)
+			$this->addCondition('application_id',$app_id);
 		return $this->addCondition('is_publish',false)->count();	
 	}
-}
+
+	function applicationItems($app_id){
+		if(!$app_id)
+			$app_id=$this->api->recall('xshop_application_id');	
+
+		$this->addCondition('application_id',$app_id);
+		$this->tryLoadAny();
+		return $this;
+	}
+
+	function getAssociatedCategories(){
+		$associated_categories = $this->ref('xShop/CategoryItem')->addCondition('is_associate',true)->_dsql()->del('fields')->field('category_id')->getAll();
+		return iterator_to_array(new \RecursiveIteratorIterator(new \RecursiveArrayIterator($associated_categories)),false);
+	}
+
+}	
 

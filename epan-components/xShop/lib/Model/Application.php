@@ -16,6 +16,7 @@ class Model_Application extends \Model_Table{
 		$this->addField('type')->enum(array('Shop','Blog'));
 
 		$this->hasMany('xShop/Category','application_id');
+		$this->hasMany('xShop/Item','application_id');
 		$this->addHook('beforeDelete',$this);
 		
 		$this->add('dynamic_model/Controller_AutoCreator'); 
@@ -23,7 +24,7 @@ class Model_Application extends \Model_Table{
 
 	function beforeDelete($m){
 		if($m->ref('xShop/Category')->count()->getOne()){
-			throw $this->exception("Category Group(".$m['name'].") cannot deleted, first delete its category",'Growl');
+			throw $this->exception("Shop/Blog (".$m['name'].") cannot deleted, first delete its category",'Growl');
 		}	
 
 	}

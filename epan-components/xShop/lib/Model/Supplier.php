@@ -30,14 +30,14 @@ class Model_Supplier extends \Model_Table {
 		$this->addField('zip_code')->caption('Zip/postal code')->group('c~2~dl');
 		$f = $this->addField('description')->type('text')->display(array('form'=>'RichText'));
 		$f->icon = "fa fa-pencil~blue";
-		$this->hasMany('xShop/Product','supplier_id');
+		$this->hasMany('xShop/Item','supplier_id');
 		$this->addHook('beforeDelete',$this);
 		// $this->add('dynamic_model/Controller_AutoCreator');
 
 	}
 
 	function beforeDelete($m){
-		if($m->ref('xShop/Product')->count()->getOne())
+		if($m->ref('xShop/Item')->count()->getOne())
 			$this->api->js(true)->univ()->errorMessage('First Delete,Associated Items')->execute();		
 	}
 

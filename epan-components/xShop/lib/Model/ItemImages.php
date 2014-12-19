@@ -2,12 +2,12 @@
 
 namespace xShop;
 
-class Model_ProductImages extends \Model_Table {
-	var $table= "xshop_product_images";
+class Model_ItemImages extends \Model_Table {
+	var $table= "xshop_item_images";
 	function init(){
 		parent::init();
 		
-		$this->hasOne('xShop/Product','product_id');
+		$this->hasOne('xShop/Item','item_id');
 		
 		$f = $this->addField('image_url')->mandatory(true)->display(array('form'=>'ElImage'))->group('a~12~<i class="glyphicon glyphicon-picture"></i> Media Management');
 		$f->icon ="glyphicon glyphicon-picture~blue";
@@ -19,8 +19,8 @@ class Model_ProductImages extends \Model_Table {
 		// $this->add('dynamic_model/Controller_AutoCreator');		
 	}
 
-	function getImageUrl($product_id){
-		$this->addCondition('product_id',$product_id);
+	function getImageUrl($item_id){
+		$this->addCondition('item_id',$item_id);
 		$this->tryLoadAny();
 		return $this;
 	}

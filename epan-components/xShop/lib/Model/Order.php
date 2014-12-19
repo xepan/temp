@@ -66,10 +66,10 @@ class Model_Order extends \Model_Table{
 			foreach ($cart_items as $order_detail) {
 
 				$order_details['order_id']=$this->id;
-				$order_details['product_id']=$order_info['productid_'.$i];
+				$order_details['item_id']=$order_info['itemid_'.$i];
 				$order_details['qty']=$order_info['qty_'.$i];
-				$order_details['rate']=$order_info['productrate_'.$i];
-				$order_details['amount']=$order_info['qty_'.$i]*$order_info['productrate_'.$i];
+				$order_details['rate']=$order_info['itemrate_'.$i];
+				$order_details['amount']=$order_info['qty_'.$i]*$order_info['itemrate_'.$i];
 				$total_amount+=$order_details['amount'];
 
 				$order_details->saveAndUnload();

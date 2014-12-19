@@ -19,7 +19,7 @@ class Model_Configuration extends \Model_Table {
 		$f = $this->addField('disqus_code')->type('text')->caption('Place the Disqus code')->PlaceHolder('Place your Disqus Code here..')->hint('Place your Discus code here')->group('x~12~<i class="fa fa-comments"></i> Item Comment System Config'); 		
 		$f->icon = "fa fa-comment~blue";
 			
-		$f = $this->addField('add_custom_button')->type('boolean')->hint('Add Custom Button on All Product at Product Detail')->group('b~2~<i class="fa fa-cog"></i> Item Custom Button Options');
+		$f = $this->addField('add_custom_button')->type('boolean')->hint('Add Custom Button on All Item at Item Detail')->group('b~2~<i class="fa fa-cog"></i> Item Custom Button Options');
 		$f->icon = "fa fa-exclamation~blue";
 		$f = $this->addField('custom_button_text')->hint('Add Custom Button Text')->group('b~4');
 		$f->icon = "fa fa-pencil~blue";
